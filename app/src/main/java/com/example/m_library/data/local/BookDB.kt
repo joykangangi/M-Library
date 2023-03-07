@@ -1,4 +1,4 @@
-package com.example.m_library.data
+package com.example.m_library.data.local
 
 import android.content.Context
 import androidx.room.Database
@@ -15,7 +15,7 @@ abstract class BookDB: RoomDatabase() {
         private var INSTANCE: BookDB? = null
 
         fun getDatabase(context: Context): BookDB {
-            return INSTANCE?: synchronized(this) {
+            return INSTANCE ?: synchronized(this) {
                 Room.databaseBuilder(context, BookDB::class.java,"book_db")
                     .fallbackToDestructiveMigration()
                     .build()

@@ -1,4 +1,4 @@
-package com.example.m_library.data
+package com.example.m_library.data.local
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
