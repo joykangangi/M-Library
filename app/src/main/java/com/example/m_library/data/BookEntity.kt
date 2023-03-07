@@ -6,13 +6,26 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 
-@Entity(tableName = "book_entity")
-data class BookEntity(
-@PrimaryKey(autoGenerate = true) @ColumnInfo val id: Int,
-@ColumnInfo val bookTitle: String,
-@ColumnInfo val bookAuthor: String,
-@ColumnInfo val bookLabel: Boolean,
-@ColumnInfo val readStatus: String,
-@ColumnInfo val newWords: String,
-@ColumnInfo var readDate: Date? = null
+@Entity(tableName = "books")
+data class Book(
+@PrimaryKey(autoGenerate = true) val id: Long = 0L,
+@ColumnInfo val title: String,
+@ColumnInfo val author: String,
+@ColumnInfo val readStatus: ReadingStatus,
+@ColumnInfo var readByDate: Date? = null,
+@ColumnInfo var currentChapter:Int = 0,
+@ColumnInfo var totalChapters:Int = 0
+)
+
+enum class ReadingStatus{
+    READING,
+    TO_READ,
+    COMPLETED
+}
+
+@Entity(tableName = "new_words")
+data class NewWord(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0L,
+    @ColumnInfo val newWord: String,
+    @ColumnInfo val meaning: String
 )
