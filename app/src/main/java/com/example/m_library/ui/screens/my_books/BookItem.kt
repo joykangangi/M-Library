@@ -37,7 +37,7 @@ fun BookItem(
         ) {
             book.readByDate?.let { Component1(bookTitle = book.title, status = book.readStatus.name, readByDate = it) }
 
-            Component2()
+            ProgressIndicator(chaptersRead = (book.currentChapter / book.totalChapters).toFloat())
         }
     }
 }
@@ -85,10 +85,4 @@ fun Component1(
             )
         }
     }
-}
-
-//Progress Indicator
-@Composable
-fun Component2() {
-
 }

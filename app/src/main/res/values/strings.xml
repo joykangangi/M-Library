@@ -5,4 +5,5 @@
     <string name="title">Book Title: %s</string>
     <string name="reading_status">Reading Status: %s</string>
     <string name="due_date">Due Date: %s</string>
+    <string name="rem">Remaining</string>
 </resources>
