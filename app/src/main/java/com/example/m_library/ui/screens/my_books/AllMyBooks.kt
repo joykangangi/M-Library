@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AllMyBooks(
     //Viewmodel
@@ -34,8 +33,6 @@ fun AllMyBooks(
 
         }
     }
-
-
 }
 
 

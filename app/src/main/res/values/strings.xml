@@ -6,4 +6,14 @@
     <string name="reading_status">Reading Status: %s</string>
     <string name="due_date">Due Date: %s</string>
     <string name="rem">Remaining</string>
+   
+    <string name="go_back">Go Back</string>
+    <string name="author">Book Author</string>
+    <string name="reading_st">Reading Status</string>
+    <string name="finishby">Finish By Date</string>
+    <string name="currentChp">Current Chapter</string>
+    <string name="totChap">Total Chapters</string>
+
+    <string name="del">Delete</string>
+    <string name="edit">Edit</string>
 </resources>
