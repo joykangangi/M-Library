@@ -1,8 +1,8 @@
 package com.example.m_library.data
 
-import com.example.m_library.data.local.Book
+import com.example.m_library.model.Book
 import com.example.m_library.data.local.BookDao
-import com.example.m_library.data.local.NewWord
+import com.example.m_library.model.NewWord
 import com.example.m_library.data.local.NewWordDao
 import kotlinx.coroutines.flow.Flow
 
@@ -25,6 +25,8 @@ class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWo
     suspend fun deleteBook(book: Book) = bookDao.deleteBook(book = book)
 
     suspend fun getBook(id: Long) = bookDao.getBookById(id = id)
+
+   fun sortByDate(): Flow<List<Book>> = bookDao.sortDates()
 
     //for new words
     fun getAllNewWords(): Flow<List<NewWord>> = newWordDao.getAllNewWords()

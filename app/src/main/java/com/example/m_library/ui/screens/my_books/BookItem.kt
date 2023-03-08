@@ -3,25 +3,21 @@ package com.example.m_library.ui.screens.my_books
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.m_library.R
-import com.example.m_library.data.local.Book
+import com.example.m_library.model.Book
+import java.text.SimpleDateFormat
+import java.util.*
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BookItem(
     modifier: Modifier = Modifier,
@@ -32,27 +28,31 @@ fun BookItem(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp),
         elevation = 10.dp,
-        backgroundColor = MaterialTheme.colors.surface
+        backgroundColor = MaterialTheme.colors.surface,
+        onClick = onBookClicked
     ) {
         Row(
             modifier = modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            book.readByDate?.let { Component1(bookTitle = book.title, status = book.readStatus.name, readByDate = it) }
 
-            }
-
-            }
+            Component2()
         }
-
     }
+}
 
 
+//The first side of the card
 @Composable
 fun Component1(
     bookTitle: String,
     status: String,
-
+    readByDate: Date
 ) {
+    // Format date as: Thu Jan 3, 2023
+    val dateFormat = SimpleDateFormat("EEE MMM d, yyyy", Locale.ENGLISH)
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +67,10 @@ fun Component1(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        Text(text = stringResource(id = R.string.reading_status, status), style = MaterialTheme.typography.body1)
+        Text(
+            text = stringResource(id = R.string.reading_status, status),
+            style = MaterialTheme.typography.body1
+        )
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -77,9 +80,15 @@ fun Component1(
             )
 
             Text(
-                text = stringResource(id = R.string.due_date, book.readByDate),
+                text = stringResource(id = R.string.due_date, dateFormat.format(readByDate)),
                 style = MaterialTheme.typography.caption
             )
         }
     }
+}
+
+//Progress Indicator
+@Composable
+fun Component2() {
+
 }

@@ -1,6 +1,8 @@
 package com.example.m_library.data.local
 
 import androidx.room.*
+import com.example.m_library.model.Book
+import com.example.m_library.model.NewWord
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -19,6 +21,9 @@ interface BookDao {
 
     @Query("SELECT * FROM books WHERE id = :id")
     suspend fun getBookById(id: Long): Book?
+
+    @Query("SELECT * FROM books ORDER BY read_by_date DESC")
+    fun sortDates(): Flow<List<Book>>
 }
 
 @Dao

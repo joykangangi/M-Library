@@ -3,8 +3,8 @@ package com.example.m_library.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
-import com.example.m_library.data.local.Book
-import com.example.m_library.data.local.NewWord
+import com.example.m_library.model.Book
+import com.example.m_library.model.NewWord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -34,6 +34,8 @@ class BookViewModel
     fun getBook(id: Long) = viewModelScope.launch {
         bookRepository.getBook(id = id)
     }
+
+    fun sortByDates(): Flow<List<Book>> = bookRepository.sortByDate()
 
     //NewWord
     private val newWords: Flow<List<NewWord>> = bookRepository.getAllNewWords()

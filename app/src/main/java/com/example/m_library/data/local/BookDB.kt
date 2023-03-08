@@ -3,6 +3,8 @@ package com.example.m_library.data.local
 import android.content.Context
 import androidx.room.*
 import com.example.m_library.converters.RoomConverters
+import com.example.m_library.model.Book
+import com.example.m_library.model.NewWord
 
 @Database(entities = [Book::class, NewWord::class], version = 1, exportSchema = false)
 @TypeConverters(RoomConverters::class)

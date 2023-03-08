@@ -1,4 +1,4 @@
-package com.example.m_library.data.local
+package com.example.m_library.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -12,7 +12,7 @@ data class Book(
     @ColumnInfo val title: String,
     @ColumnInfo val author: String,
     @ColumnInfo val readStatus: ReadingStatus,
-    @ColumnInfo var readByDate: Date? = null,
+    @ColumnInfo(name = "read_by_date") var readByDate: Date? = null,
     @ColumnInfo var currentChapter:Int = 0,
     @ColumnInfo var totalChapters:Int = 0
 )
