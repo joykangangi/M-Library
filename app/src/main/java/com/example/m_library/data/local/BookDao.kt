@@ -14,8 +14,11 @@ interface BookDao {
     @Delete
     suspend fun deleteBook(book: Book)
 
-    @Query("SELECT * from books WHERE id = :id")
+    @Query("SELECT * FROM books")
     fun getAllBooks(): Flow<List<Book>>
+
+    @Query("SELECT * FROM books WHERE id = :id")
+    suspend fun getBookById(id: Long): Book?
 }
 
 @Dao
@@ -29,6 +32,9 @@ interface NewWordDao {
     @Delete
     suspend fun deleteWord(newWord: NewWord)
 
-    @Query("SELECT * from new_words WHERE id = :id")
+    @Query("SELECT * FROM new_words")
     fun getAllNewWords(): Flow<List<NewWord>>
+
+    @Query("SELECT * FROM new_words WHERE id = :id")
+    suspend fun getNewWordById(id: Long): NewWord
 }

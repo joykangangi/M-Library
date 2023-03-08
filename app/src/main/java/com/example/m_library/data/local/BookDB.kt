@@ -1,11 +1,11 @@
 package com.example.m_library.data.local
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import com.example.m_library.converters.RoomConverters
 
 @Database(entities = [Book::class, NewWord::class], version = 1, exportSchema = false)
+@TypeConverters(RoomConverters::class)
 abstract class BookDB: RoomDatabase() {
     abstract fun bookDao(): BookDao
     abstract fun newWordDao(): NewWordDao

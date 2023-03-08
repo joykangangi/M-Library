@@ -24,8 +24,12 @@ class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWo
 
     suspend fun deleteBook(book: Book) = bookDao.deleteBook(book = book)
 
+    suspend fun getBook(id: Long) = bookDao.getBookById(id = id)
+
     //for new words
     fun getAllNewWords(): Flow<List<NewWord>> = newWordDao.getAllNewWords()
+
+    suspend fun getNewWord(id: Long) = newWordDao.getNewWordById(id = id)
 
     suspend fun insertNewWord(newWord: NewWord) = newWordDao.insertNewWord(newWord = newWord)
 

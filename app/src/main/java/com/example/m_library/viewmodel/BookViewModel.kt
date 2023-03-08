@@ -31,6 +31,11 @@ class BookViewModel
         bookRepository.deleteBook(book = book)
     }
 
+    fun getBook(id: Long) = viewModelScope.launch {
+        bookRepository.getBook(id = id)
+    }
+
+    //NewWord
     private val newWords: Flow<List<NewWord>> = bookRepository.getAllNewWords()
 
     fun addNewWord(newWord: NewWord) = viewModelScope.launch {
@@ -44,5 +49,9 @@ class BookViewModel
 
     fun deleteNewWord(newWord: NewWord) = viewModelScope.launch {
         bookRepository.deleteWord(newWord = newWord)
+    }
+
+    fun getNewWord(id: Long) = viewModelScope.launch {
+        bookRepository.getNewWord(id = id)
     }
 }

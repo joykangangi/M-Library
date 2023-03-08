@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">M-Library</string>
+    <string name="deadline">Deadline Checked</string>
+    <string name="deadLn">Deadline</string>
+    <string name="title">Book Title: %s</string>
+    <string name="reading_status">Reading Status: %s</string>
+    <string name="due_date">Due Date: %s</string>
 </resources>
