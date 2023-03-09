@@ -86,7 +86,6 @@ fun BottomNavItem(
 
     Box(
         modifier = Modifier
-            .height(40.dp)
             .clip(CircleShape)
             .background(color = background)
             .clickable(onClick = {

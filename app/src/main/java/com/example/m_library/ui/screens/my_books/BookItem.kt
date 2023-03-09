@@ -55,7 +55,6 @@ fun Component1(
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .padding(3.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.Start
