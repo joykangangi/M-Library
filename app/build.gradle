@@ -78,4 +78,6 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
+    //Date picker
+    implementation "io.github.vanpra.compose-material-dialogs:datetime:0.8.1-rc"
 }

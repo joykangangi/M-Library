@@ -123,7 +123,7 @@ fun DisplayText(
 @Preview
 @Composable
 fun ProgressPreview() {
-    MLibraryTheme() {
+    MLibraryTheme {
         ProgressIndicator(chaptersRead = 0.5f)
     }
 }

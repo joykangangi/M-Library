@@ -16,4 +16,8 @@
 
     <string name="del">Delete</string>
     <string name="edit">Edit</string>
+
+    <string name="close">Close</string>
+    <string name="add_book">Add Book</string>
+    <string name="titl">Title</string>
 </resources>
