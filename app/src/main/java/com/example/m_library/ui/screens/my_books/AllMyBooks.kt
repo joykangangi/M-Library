@@ -1,10 +1,15 @@
 package com.example.m_library.ui.screens.my_books
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.ExperimentalMaterialApi
@@ -12,7 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.m_library.model.Book
+import com.example.m_library.model.ReadingStatus
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AllMyBooks(
     //Viewmodel
@@ -22,15 +30,24 @@ fun AllMyBooks(
     //state from vm
 
     val lazyListState = rememberLazyListState()
-
+    val l = listOf(1,2,3)
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(start = 12.dp, top = 8.dp, end = 12.dp)) {
 
         BooksTopAppBar(isDeadLine = isDeadline, onDeadLineClicked = onDeadLnClicked, elevation = lazyListState.elevation )
         
-        LazyColumn(state = lazyListState) {
-
+        LazyColumn(state = lazyListState, modifier = Modifier.animateContentSize()) {
+           items(items = l, key = null ) {
+               BookItem(onBookClicked = { /*TODO Nav*/ },
+                   book = Book(title = "", author = "", readStatus = ReadingStatus.READING),
+               modifier = Modifier.animateItemPlacement(
+                   animationSpec = tween(
+                       durationMillis = 500,
+                       easing = LinearOutSlowInEasing
+                   )
+               ))
+            }
         }
     }
 }
