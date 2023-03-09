@@ -7,22 +7,17 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomScreen(
-    val id: String, //route
+    val route: String, //route
     val title: String,
     val icon: ImageVector
 ) {
     //All Books/Home Page
-    object MyBooks: BottomScreen(id = "my_books", title = "MyBooks", icon = Icons.Outlined.List)
+    object MyBooks: BottomScreen(route = "my_books", title = "MyBooks", icon = Icons.Outlined.List)
 
     //Add Book
-    object AddBook: BottomScreen(id = "add_book", title = "Add Book", icon = Icons.Outlined.Add)
+    object AddBook: BottomScreen(route = "add_book", title = "Add Book", icon = Icons.Outlined.Add)
 
     //New Word
-    object NewWord: BottomScreen(id = "new_word", title = "New Words", icon = Icons.Outlined.Star)
+    object NewWord: BottomScreen(route = "new_word", title = "New Words", icon = Icons.Outlined.Star)
 
-    object Items{
-        val list = listOf(
-            MyBooks, AddBook, NewWord
-        )
-    }
 }

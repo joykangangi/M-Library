@@ -16,6 +16,7 @@ abstract class BookDB: RoomDatabase() {
         @Volatile
         private var INSTANCE: BookDB? = null
 
+        //Todo Provide in DI
         fun getDatabase(context: Context): BookDB {
             return INSTANCE ?: synchronized(this) {
                 Room.databaseBuilder(context, BookDB::class.java,"book_db")

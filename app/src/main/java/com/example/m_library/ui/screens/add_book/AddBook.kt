@@ -18,7 +18,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.m_library.R
 import com.example.m_library.model.ReadingStatus
-import com.example.m_library.ui.screens.add_book.components.DateSaver
 import com.example.m_library.ui.screens.add_book.components.ReadingStatusRadio
 import java.time.LocalDate
 
@@ -126,7 +125,7 @@ fun AddBook() {
                     (it) //Todo VM
                 } )
 
-                DateSaver(date = LocalDate.now()/*Todo Vm.state*/)
+               // DateSaver(date = LocalDate.now()/*Todo Vm.state*/)
             }
         }
     }

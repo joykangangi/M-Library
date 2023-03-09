@@ -1,53 +1,84 @@
 package com.example.m_library.navigation
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+
+@Composable
+fun CustomBottomNav() {
+
+    val navController = rememberNavController()
+
+    Scaffold(
+        bottomBar = {
+            CustomBottomBar(navController = navController)
+        }
+    ) {
+        BottomNavGraph(navController = navController, modifier = Modifier.padding(it))
+    }
+}
 
 
 @Composable
-fun CustomBottomNavigation(
-    currentScreenId: String,
-    onItemSelected: (BottomScreen) -> Unit
+fun CustomBottomBar(
+    navController: NavHostController
 ) {
-    val items: List<BottomScreen> = BottomScreen.Items.list
+
+    val bottomScreens: List<BottomScreen> = listOf(
+        BottomScreen.MyBooks,
+        BottomScreen.AddBook,
+        BottomScreen.NewWord
+    )
+
+    val navStackBackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navStackBackEntry?.destination
 
     Row(
         modifier = Modifier
             .background(MaterialTheme.colors.background)
-            .padding(8.dp)
+            .padding(12.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        items.forEach { item ->
-            BottomNavItem(item = item, isSelected = item.id == currentScreenId) {
-            // onClick =
-            onItemSelected(it)
-            }
+        bottomScreens.forEach { screen ->
+            BottomNavItem(
+                bottomScreen = screen,
+                currentDestination = currentDestination,
+                navController = navController
+            )
         }
     }
 }
 
 @Composable
 fun BottomNavItem(
-    item: BottomScreen,
-    isSelected: Boolean,
-    onClick: (BottomScreen) -> Unit
+    bottomScreen: BottomScreen,
+    currentDestination: NavDestination?,
+    navController: NavHostController
 ) {
+    val isSelected = currentDestination?.hierarchy?.any { it.route == bottomScreen.route } == true
+
     val background =
         if (isSelected) MaterialTheme.colors.background.copy(alpha = 0.1f) else Color.Transparent
     val contentColor =
@@ -55,47 +86,32 @@ fun BottomNavItem(
 
     Box(
         modifier = Modifier
+            .height(40.dp)
             .clip(CircleShape)
             .background(color = background)
-            .clickable(onClick = { onClick(item) })
+            .clickable(onClick = {
+                navController.navigate(bottomScreen.route) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
+            })
     ) {
         Row(
             modifier = Modifier
-                .padding(12.dp),
+                .padding(all = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Icon(imageVector = item.icon, contentDescription = item.title, tint = contentColor)
+            Icon(
+                imageVector = bottomScreen.icon,
+                contentDescription = bottomScreen.title,
+                tint = contentColor
+            )
             AnimatedVisibility(visible = isSelected) {
-                Text(text = item.title, color = contentColor)
+                Text(text = bottomScreen.title, color = contentColor)
             }
 
         }
 
     }
-}
-
-
-@Preview
-@Composable
-fun BottPrev1() {
-    CustomBottomNavigation(currentScreenId = BottomScreen.MyBooks.id, onItemSelected = {})
-}
-
-@Preview
-@Composable
-fun BottPrev1Item() {
-    BottomNavItem(item = BottomScreen.MyBooks, isSelected = true, onClick = {})
-}
-
-@Preview
-@Composable
-fun BottPrev2() {
-    CustomBottomNavigation(currentScreenId = BottomScreen.AddBook.id, onItemSelected = {})
-}
-
-@Preview
-@Composable
-fun BottPrev3() {
-    CustomBottomNavigation(currentScreenId = BottomScreen.NewWord.id, onItemSelected = {})
 }

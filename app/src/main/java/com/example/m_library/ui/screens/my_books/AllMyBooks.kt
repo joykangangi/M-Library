@@ -24,24 +24,25 @@ import com.example.m_library.model.ReadingStatus
 @Composable
 fun AllMyBooks(
     //Viewmodel
-    isDeadline: Boolean,
-    onDeadLnClicked: () -> Unit
+    isDeadline: Boolean ,
+    onDeadLnClicked: () -> Unit,
+    modifier: Modifier
 ) {
     //state from vm
 
     val lazyListState = rememberLazyListState()
     val l = listOf(1,2,3)
-    Column(modifier = Modifier
+    Column(modifier = modifier
         .fillMaxSize()
         .padding(start = 12.dp, top = 8.dp, end = 12.dp)) {
 
         BooksTopAppBar(isDeadLine = isDeadline, onDeadLineClicked = onDeadLnClicked, elevation = lazyListState.elevation )
         
-        LazyColumn(state = lazyListState, modifier = Modifier.animateContentSize()) {
+        LazyColumn(state = lazyListState, modifier = modifier.animateContentSize()) {
            items(items = l, key = null ) {
                BookItem(onBookClicked = { /*TODO Nav*/ },
-                   book = Book(title = "", author = "", readStatus = ReadingStatus.READING),
-               modifier = Modifier.animateItemPlacement(
+                   book = Book(title = "", author = "", readStatus = ReadingStatus.READING, currentChapter = 4, totalChapters = 10),
+               modifier = modifier.animateItemPlacement(
                    animationSpec = tween(
                        durationMillis = 500,
                        easing = LinearOutSlowInEasing

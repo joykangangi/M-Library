@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.m_library.model.NewWord
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -32,7 +33,7 @@ fun WordsList(/*Todo VM*/) {
             modifier = Modifier.padding(5.dp)
         ) {
             items(words) {
-                WordItem(
+                WordItem(newWord = NewWord(newWord = "", meaning = ""),
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(
                             durationMillis = 500,
