@@ -1,5 +1,6 @@
 package com.example.m_library.ui.screens.my_books
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -18,30 +19,32 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.m_library.R
 import com.example.m_library.model.Book
 import com.example.m_library.model.ReadingStatus
+import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun AllMyBooks(
-    //Viewmodel
-    isDeadline: Boolean ,
-    onDeadLnClicked: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier = Modifier,
+    bookViewModel: BookViewModel = hiltViewModel()
 ) {
-    //state from vm
+    val bookListState = bookViewModel.bookListState.value
 
     val lazyListState = rememberLazyListState()
 
-    Column(modifier = modifier
-        .fillMaxSize()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
     ) {
         TopAppBar(
             title = {
@@ -49,28 +52,37 @@ fun AllMyBooks(
             },
             elevation = lazyListState.elevation
         )
-        Chip(modifier = modifier.padding(start = 9.dp, bottom = 3.dp), onClick = onDeadLnClicked, shape = CircleShape) {
-            if (isDeadline){
-                Image(imageVector = Icons.Filled.CheckCircle, contentDescription = stringResource(id = R.string.deadline))
+        Chip(
+            modifier = modifier.padding(start = 9.dp, bottom = 3.dp),
+            onClick = {
+              bookViewModel.getBooksEvent(BookListEvents.DeadLineChanged(deadLine = !bookListState.isDeadLine))
+                Log.i("AllMyBooks","${bookListState.isDeadLine}")
+        }, shape = CircleShape) {
+            if (bookListState.isDeadLine) {
+                Image(
+                    imageVector = Icons.Filled.CheckCircle,
+                    contentDescription = stringResource(id = R.string.deadline)
+                )
             }
-            Text(text = stringResource(id = R.string.deadLn), fontSize = 21.sp)
+            Text(text = stringResource(id = R.string.deadLn), fontSize = 16.sp)
 
         }
         Divider()
         LazyColumn(
-            modifier = Modifier.padding(start = 12.dp, bottom = 4.dp, end = 12.dp),
+            modifier = Modifier.padding(start = 12.dp, end = 12.dp),
             state = lazyListState
         ) {
-           items(items = listOf("a","b"), key = null) {
-               BookItem(onBookClicked = { /*TODO Nav*/ },
-                   book = Book(
-                       title = "Mary", author = "Joy", readStatus = ReadingStatus.READING, currentChapter = 4, totalChapters = 10),
-               modifier = Modifier.animateItemPlacement(
-                   animationSpec = tween(
-                       durationMillis = 500,
-                       easing = LinearOutSlowInEasing
-                   )
-               ))
+            items(items = bookListState.bookList) {
+                BookItem(
+                    modifier = Modifier.animateItemPlacement(
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = LinearOutSlowInEasing
+                        )
+                    ),
+                    onBookClicked = { /*TODO Nav*/ },
+                    book = it
+                )
             }
         }
     }

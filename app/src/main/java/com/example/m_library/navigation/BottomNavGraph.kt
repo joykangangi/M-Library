@@ -12,15 +12,14 @@ import com.example.m_library.ui.screens.new_words.WordsList
 
 @Composable
 fun BottomNavGraph(
-    navController: NavHostController,
-    modifier: Modifier
+    navController: NavHostController
 ) {
     NavHost(
         navController = navController,
         startDestination = BottomScreen.MyBooks.route
     ) {
         composable(route = BottomScreen.MyBooks.route) {
-            AllMyBooks(isDeadline = true, onDeadLnClicked = {}, modifier = modifier)
+            AllMyBooks()
         }
 
         composable(route = BottomScreen.AddBook.route) {

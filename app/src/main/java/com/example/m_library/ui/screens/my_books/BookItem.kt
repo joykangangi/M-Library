@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -26,19 +27,18 @@ fun BookItem(
     book: Book
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth().padding(vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = 10.dp,
-        backgroundColor = MaterialTheme.colors.surface,
         onClick = onBookClicked
     ) {
         Row(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            book.readByDate?.let { Component1(bookTitle = book.title, status = book.readStatus.name, readByDate = it) }
+            Component1(bookTitle = book.title, status = book.readStatus.name, readByDate = book.readByDate ?: Date())
 
-            ProgressIndicator(readChapters = book.currentChapter, totChapters = book.totalChapters )
+            ProgressIndicator(readChapters = book.currentChapter, totChapters = book.totalChapters, modifier = Modifier.padding(top = 8.dp, end = 6.dp) )
         }
     }
 }
@@ -76,12 +76,14 @@ fun Component1(
             Icon(
                 imageVector = Icons.Filled.DateRange, contentDescription = stringResource(
                     id = R.string.deadline
-                )
+                ),
+                tint =  Color.Gray
             )
 
             Text(
                 text = stringResource(id = R.string.due_date, dateFormat.format(readByDate)),
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
+                color = Color.Gray
             )
         }
     }

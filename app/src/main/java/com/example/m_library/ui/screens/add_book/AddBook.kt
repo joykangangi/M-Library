@@ -91,7 +91,7 @@ fun AddBook(
                     OutlinedTextField(
                         value = addBookState.title,
                         onValueChange = {
-                            bookViewModel.getEvent(event = AddBookEvents.OnTitleChange(it))
+                            bookViewModel.getAddEvent(event = AddBookEvents.OnTitleChange(it))
                         },
                         maxLines = 2,
                         label = {
@@ -105,7 +105,7 @@ fun AddBook(
                     OutlinedTextField(
                         value = addBookState.author,
                         onValueChange = {
-                            bookViewModel.getEvent(AddBookEvents.OnAuthorChange(it))
+                            bookViewModel.getAddEvent(AddBookEvents.OnAuthorChange(it))
                         },
                         maxLines = 2,
                         label = {
@@ -125,7 +125,7 @@ fun AddBook(
                             modifier = Modifier.weight(0.4f),
                             value = addBookState.readChapters,
                             onValueChange = {
-                                bookViewModel.getEvent(AddBookEvents.OnRdChaptsChange(it))
+                                bookViewModel.getAddEvent(AddBookEvents.OnRdChaptsChange(it))
                             },
                             maxLines = 1,
                             label = {
@@ -142,7 +142,7 @@ fun AddBook(
                             modifier = Modifier.weight(0.4f),
                             value = addBookState.totalChapters,
                             onValueChange = {
-                                bookViewModel.getEvent(AddBookEvents.OnTChaptsChange(it))
+                                bookViewModel.getAddEvent(AddBookEvents.OnTChaptsChange(it))
                             },
                             maxLines = 1,
                             label = {
@@ -167,12 +167,12 @@ fun AddBook(
                         options = choiceList,
                         selectedIndex = addBookState.selectedStatus,
                         onSelected = {
-                            bookViewModel.getEvent(AddBookEvents.OnSelectChange(it))
+                            bookViewModel.getAddEvent(AddBookEvents.OnSelectChange(it))
                         }
                     )
 
                     DateSaver(date = addBookState.readByDate, onDateChanged = {
-                        bookViewModel.getEvent(AddBookEvents.OnDateChange(it))
+                        bookViewModel.getAddEvent(AddBookEvents.OnDateChange(it))
                     })
                     Spacer(modifier = Modifier.height(5.dp))
 

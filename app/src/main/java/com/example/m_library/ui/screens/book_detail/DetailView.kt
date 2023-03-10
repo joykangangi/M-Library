@@ -35,7 +35,7 @@ fun BookDetail(
         
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             MoreDetail(title = stringResource(id = R.string.author), details = book.author )
-            ProgressIndicator(readChapters = book.currentChapter, totChapters = book.totalChapters)
+            ProgressIndicator(readChapters = book.currentChapter, totChapters = book.totalChapters, modifier = Modifier)
         }
         Spacer(modifier = Modifier.height(5.dp))
         

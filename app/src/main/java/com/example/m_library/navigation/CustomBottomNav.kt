@@ -17,12 +17,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.m_library.ui.theme.Purple200
+import com.example.m_library.ui.theme.Purple209
 
 @Composable
 fun CustomBottomNav() {
@@ -34,7 +37,8 @@ fun CustomBottomNav() {
             CustomBottomBar(navController = navController)
         }
     ) {
-        BottomNavGraph(navController = navController, modifier = Modifier.padding(paddingValues = PaddingValues(start = it.calculateTopPadding())))
+        BottomNavGraph(navController = navController)
+        it
     }
 }
 
@@ -53,10 +57,10 @@ fun CustomBottomBar(
     val navStackBackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navStackBackEntry?.destination
 
+
     Row(
         modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .padding(12.dp)
+            .padding(5.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
@@ -102,13 +106,13 @@ fun BottomNavItem(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Icon(
+            Icon(modifier = Modifier.size(35.dp),
                 imageVector = bottomScreen.icon,
                 contentDescription = bottomScreen.title,
                 tint = contentColor
             )
             AnimatedVisibility(visible = isSelected) {
-                Text(text = bottomScreen.title, color = contentColor)
+                Text(text = bottomScreen.title, color = contentColor, fontSize = 16.sp)
             }
 
         }
