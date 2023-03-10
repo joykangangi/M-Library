@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 fun ReadingStatusRadio(
     options: List<String>,
     selectedIndex: Int?,
-    onSelected: (Int) -> Int,
+    onSelected: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(modifier = modifier) {

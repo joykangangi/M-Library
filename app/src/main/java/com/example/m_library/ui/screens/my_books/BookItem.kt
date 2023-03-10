@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,12 +33,12 @@ fun BookItem(
         onClick = onBookClicked
     ) {
         Row(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             book.readByDate?.let { Component1(bookTitle = book.title, status = book.readStatus.name, readByDate = it) }
 
-            ProgressIndicator(chaptersRead = (book.currentChapter / book.totalChapters).toFloat())
+            ProgressIndicator(readChapters = book.currentChapter, totChapters = book.totalChapters )
         }
     }
 }
@@ -73,7 +74,7 @@ fun Component1(
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
-                imageVector = Icons.Outlined.DateRange, contentDescription = stringResource(
+                imageVector = Icons.Filled.DateRange, contentDescription = stringResource(
                     id = R.string.deadline
                 )
             )

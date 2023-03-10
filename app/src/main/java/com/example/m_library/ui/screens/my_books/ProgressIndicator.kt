@@ -34,10 +34,10 @@ import com.example.m_library.ui.theme.MLibraryTheme
 fun ProgressIndicator(
     readChapters: Int,
     totChapters: Int,
-    fontSize: TextUnit = 24.sp,
-    radius: Dp = 50.dp,
+    fontSize: TextUnit = 18.sp,
+    radius: Dp = 20.dp,
     color: Color = MaterialTheme.colors.primary,
-    strokeWidth: Dp = 8.dp,
+    strokeWidth: Dp = 3.dp,
     animationDuration: Int = 1000, //ms,
     animDelay: Int = 0
 ) {
@@ -76,8 +76,7 @@ fun ProgressIndicator(
 
         Text(
             text = (readPerAnim.value * totChapters).toInt().toString() + "%",
-            fontSize = fontSize,
-            fontWeight = FontWeight.Bold
+            fontSize = fontSize
         )
     }
 
@@ -88,6 +87,6 @@ fun ProgressIndicator(
 @Composable
 fun ProgressPreview() {
     MLibraryTheme {
-        ProgressIndicator(readChapters = 60, totChapters = 100)
+        //ProgressIndicator(readChapters = 60, totChapters = 100)
     }
 }

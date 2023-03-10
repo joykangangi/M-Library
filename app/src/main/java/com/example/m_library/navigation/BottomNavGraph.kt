@@ -24,7 +24,8 @@ fun BottomNavGraph(
         }
 
         composable(route = BottomScreen.AddBook.route) {
-            AddBook()
+            AddBook(
+                onCloseDialog = { navController.navigate(BottomScreen.MyBooks.route) })
         }
 
         composable(route = BottomScreen.NewWord.route) {

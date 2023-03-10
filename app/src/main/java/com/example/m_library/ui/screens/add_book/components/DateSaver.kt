@@ -1,10 +1,11 @@
 package com.example.m_library.ui.screens.add_book.components
-/*
+
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.OutlinedButton
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.m_library.R
@@ -16,11 +17,12 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun DateSaver(
-    date: LocalDate
+    date: LocalDate,
+    onDateChanged: (date: LocalDate) -> Unit
 ) {
-
-    var pickedDate: LocalDate by remember { mutableStateOf(date) }
-
+    var pickedDate by remember {
+        mutableStateOf(date)
+    }
     val dateDialogState = rememberMaterialDialogState()
 
     val formattedDate by remember {
@@ -30,8 +32,12 @@ fun DateSaver(
                 .format(pickedDate)
         }
     }
-    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-        OutlinedButton(onClick = {
+
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(7.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Button(onClick = {
             dateDialogState.show()
         }) {
             Text(text = stringResource(id = R.string.finishby))
@@ -42,7 +48,7 @@ fun DateSaver(
     MaterialDialog(
         dialogState = dateDialogState,
         buttons = {
-            positiveButton(text = "OK")
+            positiveButton(text = "OK", onClick = { onDateChanged(pickedDate) })
             negativeButton(text = "Cancel")
         }
     ) {
@@ -52,7 +58,5 @@ fun DateSaver(
         ) {
             pickedDate = it
         }
-
     }
 }
-*/

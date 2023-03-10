@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -33,7 +34,7 @@ fun CustomBottomNav() {
             CustomBottomBar(navController = navController)
         }
     ) {
-        BottomNavGraph(navController = navController, modifier = Modifier.padding(it))
+        BottomNavGraph(navController = navController, modifier = Modifier.padding(paddingValues = PaddingValues(start = it.calculateTopPadding())))
     }
 }
 
@@ -82,7 +83,7 @@ fun BottomNavItem(
     val background =
         if (isSelected) MaterialTheme.colors.background.copy(alpha = 0.1f) else Color.Transparent
     val contentColor =
-        if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+        if (isSelected) MaterialTheme.colors.primary else Color.LightGray
 
     Box(
         modifier = Modifier

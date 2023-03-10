@@ -1,10 +1,15 @@
 package com.example.m_library.viewmodel
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
 import com.example.m_library.model.NewWord
+import com.example.m_library.ui.screens.add_book.components.AddBookEvents
+import com.example.m_library.ui.screens.add_book.components.AddBookState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -17,6 +22,38 @@ class BookViewModel
 ): ViewModel(){
 
     private val bookListFlow: Flow<List<Book>> = bookRepository.getAllBooks()
+
+    private val _addBookState: MutableState<AddBookState> = mutableStateOf(AddBookState())
+    val addBookState: State<AddBookState> = _addBookState
+
+    /**
+     * Add note screen Util
+     */
+    fun getEvent(event: AddBookEvents) {
+        when (event) {
+            is AddBookEvents.OnAuthorChange -> {
+                _addBookState.value = _addBookState.value.copy(author = event.author)
+
+            }
+            is AddBookEvents.OnRdChaptsChange -> {
+                _addBookState.value = _addBookState.value.copy(readChapters = event.rdChap)
+            }
+            is AddBookEvents.OnTChaptsChange -> {
+                _addBookState.value = _addBookState.value.copy(totalChapters = event.totChap)
+            }
+            is AddBookEvents.OnTitleChange -> {
+                _addBookState.value = _addBookState.value.copy(title = event.title)
+            }
+            is AddBookEvents.OnSelectChange -> {
+                _addBookState.value = _addBookState.value.copy(selectedStatus = event.selectedIndex)
+            }
+            is AddBookEvents.OnDateChange -> {
+                _addBookState.value = _addBookState.value.copy(readByDate = event.dateChange)
+            }
+        }
+    }
+
+
 
     fun addBook(book: Book) = viewModelScope.launch {
         if (book.id == null) {
