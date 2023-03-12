@@ -1,5 +1,6 @@
 package com.example.m_library.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import com.example.m_library.model.Book
 import com.example.m_library.model.NewWord
 import com.example.m_library.ui.screens.add_book.components.AddBookEvents
 import com.example.m_library.ui.screens.add_book.components.AddBookState
+import com.example.m_library.ui.screens.book_detail.BookDetailState
 import com.example.m_library.ui.screens.my_books.BookListEvents
 import com.example.m_library.ui.screens.my_books.BookListState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +33,9 @@ class BookViewModel
 
     private val _bookListState: MutableState<BookListState> = mutableStateOf(BookListState())
     val bookListState: State<BookListState> = _bookListState
+
+    private val _bookDetailState: MutableState<BookDetailState> = mutableStateOf(BookDetailState())
+    val bookDetailState: State<BookDetailState> = _bookDetailState
 
     init {
         getBooks()
@@ -88,9 +93,14 @@ class BookViewModel
         if (_bookListState.value.isDeadLine) {
             sortByDates()
         }
+        Log.i("ALL book VM"," ${_bookListState.value}")
     }
 
 
+    fun setSelectedBook(book: Book) {
+        _bookDetailState.value = _bookDetailState.value.copy(book = book)
+        Log.i("one book VM"," $book")
+    }
 
 
     fun addBook(book: Book) = viewModelScope.launch {

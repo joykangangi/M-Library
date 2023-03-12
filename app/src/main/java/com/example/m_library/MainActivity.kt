@@ -18,7 +18,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MLibraryTheme {
-                CustomBottomNav()
+
+                CustomBottomNav(viewModel = bookViewModel)
             }
         }
     }

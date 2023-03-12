@@ -34,7 +34,7 @@ import java.util.*
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddBook(
-    bookViewModel: BookViewModel = hiltViewModel(),
+    bookViewModel: BookViewModel,
     onCloseDialog: () -> Unit
 ) {
 

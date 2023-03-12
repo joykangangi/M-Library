@@ -11,7 +11,7 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomScreen(
-    val route: String, //route
+    val route: String,
     val title: String,
     val icon: ImageVector
 ) {
@@ -24,4 +24,8 @@ sealed class BottomScreen(
     //New Word
     object NewWord: BottomScreen(route = "new_word", title = "New Words", icon = Icons.Filled.Star)
 
+}
+
+sealed class Screen(val route: String) {
+    object BookDetailScreen: Screen("detail")
 }

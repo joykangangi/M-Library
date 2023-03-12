@@ -1,31 +1,47 @@
 package com.example.m_library.ui.screens.book_detail
 
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.example.m_library.R
 
 @Composable
-fun DetailTopAppBar(bookTitle: String) {
+fun DetailTopAppBar(bookTitle: String, onBackClicked: () -> Unit) {
     TopAppBar(
         title = {
             Text(text = bookTitle)
         },
         navigationIcon = {
-            IconButton(onClick = {
-                //Todo Nav
-            }) {
+            IconButton(onClick = onBackClicked) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack, contentDescription = stringResource(
                         id = R.string.go_back
                     )
                 )
             }
+        },
+        actions = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(id = R.string.del))
+            }
+            IconButton(onClick = { /*TODO*/}) {
+                Icon(
+                imageVector = Icons.Outlined.Edit,
+                contentDescription = stringResource(id = R.string.edit))
+            }
         }
     )
 }
+
+//Todo join to VM and create an edit screen
