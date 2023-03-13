@@ -13,14 +13,15 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.m_library.R
 
 @Composable
-fun DetailTopAppBar(bookTitle: String, onBackClicked: () -> Unit) {
+fun DetailTopAppBar(onBackClicked: () -> Unit, onDeleteClick:()-> Unit,onEditClick: () -> Unit) {
     TopAppBar(
         title = {
-            Text(text = bookTitle)
+            Text(text = stringResource(id = R.string.book_det))
         },
         navigationIcon = {
             IconButton(onClick = onBackClicked) {
@@ -32,10 +33,10 @@ fun DetailTopAppBar(bookTitle: String, onBackClicked: () -> Unit) {
             }
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onDeleteClick) {
                 Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(id = R.string.del))
             }
-            IconButton(onClick = { /*TODO*/}) {
+            IconButton(onClick = onEditClick) {
                 Icon(
                 imageVector = Icons.Outlined.Edit,
                 contentDescription = stringResource(id = R.string.edit))

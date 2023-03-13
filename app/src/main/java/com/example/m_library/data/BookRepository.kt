@@ -28,6 +28,9 @@ class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWo
 
    fun sortByDate(): Flow<List<Book>> = bookDao.sortDates()
 
+    fun finishedBooks(): Flow<List<Book>> = bookDao.finishedBooks()
+    fun readingBooks(): Flow<List<Book>> = bookDao.currentReads()
+
     //for new words
     fun getAllNewWords(): Flow<List<NewWord>> = newWordDao.getAllNewWords()
 

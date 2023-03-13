@@ -48,7 +48,7 @@ fun CustomBottomBar(
     val bottomScreens: List<BottomScreen> = listOf(
         BottomScreen.MyBooks,
         BottomScreen.AddBook,
-        BottomScreen.NewWord
+        BottomScreen.Stats
     )
 
     val navStackBackEntry by navController.currentBackStackEntryAsState()

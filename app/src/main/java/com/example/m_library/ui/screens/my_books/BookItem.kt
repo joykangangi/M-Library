@@ -56,7 +56,7 @@ fun Component1(
 
     Column(
         modifier = Modifier
-            .padding(3.dp),
+            .padding(3.dp).width(250.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.Start
     ) {

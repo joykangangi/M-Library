@@ -24,6 +24,12 @@ interface BookDao {
 
     @Query("SELECT * FROM books ORDER BY read_by_date DESC")
     fun sortDates(): Flow<List<Book>>
+
+    @Query("SELECT * FROM books WHERE current_chapter = total_chapters")
+    fun finishedBooks(): Flow<List<Book>>
+
+    @Query("SELECT * FROM books WHERE current_chapter > 0")
+    fun currentReads(): Flow<List<Book>>
 }
 
 @Dao

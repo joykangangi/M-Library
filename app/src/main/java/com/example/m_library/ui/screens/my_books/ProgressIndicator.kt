@@ -36,7 +36,7 @@ fun ProgressIndicator(
     readChapters: Int,
     totChapters: Int,
     fontSize: TextUnit = 14.sp,
-    radius: Dp = 20.dp,
+    radius: Dp = 25.dp,
     color: Color = MaterialTheme.colors.primary,
     strokeWidth: Dp = 3.dp,
     animationDuration: Int = 1000, //ms,

@@ -1,4 +1,4 @@
-package com.example.m_library.ui.screens.new_words
+package com.example.m_library.archived.new_words
 
 
 import androidx.compose.animation.core.LinearOutSlowInEasing

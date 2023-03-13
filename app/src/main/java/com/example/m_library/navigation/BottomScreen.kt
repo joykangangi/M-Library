@@ -1,13 +1,7 @@
 package com.example.m_library.navigation
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.List
-import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomScreen(
@@ -22,10 +16,11 @@ sealed class BottomScreen(
     object AddBook: BottomScreen(route = "add_book", title = "Add Book", icon = Icons.Filled.AddCircle)
 
     //New Word
-    object NewWord: BottomScreen(route = "new_word", title = "New Words", icon = Icons.Filled.Star)
+    object Stats: BottomScreen(route = "book_stats", title = "Stats", icon = Icons.Filled.Settings)
 
 }
 
 sealed class Screen(val route: String) {
     object BookDetailScreen: Screen("detail")
+    object BookEditScreen: Screen("edit")
 }

@@ -8,15 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
-import com.example.m_library.model.NewWord
 import com.example.m_library.ui.screens.add_book.components.AddBookEvents
 import com.example.m_library.ui.screens.add_book.components.AddBookState
 import com.example.m_library.ui.screens.book_detail.BookDetailState
-import com.example.m_library.ui.screens.my_books.BookListEvents
-import com.example.m_library.ui.screens.my_books.BookListState
+import com.example.m_library.util.dateToLocal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,21 +23,16 @@ class BookViewModel
     private val bookRepository: BookRepository
 ): ViewModel(){
 
-    //val bookListFlow: Flow<List<Book>> = bookRepository.getAllBooks()
+    val bookListFlow: Flow<List<Book>> = bookRepository.getAllBooks()
+    val finishedListFlow: Flow<List<Book>> = bookRepository.finishedBooks()
+    val readingListFlow: Flow<List<Book>> = bookRepository.readingBooks()
 
     private val _addBookState: MutableState<AddBookState> = mutableStateOf(AddBookState())
     val addBookState: State<AddBookState> = _addBookState
 
-    private val _bookListState: MutableState<BookListState> = mutableStateOf(BookListState())
-    val bookListState: State<BookListState> = _bookListState
 
     private val _bookDetailState: MutableState<BookDetailState> = mutableStateOf(BookDetailState())
     val bookDetailState: State<BookDetailState> = _bookDetailState
-
-    init {
-        getBooks()
-    }
-
 
 
     /**
@@ -73,7 +65,7 @@ class BookViewModel
     /**
      * All Books Util
      */
-
+/*
     fun getBooksEvent(event: BookListEvents) = viewModelScope.launch {
         when(event) {
             is BookListEvents.DeadLineChanged -> {
@@ -86,20 +78,20 @@ class BookViewModel
                 }
             }
         }
-    }
+    }*/
 
-    private fun getBooks() = viewModelScope.launch{
+   /* private fun getBooks() = viewModelScope.launch{
         _bookListState.value = _bookListState.value.copy(bookList = bookRepository.getAllBooks().first() )
         if (_bookListState.value.isDeadLine) {
             sortByDates()
         }
         Log.i("ALL book VM"," ${_bookListState.value}")
     }
+    */
 
 
     fun setSelectedBook(book: Book) {
         _bookDetailState.value = _bookDetailState.value.copy(book = book)
-        Log.i("one book VM"," $book")
     }
 
 
@@ -119,6 +111,9 @@ class BookViewModel
     fun getBook(id: Long) = viewModelScope.launch {
         bookRepository.getBook(id = id)
     }
+
+
+    /*
 
     private fun sortByDates(): Flow<List<Book>> = bookRepository.sortByDate()
 
@@ -142,4 +137,6 @@ class BookViewModel
     fun getNewWord(id: Long) = viewModelScope.launch {
         bookRepository.getNewWord(id = id)
     }
+
+     */
 }
