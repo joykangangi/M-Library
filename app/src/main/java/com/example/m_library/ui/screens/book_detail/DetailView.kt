@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.m_library.R
@@ -18,7 +19,6 @@ import com.example.m_library.model.Book
 import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.my_books.ProgressIndicator
 import com.example.m_library.util.localDateToDate
-import com.example.m_library.util.safeToInt
 import com.example.m_library.viewmodel.BookViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -44,16 +44,6 @@ fun BookDetail(
             onBackClicked = onBackClicked,
             onDeleteClick = {
                 Log.i("DETAIL VIEW","$bookState")
-
-                     bookViewModel.setSelectedBook(book = Book(
-                         id = id,
-                         author = bookState.author,
-                         title = bookState.title,
-                         currentChapter = bookState.readChapters.toInt(),
-                         totalChapters = bookState.totalChapters.toInt(),
-                         readStatus = bookState.selectedStatus,
-                         readByDate = localDateToDate(bookState.readByDate)
-                     ))
                      bookViewModel.deleteBook(book = Book(
                          id=id,
                          author = bookState.author,
@@ -75,8 +65,8 @@ fun BookDetail(
 
 
             ProgressIndicator(
-                readChapters = bookState.readChapters.safeToInt(),
-                totChapters = bookState.totalChapters.safeToInt(),
+                readChapters = bookState.readChapters.toInt(),
+                totChapters = bookState.totalChapters.toInt(),
                 fontSize = 20.sp,
                 modifier = Modifier.size(100.dp)
             )
@@ -130,13 +120,14 @@ fun BookDetail(
 @Composable
 fun MoreDetail(
     title: String,
-    details: Any
+    details: Any,
+    spaced: Dp = 8.dp,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(spaced)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(3.dp),
+                .padding(5.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(

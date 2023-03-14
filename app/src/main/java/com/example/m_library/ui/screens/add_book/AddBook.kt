@@ -24,7 +24,6 @@ import com.example.m_library.ui.screens.add_book.components.DateSaver
 import com.example.m_library.ui.screens.add_book.components.ReadingStatusRadio
 import com.example.m_library.ui.screens.book_detail.EditBookEvents
 import com.example.m_library.util.localDateToDate
-import com.example.m_library.util.safeToInt
 import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
@@ -38,7 +37,6 @@ fun AddBook(
 ) {
 
     val addBookState = bookViewModel.bookDetailState.value
-    val book = bookViewModel.bookState.value
     //store the dialog open or closed
     var dialogOpen by remember {
         mutableStateOf(true)
@@ -182,22 +180,21 @@ fun AddBook(
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                             .align(Alignment.CenterHorizontally),
+                        enabled = bookViewModel.validInput(),
                         onClick = {
                             bookViewModel.addBook(
-                                    Book(
-                                        id = bookViewModel.currentBookId,
-                                        author = addBookState.author,
-                                        title = addBookState.title,
-                                        totalChapters = addBookState.totalChapters.safeToInt(),
-                                        currentChapter = addBookState.readChapters.safeToInt(),
-                                        readStatus = addBookState.selectedStatus,
-                                        readByDate = localDateToDate(addBookState.readByDate)
-                                    )
+                                Book(
+                                    author = addBookState.author,
+                                    title = addBookState.title,
+                                    totalChapters = addBookState.totalChapters.toInt(),
+                                    currentChapter = addBookState.readChapters.toInt(),
+                                    readStatus = addBookState.selectedStatus,
+                                    readByDate = localDateToDate(addBookState.readByDate)
                                 )
+                            )
                             onCloseDialog()
-                            /* TODO Validation*/
-
-                        }) {
+                        }
+                    ) {
                         Text(text = stringResource(id = R.string.save), fontSize = 21.sp)
                     }
 

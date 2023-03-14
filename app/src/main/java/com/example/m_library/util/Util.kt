@@ -16,12 +16,5 @@ fun dateToLocal(readDate: Date?): LocalDate {
     return zonedDateTime.toLocalDate()
 }
 
-fun String.safeToInt(): Int {
-    return if (this.isNotBlank()) {
-        this.toInt()
-    } else {
-        0
-    }
-}
 
 

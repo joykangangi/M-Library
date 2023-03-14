@@ -34,13 +34,17 @@ fun NavGraph(
 
         composable(route = BottomScreen.AddBook.route) {
             AddBook(
-                onCloseDialog = { navController.navigate(BottomScreen.MyBooks.route) },
+                onCloseDialog = {
+                    navController.navigate(BottomScreen.MyBooks.route) {
+                        popUpTo(BottomScreen.MyBooks.route) { inclusive = true }
+                    }
+                },
                 bookViewModel = bookViewModel
             )
         }
 
         composable(route = BottomScreen.Stats.route) {
-           BookStats(viewModel = bookViewModel)
+            BookStats(viewModel = bookViewModel)
         }
         composable(route = Screen.BookDetailScreen.route + "/{id}") {
             BookDetail(

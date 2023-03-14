@@ -8,11 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
 import com.example.m_library.ui.screens.book_detail.BookDetailState
-import com.example.m_library.ui.screens.book_detail.BookState
 import com.example.m_library.ui.screens.book_detail.EditBookEvents
 import com.example.m_library.util.dateToLocal
-import com.example.m_library.util.localDateToDate
-import com.example.m_library.util.safeToInt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -30,17 +27,6 @@ class BookViewModel
 
     private val _bookDetailState: MutableState<BookDetailState> = mutableStateOf(BookDetailState())
     val bookDetailState: State<BookDetailState> = _bookDetailState
-
-    private var _currentBookId: Long? = null
-    val currentBookId = _currentBookId
-
-    private val _bookState: MutableState<BookState> = mutableStateOf(BookState())
-    val bookState: State<BookState> = _bookState
-
-
-    /**
-     * Add note screen Util
-     */
 
 
     fun editEvent(event: EditBookEvents) {
@@ -64,24 +50,6 @@ class BookViewModel
             is EditBookEvents.OnTitleChange -> {
                 _bookDetailState.value = _bookDetailState.value.copy(title = event.title)
             }
-
-            is EditBookEvents.SaveBook -> {
-                    addBook(
-                        Book(
-                            id = _currentBookId,
-                            author = _bookDetailState.value.author,
-                            title = _bookDetailState.value.title,
-                            totalChapters = _bookDetailState.value.totalChapters.safeToInt(),
-                            currentChapter = _bookDetailState.value.readChapters.safeToInt(),
-                            readStatus = _bookDetailState.value.selectedStatus,
-                            readByDate = localDateToDate(_bookDetailState.value.readByDate)
-                        )
-                    )
-                }
-            is EditBookEvents.DeleteBook -> {
-                _bookState.value.book?.let { deleteBook(book = it) }
-                }
-            else -> {}
         }
     }
 
@@ -92,17 +60,17 @@ class BookViewModel
 
     fun setSelectedBook(book: Book) {
         _bookDetailState.value = _bookDetailState.value.copy(
-                title = book.title,
-                author = book.author,
-                readByDate = dateToLocal(book.readByDate),
-                totalChapters = book.totalChapters.toString(),
-                readChapters = book.currentChapter.toString(),
-                selectedStatus = book.readStatus
-            )
+            title = book.title,
+            author = book.author,
+            readByDate = dateToLocal(book.readByDate),
+            totalChapters = book.totalChapters.toString(),
+            readChapters = book.currentChapter.toString(),
+            selectedStatus = book.readStatus
+        )
     }
 
 
-     fun addBook(book: Book) = viewModelScope.launch {
+    fun addBook(book: Book) = viewModelScope.launch {
         bookRepository.insertBook(book = book)
     }
 
@@ -110,32 +78,11 @@ class BookViewModel
         bookRepository.deleteBook(book = book)
     }
 
-    /*
-
-
-
-    private fun sortByDates(): Flow<List<Book>> = bookRepository.sortByDate()
-
-
-    //NewWord
-    private val newWords: Flow<List<NewWord>> = bookRepository.getAllNewWords()
-
-    fun addNewWord(newWord: NewWord) = viewModelScope.launch {
-        if (newWord.id == null){
-            bookRepository.insertNewWord(newWord = newWord)
-        }
-        else {
-            bookRepository.updateWord(newWord = newWord)
-        }
+    fun validInput(): Boolean {
+        return !(_bookDetailState.value.author.isBlank() ||
+                _bookDetailState.value.readByDate.toString().isBlank()
+                || _bookDetailState.value.title.isBlank() || _bookDetailState.value.readChapters.isBlank() ||
+                _bookDetailState.value.totalChapters.isBlank() ||
+                _bookDetailState.value.selectedStatus.toString().isBlank())
     }
-
-    fun deleteNewWord(newWord: NewWord) = viewModelScope.launch {
-        bookRepository.deleteWord(newWord = newWord)
-    }
-
-    fun getNewWord(id: Long) = viewModelScope.launch {
-        bookRepository.getNewWord(id = id)
-    }
-
-     */
 }

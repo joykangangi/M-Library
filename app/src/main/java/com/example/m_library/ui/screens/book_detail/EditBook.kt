@@ -23,7 +23,6 @@ import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.DateSaver
 import com.example.m_library.ui.screens.add_book.components.ReadingStatusRadio
 import com.example.m_library.util.localDateToDate
-import com.example.m_library.util.safeToInt
 import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
@@ -183,24 +182,24 @@ fun EditBook(
 
                     Spacer(modifier = Modifier.height(5.dp))
 
-                    Button(modifier = Modifier
-                        .fillMaxWidth(0.7f)
-                        .align(Alignment.CenterHorizontally),
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(0.7f)
+                            .align(Alignment.CenterHorizontally),
+                        enabled = bookViewModel.validInput(),
                         onClick = {
                             bookViewModel.addBook(
                                 Book(
                                     id = id,
                                     author = detailState.author,
                                     title = detailState.title,
-                                    totalChapters = detailState.totalChapters.safeToInt(),
-                                    currentChapter = detailState.readChapters.safeToInt(),
+                                    totalChapters = detailState.totalChapters.toInt(),
+                                    currentChapter = detailState.readChapters.toInt(),
                                     readStatus = detailState.selectedStatus,
                                     readByDate = localDateToDate(detailState.readByDate)
                                 )
                             )
                             onCloseEdit()
-
-                            /*TODO Validation*/
                         }) {
                         Text(text = stringResource(id = R.string.update), fontSize = 21.sp)
                     }
