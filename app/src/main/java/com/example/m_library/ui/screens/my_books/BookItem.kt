@@ -36,7 +36,7 @@ fun BookItem(
             modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Component1(bookTitle = book.title, status = book.readStatus.name, readByDate = book.readByDate ?: Date())
+            Component1(bookTitle = book.title, status = Book.choiceList[book.readStatus], readByDate = book.readByDate)
 
             ProgressIndicator(readChapters = book.currentChapter, totChapters = book.totalChapters, modifier = Modifier.padding(top = 8.dp, end = 6.dp) )
         }

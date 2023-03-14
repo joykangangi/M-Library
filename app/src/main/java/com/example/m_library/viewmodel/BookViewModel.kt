@@ -1,6 +1,5 @@
 package com.example.m_library.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
-import com.example.m_library.ui.screens.add_book.components.AddBookEvents
-import com.example.m_library.ui.screens.add_book.components.AddBookState
 import com.example.m_library.ui.screens.book_detail.BookDetailState
+import com.example.m_library.ui.screens.book_detail.BookState
+import com.example.m_library.ui.screens.book_detail.EditBookEvents
 import com.example.m_library.util.dateToLocal
+import com.example.m_library.util.localDateToDate
+import com.example.m_library.util.safeToInt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -21,99 +22,97 @@ import javax.inject.Inject
 class BookViewModel
 @Inject constructor(
     private val bookRepository: BookRepository
-): ViewModel(){
+) : ViewModel() {
 
     val bookListFlow: Flow<List<Book>> = bookRepository.getAllBooks()
     val finishedListFlow: Flow<List<Book>> = bookRepository.finishedBooks()
     val readingListFlow: Flow<List<Book>> = bookRepository.readingBooks()
 
-    private val _addBookState: MutableState<AddBookState> = mutableStateOf(AddBookState())
-    val addBookState: State<AddBookState> = _addBookState
-
-
     private val _bookDetailState: MutableState<BookDetailState> = mutableStateOf(BookDetailState())
     val bookDetailState: State<BookDetailState> = _bookDetailState
+
+    private var _currentBookId: Long? = null
+    val currentBookId = _currentBookId
+
+    private val _bookState: MutableState<BookState> = mutableStateOf(BookState())
+    val bookState: State<BookState> = _bookState
 
 
     /**
      * Add note screen Util
      */
-    fun getAddEvent(event: AddBookEvents) {
-        when (event) {
-            is AddBookEvents.OnAuthorChange -> {
-                _addBookState.value = _addBookState.value.copy(author = event.author)
 
+
+    fun editEvent(event: EditBookEvents) {
+        when (event) {
+            is EditBookEvents.OnAuthorChange -> {
+                _bookDetailState.value = _bookDetailState.value.copy(author = event.author)
             }
-            is AddBookEvents.OnRdChaptsChange -> {
-                _addBookState.value = _addBookState.value.copy(readChapters = event.rdChap)
+            is EditBookEvents.OnDateChange -> {
+                _bookDetailState.value = _bookDetailState.value.copy(readByDate = event.dateChange)
             }
-            is AddBookEvents.OnTChaptsChange -> {
-                _addBookState.value = _addBookState.value.copy(totalChapters = event.totChap)
+            is EditBookEvents.OnRdChaptsChange -> {
+                _bookDetailState.value = _bookDetailState.value.copy(readChapters = event.rdChap)
             }
-            is AddBookEvents.OnTitleChange -> {
-                _addBookState.value = _addBookState.value.copy(title = event.title)
+            is EditBookEvents.OnSelectChange -> {
+                _bookDetailState.value =
+                    _bookDetailState.value.copy(selectedStatus = event.selectedIndex)
             }
-            is AddBookEvents.OnSelectChange -> {
-                _addBookState.value = _addBookState.value.copy(selectedStatus = event.selectedIndex)
+            is EditBookEvents.OnTChaptsChange -> {
+                _bookDetailState.value = _bookDetailState.value.copy(totalChapters = event.totChap)
             }
-            is AddBookEvents.OnDateChange -> {
-                _addBookState.value = _addBookState.value.copy(readByDate = event.dateChange)
+            is EditBookEvents.OnTitleChange -> {
+                _bookDetailState.value = _bookDetailState.value.copy(title = event.title)
             }
+
+            is EditBookEvents.SaveBook -> {
+                    addBook(
+                        Book(
+                            id = _currentBookId,
+                            author = _bookDetailState.value.author,
+                            title = _bookDetailState.value.title,
+                            totalChapters = _bookDetailState.value.totalChapters.safeToInt(),
+                            currentChapter = _bookDetailState.value.readChapters.safeToInt(),
+                            readStatus = _bookDetailState.value.selectedStatus,
+                            readByDate = localDateToDate(_bookDetailState.value.readByDate)
+                        )
+                    )
+                }
+            is EditBookEvents.DeleteBook -> {
+                _bookState.value.book?.let { deleteBook(book = it) }
+                }
+            else -> {}
         }
     }
 
     /**
      * All Books Util
      */
-/*
-    fun getBooksEvent(event: BookListEvents) = viewModelScope.launch {
-        when(event) {
-            is BookListEvents.DeadLineChanged -> {
-                _bookListState.value = _bookListState.value.copy(isDeadLine = !bookListState.value.isDeadLine)
-                if (_bookListState.value.isDeadLine) {
-                    _bookListState.value= _bookListState.value.copy(bookList = sortByDates().first())
-                }
-                else {
-                    _bookListState.value = _bookListState.value.copy(bookList = bookRepository.getAllBooks().first() )
-                }
-            }
-        }
-    }*/
-
-   /* private fun getBooks() = viewModelScope.launch{
-        _bookListState.value = _bookListState.value.copy(bookList = bookRepository.getAllBooks().first() )
-        if (_bookListState.value.isDeadLine) {
-            sortByDates()
-        }
-        Log.i("ALL book VM"," ${_bookListState.value}")
-    }
-    */
 
 
     fun setSelectedBook(book: Book) {
-        _bookDetailState.value = _bookDetailState.value.copy(book = book)
+        _bookDetailState.value = _bookDetailState.value.copy(
+                title = book.title,
+                author = book.author,
+                readByDate = dateToLocal(book.readByDate),
+                totalChapters = book.totalChapters.toString(),
+                readChapters = book.currentChapter.toString(),
+                selectedStatus = book.readStatus
+            )
     }
 
 
-    fun addBook(book: Book) = viewModelScope.launch {
-        if (book.id == null) {
-            bookRepository.insertBook(book = book)
-        }
-        else {
-            bookRepository.updateBook(book = book)
-        }
+     fun addBook(book: Book) = viewModelScope.launch {
+        bookRepository.insertBook(book = book)
     }
 
     fun deleteBook(book: Book) = viewModelScope.launch {
         bookRepository.deleteBook(book = book)
     }
 
-    fun getBook(id: Long) = viewModelScope.launch {
-        bookRepository.getBook(id = id)
-    }
-
-
     /*
+
+
 
     private fun sortByDates(): Flow<List<Book>> = bookRepository.sortByDate()
 

@@ -22,3 +22,29 @@ package com.example.m_library.archived
          Divider()
 
          */
+
+
+
+/*
+    fun getBooksEvent(event: BookListEvents) = viewModelScope.launch {
+        when(event) {
+            is BookListEvents.DeadLineChanged -> {
+                _bookListState.value = _bookListState.value.copy(isDeadLine = !bookListState.value.isDeadLine)
+                if (_bookListState.value.isDeadLine) {
+                    _bookListState.value= _bookListState.value.copy(bookList = sortByDates().first())
+                }
+                else {
+                    _bookListState.value = _bookListState.value.copy(bookList = bookRepository.getAllBooks().first() )
+                }
+            }
+        }
+    }*/
+
+/* private fun getBooks() = viewModelScope.launch{
+     _bookListState.value = _bookListState.value.copy(bookList = bookRepository.getAllBooks().first() )
+     if (_bookListState.value.isDeadLine) {
+         sortByDates()
+     }
+     Log.i("ALL book VM"," ${_bookListState.value}")
+ }
+ */

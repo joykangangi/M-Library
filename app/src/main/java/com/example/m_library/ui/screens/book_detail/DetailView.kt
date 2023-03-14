@@ -1,5 +1,6 @@
 package com.example.m_library.ui.screens.book_detail
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -14,7 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.m_library.R
 import com.example.m_library.model.Book
+import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.my_books.ProgressIndicator
+import com.example.m_library.util.localDateToDate
+import com.example.m_library.util.safeToInt
 import com.example.m_library.viewmodel.BookViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,83 +27,104 @@ import java.util.*
 fun BookDetail(
     onBackClicked: () -> Unit,
     bookViewModel: BookViewModel,
-    onEditClick: (Book) -> Unit
+    onEditClick: () -> Unit,
+    id: Long
 ) {
     // Format date as: Thu Jan 3, 2023
     val dateFormat = SimpleDateFormat("EEE MMM d, yyyy", Locale.ENGLISH)
-    val book = bookViewModel.bookDetailState.value.book
+    val bookState = bookViewModel.bookDetailState.value
+
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        if (book != null) {
-            DetailTopAppBar(
-                onBackClicked = onBackClicked,
-                onDeleteClick = {
-                    bookViewModel.deleteBook(book = book)
-                    onBackClicked()
-                },
-                onEditClick = {
-                    onEditClick(book)
-                }
+
+        DetailTopAppBar(
+            onBackClicked = onBackClicked,
+            onDeleteClick = {
+                Log.i("DETAIL VIEW","$bookState")
+
+                     bookViewModel.setSelectedBook(book = Book(
+                         id = id,
+                         author = bookState.author,
+                         title = bookState.title,
+                         currentChapter = bookState.readChapters.toInt(),
+                         totalChapters = bookState.totalChapters.toInt(),
+                         readStatus = bookState.selectedStatus,
+                         readByDate = localDateToDate(bookState.readByDate)
+                     ))
+                     bookViewModel.deleteBook(book = Book(
+                         id=id,
+                         author = bookState.author,
+                         title = bookState.title,
+                         currentChapter = bookState.readChapters.toInt(),
+                         totalChapters = bookState.totalChapters.toInt(),
+                         readStatus = bookState.selectedStatus,
+                         readByDate = localDateToDate(bookState.readByDate)
+                     )
+                     )
+
+                onBackClicked()
+            },
+            onEditClick = { onEditClick() }
+        )
+
+        Spacer(modifier = Modifier.height(5.dp))
+        Column(Modifier.padding(3.dp), horizontalAlignment = CenterHorizontally) {
+
+
+            ProgressIndicator(
+                readChapters = bookState.readChapters.safeToInt(),
+                totChapters = bookState.totalChapters.safeToInt(),
+                fontSize = 20.sp,
+                modifier = Modifier.size(100.dp)
             )
 
+            Spacer(modifier = Modifier.height(7.dp))
+
+
+            Text(
+                text = bookState.title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 22.sp,
+                style = MaterialTheme.typography.h5
+            )
+            Spacer(modifier = Modifier.height(3.dp))
+            Text(
+                text = bookState.author,
+                style = MaterialTheme.typography.h6,
+                fontStyle = FontStyle.Italic
+            )
             Spacer(modifier = Modifier.height(5.dp))
-            Column(Modifier.padding(3.dp), horizontalAlignment = CenterHorizontally) {
-
-                ProgressIndicator(
-                    readChapters = book.currentChapter,
-                    totChapters = book.totalChapters,
-                    fontSize = 20.sp,
-                    modifier = Modifier.size(100.dp)
-                )
-
-                Spacer(modifier = Modifier.height(7.dp))
+            Text(
+                text = stringResource(id = R.string.info),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
 
 
-                Text(
-                    text = book.title,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 22.sp,
-                    style = MaterialTheme.typography.h5
-                )
-                Spacer(modifier = Modifier.height(3.dp))
-                Text(
-                    text = book.author,
-                    style = MaterialTheme.typography.h6,
-                    fontStyle = FontStyle.Italic
-                )
-                Spacer(modifier = Modifier.height(5.dp))
-                Text(
-                    text = stringResource(id = R.string.info),
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+            MoreDetail(
+                title = stringResource(id = R.string.reading_st),
+                details = choiceList[bookState.selectedStatus]
+            )
 
                 MoreDetail(
-                    title = stringResource(id = R.string.reading_st),
-                    details = book.readStatus.name
+                    title = stringResource(id = R.string.finishby),
+                    details = dateFormat.format(localDateToDate(bookState.readByDate))
                 )
-                book.readByDate?.let {
-                    dateFormat.format(
-                        it
-                    )
-                }?.let { MoreDetail(title = stringResource(id = R.string.finishby), details = it) }
-
-                MoreDetail(
-                    title = stringResource(id = R.string.currentChp),
-                    details = book.currentChapter
-                )
-                MoreDetail(
-                    title = stringResource(id = R.string.totChap),
-                    details = book.totalChapters
-                )
-
             }
+
+            MoreDetail(
+                title = stringResource(id = R.string.currentChp),
+                details = bookState.readChapters
+            )
+            MoreDetail(
+                title = stringResource(id = R.string.totChap),
+                details = bookState.totalChapters
+            )
         }
     }
-}
 
 
 @Composable

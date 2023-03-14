@@ -19,11 +19,12 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.m_library.R
 import com.example.m_library.model.Book
-import com.example.m_library.model.ReadingStatus
-import com.example.m_library.ui.screens.add_book.components.AddBookEvents
+import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.DateSaver
 import com.example.m_library.ui.screens.add_book.components.ReadingStatusRadio
+import com.example.m_library.ui.screens.book_detail.EditBookEvents
 import com.example.m_library.util.localDateToDate
+import com.example.m_library.util.safeToInt
 import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
@@ -36,16 +37,12 @@ fun AddBook(
     onCloseDialog: () -> Unit
 ) {
 
-    val addBookState = bookViewModel.addBookState.value
-
-
+    val addBookState = bookViewModel.bookDetailState.value
+    val book = bookViewModel.bookState.value
     //store the dialog open or closed
     var dialogOpen by remember {
         mutableStateOf(true)
     }
-
-    val choiceList =
-        listOf(ReadingStatus.TO_READ.name, ReadingStatus.READING.name, ReadingStatus.COMPLETED.name)
 
     if (dialogOpen) {
         Dialog(
@@ -89,7 +86,7 @@ fun AddBook(
                     OutlinedTextField(
                         value = addBookState.title,
                         onValueChange = {
-                            bookViewModel.getAddEvent(event = AddBookEvents.OnTitleChange(it))
+                            bookViewModel.editEvent(event = EditBookEvents.OnTitleChange(it))
                         },
                         maxLines = 2,
                         label = {
@@ -100,10 +97,11 @@ fun AddBook(
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
                     )
 
+
                     OutlinedTextField(
                         value = addBookState.author,
                         onValueChange = {
-                            bookViewModel.getAddEvent(AddBookEvents.OnAuthorChange(it))
+                            bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it))
                         },
                         maxLines = 2,
                         label = {
@@ -121,11 +119,12 @@ fun AddBook(
                         horizontalArrangement = Arrangement.spacedBy(5.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+
                         OutlinedTextField(
                             modifier = Modifier.weight(0.4f),
                             value = addBookState.readChapters,
                             onValueChange = {
-                                bookViewModel.getAddEvent(AddBookEvents.OnRdChaptsChange(it))
+                                bookViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it))
                             },
                             maxLines = 1,
                             label = {
@@ -142,7 +141,7 @@ fun AddBook(
                             modifier = Modifier.weight(0.4f),
                             value = addBookState.totalChapters,
                             onValueChange = {
-                                bookViewModel.getAddEvent(AddBookEvents.OnTChaptsChange(it))
+                                bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it))
                             },
                             maxLines = 1,
                             label = {
@@ -156,6 +155,7 @@ fun AddBook(
                             )
                         )
                     }
+
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = stringResource(id = R.string.reading_st),
@@ -163,36 +163,41 @@ fun AddBook(
                     )
                     Divider(Modifier.padding(top = 3.dp))
 
+
                     ReadingStatusRadio(
                         options = choiceList,
                         selectedIndex = addBookState.selectedStatus,
                         onSelected = {
-                            bookViewModel.getAddEvent(AddBookEvents.OnSelectChange(it))
+                            bookViewModel.editEvent(EditBookEvents.OnSelectChange(it))
                         }
                     )
 
                     DateSaver(date = addBookState.readByDate, onDateChanged = {
-                        bookViewModel.getAddEvent(AddBookEvents.OnDateChange(it))
+                        bookViewModel.editEvent(EditBookEvents.OnDateChange(it))
                     })
+
                     Spacer(modifier = Modifier.height(5.dp))
 
-                    Button(modifier = Modifier
-                        .fillMaxWidth(0.7f)
-                        .align(Alignment.CenterHorizontally), onClick = {
-                        bookViewModel.addBook(
-                            Book(
-                                title = addBookState.title,
-                                author = addBookState.author,
-                                readStatus = ReadingStatus.valueOf(choiceList[addBookState.selectedStatus]),
-                                currentChapter = addBookState.readChapters.toInt(),
-                                totalChapters = addBookState.totalChapters.toInt(),
-                                readByDate = localDateToDate(addBookState.readByDate)
-                            )
-                        )
-                        onCloseDialog()
-                        /*TODO Validation*/
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth(0.7f)
+                            .align(Alignment.CenterHorizontally),
+                        onClick = {
+                            bookViewModel.addBook(
+                                    Book(
+                                        id = bookViewModel.currentBookId,
+                                        author = addBookState.author,
+                                        title = addBookState.title,
+                                        totalChapters = addBookState.totalChapters.safeToInt(),
+                                        currentChapter = addBookState.readChapters.safeToInt(),
+                                        readStatus = addBookState.selectedStatus,
+                                        readByDate = localDateToDate(addBookState.readByDate)
+                                    )
+                                )
+                            onCloseDialog()
+                            /* TODO Validation*/
 
-                    }) {
+                        }) {
                         Text(text = stringResource(id = R.string.save), fontSize = 21.sp)
                     }
 

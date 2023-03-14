@@ -1,5 +1,6 @@
 package com.example.m_library.ui.screens.my_books
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
@@ -46,7 +47,7 @@ fun ProgressIndicator(
         mutableStateOf(false)
     }
 
-    val readPercentage = (readChapters.toFloat()/totChapters.toFloat())
+    val readPercentage = if (totChapters > 0) readChapters.toFloat() / totChapters.toFloat() else 0f
 
     val readPerAnim = animateFloatAsState(
         targetValue = if (animationPlayed) readPercentage else 0f,

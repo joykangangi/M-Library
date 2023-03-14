@@ -6,7 +6,7 @@ import com.example.m_library.converters.RoomConverters
 import com.example.m_library.model.Book
 import com.example.m_library.model.NewWord
 
-@Database(entities = [Book::class, NewWord::class], version = 2, exportSchema = false)
+@Database(entities = [Book::class, NewWord::class], version = 5, exportSchema = false)
 @TypeConverters(RoomConverters::class)
 abstract class BookDB: RoomDatabase() {
     abstract fun bookDao(): BookDao

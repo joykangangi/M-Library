@@ -11,16 +11,15 @@ data class Book(
     @PrimaryKey(autoGenerate = true) val id: Long? = null,
     @ColumnInfo val title: String,
     @ColumnInfo val author: String,
-    @ColumnInfo val readStatus: ReadingStatus,
-    @ColumnInfo(name = "read_by_date") var readByDate: Date? = null,
-    @ColumnInfo(name = "current_chapter") var currentChapter:Int = 0,
-    @ColumnInfo(name = "total_chapters") var totalChapters:Int = 0
-)
+    @ColumnInfo val readStatus: Int,
+    @ColumnInfo(name = "read_by_date") val readByDate: Date,
+    @ColumnInfo(name = "current_chapter") val currentChapter:Int=0,
+    @ColumnInfo(name = "total_chapters") val totalChapters:Int=0
+) {
 
-enum class ReadingStatus{
-    READING,
-    TO_READ,
-    COMPLETED
+    companion object ReadingStatus {
+        val choiceList = listOf("TO_READ", "READING", "COMPLETED")
+    }
 }
 
 @Entity(tableName = "new_words")
