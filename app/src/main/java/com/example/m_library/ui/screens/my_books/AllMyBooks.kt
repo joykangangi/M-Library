@@ -12,11 +12,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.m_library.R
 import com.example.m_library.model.Book
+import com.example.m_library.navigation.Screen
 import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
@@ -27,7 +30,7 @@ fun AllMyBooks(
     bookViewModel: BookViewModel,
     onClickBook: (Book) -> Unit
 ) {
-    val bookList = bookViewModel.bookListFlow.collectAsState(initial = listOf())
+    val bookList by bookViewModel.allList.collectAsState(initial = listOf())
 
     Log.i("All Books", "the ${bookList}")
 
@@ -44,13 +47,13 @@ fun AllMyBooks(
         LazyColumn(
             modifier = Modifier.padding(start = 12.dp, end = 12.dp)
         ) {
-            items(items = bookList.value) {book:Book ->
+            items(items = bookList) {book:Book ->
                 BookItem(
                     book = book,
                     onBookClicked = {
                         bookViewModel.setSelectedBook(book = book)
                         onClickBook(book)
-                    },
+                         },
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(
                             durationMillis = 500,

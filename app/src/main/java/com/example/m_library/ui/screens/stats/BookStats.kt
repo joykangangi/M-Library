@@ -22,9 +22,10 @@ import com.example.m_library.viewmodel.BookViewModel
 fun BookStats(
     viewModel: BookViewModel
 ) {
-    val totalBooks = viewModel.bookListFlow.collectAsState(initial = listOf()).value.size
-    val finishedBooks = viewModel.finishedListFlow.collectAsState(initial = listOf()).value.size
-    val readingBooks = viewModel.readingListFlow.collectAsState(initial = listOf()).value.size
+
+    val totalBooks = viewModel.allList.collectAsState(initial = listOf()).value.size
+    val finishedBooks = viewModel.finishedList.collectAsState(initial = listOf()).value.size
+    val readingBooks = viewModel.readingList.collectAsState(initial = listOf()).value.size
 
     Surface(
         modifier = Modifier

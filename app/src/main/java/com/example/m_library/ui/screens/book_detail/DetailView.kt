@@ -6,6 +6,8 @@ import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -18,7 +20,6 @@ import com.example.m_library.R
 import com.example.m_library.model.Book
 import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.my_books.ProgressIndicator
-import com.example.m_library.util.localDateToDate
 import com.example.m_library.viewmodel.BookViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,95 +28,85 @@ import java.util.*
 fun BookDetail(
     onBackClicked: () -> Unit,
     bookViewModel: BookViewModel,
-    onEditClick: () -> Unit,
-    id: Long
+    onEditClick: () -> Unit
 ) {
     // Format date as: Thu Jan 3, 2023
     val dateFormat = SimpleDateFormat("EEE MMM d, yyyy", Locale.ENGLISH)
-    val bookState = bookViewModel.bookDetailState.value
+    val bookState by bookViewModel.bookState.collectAsState()
 
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
+        bookState.book?.let { book: Book ->
+            DetailTopAppBar(
+                onBackClicked = onBackClicked,
+                onDeleteClick = {
+                    Log.i("DETAIL VIEW", "$book")
+                    bookViewModel.deleteBook(book = book)
 
-        DetailTopAppBar(
-            onBackClicked = onBackClicked,
-            onDeleteClick = {
-                Log.i("DETAIL VIEW","$bookState")
-                     bookViewModel.deleteBook(book = Book(
-                         id=id,
-                         author = bookState.author,
-                         title = bookState.title,
-                         currentChapter = bookState.readChapters.toInt(),
-                         totalChapters = bookState.totalChapters.toInt(),
-                         readStatus = bookState.selectedStatus,
-                         readByDate = localDateToDate(bookState.readByDate)
-                     )
-                     )
-
-                onBackClicked()
-            },
-            onEditClick = { onEditClick() }
-        )
-
-        Spacer(modifier = Modifier.height(5.dp))
-        Column(Modifier.padding(3.dp), horizontalAlignment = CenterHorizontally) {
-
-
-            ProgressIndicator(
-                readChapters = bookState.readChapters.toInt(),
-                totChapters = bookState.totalChapters.toInt(),
-                fontSize = 20.sp,
-                modifier = Modifier.size(100.dp)
+                    onBackClicked()
+                },
+                onEditClick = { onEditClick() }
             )
 
-            Spacer(modifier = Modifier.height(7.dp))
-
-
-            Text(
-                text = bookState.title,
-                fontWeight = FontWeight.Bold,
-                fontSize = 22.sp,
-                style = MaterialTheme.typography.h5
-            )
-            Spacer(modifier = Modifier.height(3.dp))
-            Text(
-                text = bookState.author,
-                style = MaterialTheme.typography.h6,
-                fontStyle = FontStyle.Italic
-            )
             Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                text = stringResource(id = R.string.info),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Column(Modifier.padding(3.dp), horizontalAlignment = CenterHorizontally) {
 
 
-            MoreDetail(
-                title = stringResource(id = R.string.reading_st),
-                details = choiceList[bookState.selectedStatus]
-            )
+                ProgressIndicator(
+                    readChapters = book.currentChapter,
+                    totChapters = book.totalChapters,
+                    fontSize = 20.sp,
+                    modifier = Modifier.size(100.dp)
+                )
+
+                Spacer(modifier = Modifier.height(7.dp))
+
+
+                Text(
+                    text = book.title,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    style = MaterialTheme.typography.h5
+                )
+                Spacer(modifier = Modifier.height(3.dp))
+                Text(
+                    text = book.author,
+                    style = MaterialTheme.typography.h6,
+                    fontStyle = FontStyle.Italic
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = stringResource(id = R.string.info),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+
+                MoreDetail(
+                    title = stringResource(id = R.string.reading_st),
+                    details = choiceList[book.readStatus]
+                )
 
                 MoreDetail(
                     title = stringResource(id = R.string.finishby),
-                    details = dateFormat.format(localDateToDate(bookState.readByDate))
+                    details = dateFormat.format(book.readByDate)
                 )
             }
 
             MoreDetail(
                 title = stringResource(id = R.string.currentChp),
-                details = bookState.readChapters
+                details = book.currentChapter
             )
             MoreDetail(
                 title = stringResource(id = R.string.totChap),
-                details = bookState.totalChapters
+                details = book.totalChapters
             )
         }
     }
-
+}
 
 @Composable
 fun MoreDetail(

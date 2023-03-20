@@ -1,10 +1,11 @@
 package com.example.m_library.ui.screens.my_books
 
 import com.example.m_library.model.Book
+import kotlinx.coroutines.flow.Flow
 
-data class BookListState(
-    val isDeadLine: Boolean = false,
-    val bookList: List<Book> = listOf()
+
+data class BookState(
+    val book: Book? = null
 )
 
 sealed class BookListEvents {

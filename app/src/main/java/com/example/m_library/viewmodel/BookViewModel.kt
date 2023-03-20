@@ -1,18 +1,21 @@
 package com.example.m_library.viewmodel
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
 import com.example.m_library.ui.screens.book_detail.BookDetailState
 import com.example.m_library.ui.screens.book_detail.EditBookEvents
-import com.example.m_library.util.dateToLocal
+import com.example.m_library.ui.screens.my_books.BookState
+import com.example.m_library.util.localDateToDate
+import com.example.m_library.util.safeToInt
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,68 +24,24 @@ class BookViewModel
     private val bookRepository: BookRepository
 ) : ViewModel() {
 
-    val bookListFlow: Flow<List<Book>> = bookRepository.getAllBooks()
-    val finishedListFlow: Flow<List<Book>> = bookRepository.finishedBooks()
-    val readingListFlow: Flow<List<Book>> = bookRepository.readingBooks()
 
-    private val _bookDetailState: MutableState<BookDetailState> = mutableStateOf(BookDetailState())
-    val bookDetailState: State<BookDetailState> = _bookDetailState
+    val allList = bookRepository.getAllBooks()
+    val finishedList = bookRepository.getAllBooks()
+    val readingList = bookRepository.getAllBooks()
 
-
-    fun editEvent(event: EditBookEvents) {
-        when (event) {
-            is EditBookEvents.OnAuthorChange -> {
-                _bookDetailState.value = _bookDetailState.value.copy(author = event.author)
-            }
-            is EditBookEvents.OnDateChange -> {
-                _bookDetailState.value = _bookDetailState.value.copy(readByDate = event.dateChange)
-            }
-            is EditBookEvents.OnRdChaptsChange -> {
-                _bookDetailState.value = _bookDetailState.value.copy(readChapters = event.rdChap)
-            }
-            is EditBookEvents.OnSelectChange -> {
-                _bookDetailState.value =
-                    _bookDetailState.value.copy(selectedStatus = event.selectedIndex)
-            }
-            is EditBookEvents.OnTChaptsChange -> {
-                _bookDetailState.value = _bookDetailState.value.copy(totalChapters = event.totChap)
-            }
-            is EditBookEvents.OnTitleChange -> {
-                _bookDetailState.value = _bookDetailState.value.copy(title = event.title)
-            }
-        }
-    }
-
-    /**
-     * All Books Util
-     */
+    private val _bookState = MutableStateFlow(BookState())
+    val bookState: StateFlow<BookState> = _bookState.asStateFlow()
 
 
     fun setSelectedBook(book: Book) {
-        _bookDetailState.value = _bookDetailState.value.copy(
-            title = book.title,
-            author = book.author,
-            readByDate = dateToLocal(book.readByDate),
-            totalChapters = book.totalChapters.toString(),
-            readChapters = book.currentChapter.toString(),
-            selectedStatus = book.readStatus
-        )
+        _bookState.value = _bookState.value.copy(book = book)
+        Log.i("VM-Book Value","$book")
     }
 
 
-    fun addBook(book: Book) = viewModelScope.launch {
-        bookRepository.insertBook(book = book)
-    }
 
     fun deleteBook(book: Book) = viewModelScope.launch {
         bookRepository.deleteBook(book = book)
     }
 
-    fun validInput(): Boolean {
-        return !(_bookDetailState.value.author.isBlank() ||
-                _bookDetailState.value.readByDate.toString().isBlank()
-                || _bookDetailState.value.title.isBlank() || _bookDetailState.value.readChapters.isBlank() ||
-                _bookDetailState.value.totalChapters.isBlank() ||
-                _bookDetailState.value.selectedStatus.toString().isBlank())
-    }
 }

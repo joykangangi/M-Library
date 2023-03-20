@@ -14,17 +14,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.m_library.viewmodel.AddEditViewModel
 import com.example.m_library.viewmodel.BookViewModel
 
 @Composable
 fun CustomBottomNav(
-    viewModel: BookViewModel
+    viewModel: BookViewModel,
+    addEditViewModel: AddEditViewModel,
 ) {
 
     val navController = rememberNavController()
@@ -34,7 +37,7 @@ fun CustomBottomNav(
             CustomBottomBar(navController = navController)
         }
     ) {
-        NavGraph(navController = navController, bookViewModel = viewModel)
+        NavGraph(navController = navController, bookViewModel = viewModel, addEditViewModel = addEditViewModel)
         it
     }
 }
