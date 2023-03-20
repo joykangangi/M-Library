@@ -26,8 +26,8 @@ class BookViewModel
 
 
     val allList = bookRepository.getAllBooks()
-    val finishedList = bookRepository.getAllBooks()
-    val readingList = bookRepository.getAllBooks()
+    val finishedList = bookRepository.finishedBooks()
+    val readingList = bookRepository.readingBooks()
 
     private val _bookState = MutableStateFlow(BookState())
     val bookState: StateFlow<BookState> = _bookState.asStateFlow()

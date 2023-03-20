@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.m_library.R
 import com.example.m_library.model.Book
 import com.example.m_library.model.Book.ReadingStatus.choiceList
@@ -27,7 +28,7 @@ import java.util.*
 @Composable
 fun BookDetail(
     onBackClicked: () -> Unit,
-    bookViewModel: BookViewModel,
+    bookViewModel: BookViewModel = hiltViewModel(),
     onEditClick: () -> Unit
 ) {
     // Format date as: Thu Jan 3, 2023

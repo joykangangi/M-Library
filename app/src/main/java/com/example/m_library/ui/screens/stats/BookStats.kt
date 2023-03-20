@@ -14,13 +14,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.m_library.R
 import com.example.m_library.ui.screens.book_detail.MoreDetail
 import com.example.m_library.viewmodel.BookViewModel
 
 @Composable
 fun BookStats(
-    viewModel: BookViewModel
+    viewModel: BookViewModel = hiltViewModel()
 ) {
 
     val totalBooks = viewModel.allList.collectAsState(initial = listOf()).value.size

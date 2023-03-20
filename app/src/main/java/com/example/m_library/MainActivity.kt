@@ -15,13 +15,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val bookViewModel: BookViewModel by viewModels()
-        val addEditViewModel: AddEditViewModel by viewModels()
+//        val bookViewModel: BookViewModel by viewModels()
+//        val addEditViewModel: AddEditViewModel by viewModels()
 
         setContent {
             MLibraryTheme {
 
-                CustomBottomNav(viewModel = bookViewModel, addEditViewModel = addEditViewModel)
+                CustomBottomNav()
             }
         }
     }

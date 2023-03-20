@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.m_library.R
 import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.DateSaver
@@ -30,7 +31,7 @@ import java.util.*
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AddBook(
-    addEditViewModel: AddEditViewModel,
+    addEditViewModel: AddEditViewModel= hiltViewModel(),
     onCloseDialog: () -> Unit
 ) {
 

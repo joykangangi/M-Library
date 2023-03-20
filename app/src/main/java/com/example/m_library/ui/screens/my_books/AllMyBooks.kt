@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.m_library.R
 import com.example.m_library.model.Book
@@ -27,7 +28,7 @@ import java.util.*
 @Composable
 fun AllMyBooks(
     modifier: Modifier = Modifier,
-    bookViewModel: BookViewModel,
+    bookViewModel: BookViewModel = hiltViewModel(),
     onClickBook: (Book) -> Unit
 ) {
     val bookList by bookViewModel.allList.collectAsState(initial = listOf())

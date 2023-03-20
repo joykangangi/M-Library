@@ -16,9 +16,7 @@ import com.example.m_library.viewmodel.BookViewModel
 
 @Composable
 fun NavGraph(
-    navController: NavHostController,
-    bookViewModel: BookViewModel,
-    addEditViewModel: AddEditViewModel,
+    navController: NavHostController
 ) {
     //var id by Delegates.notNull<Long>()
     NavHost(
@@ -27,7 +25,6 @@ fun NavGraph(
     ) {
         composable(route = BottomScreen.MyBooks.route) {
             AllMyBooks(
-                bookViewModel = bookViewModel,
                 onClickBook = {
                     navController.navigate(Screen.BookDetailScreen.route + "/${it.id}")
                     Log.i("Bottom Nav","The screen number is: ${Screen.BookDetailScreen.route+ it.id} ")
@@ -39,17 +36,15 @@ fun NavGraph(
             AddBook(
                 onCloseDialog = {
                     navController.navigate(BottomScreen.MyBooks.route)
-                },
-                addEditViewModel = addEditViewModel
+                }
             )
         }
 
         composable(route = BottomScreen.Stats.route) {
-            BookStats(viewModel = bookViewModel)
+            BookStats()
         }
         composable(route = Screen.BookDetailScreen.route + "/{id}") {
             BookDetail(
-                bookViewModel = bookViewModel,
                 onBackClicked = {
                     navController.navigate(BottomScreen.MyBooks.route)
                 },
@@ -60,7 +55,7 @@ fun NavGraph(
         }
 
         composable(route = Screen.BookEditScreen.route + "/{id}") {
-            EditBook(addEditViewModel = addEditViewModel, onCloseEdit = {
+            EditBook( onCloseEdit = {
                 navController.navigate(Screen.BookDetailScreen.route + "/{id}")
             })
         }

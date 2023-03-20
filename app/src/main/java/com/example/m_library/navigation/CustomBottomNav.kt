@@ -25,10 +25,7 @@ import com.example.m_library.viewmodel.AddEditViewModel
 import com.example.m_library.viewmodel.BookViewModel
 
 @Composable
-fun CustomBottomNav(
-    viewModel: BookViewModel,
-    addEditViewModel: AddEditViewModel,
-) {
+fun CustomBottomNav() {
 
     val navController = rememberNavController()
 
@@ -37,7 +34,7 @@ fun CustomBottomNav(
             CustomBottomBar(navController = navController)
         }
     ) {
-        NavGraph(navController = navController, bookViewModel = viewModel, addEditViewModel = addEditViewModel)
+        NavGraph(navController = navController)
         it
     }
 }
