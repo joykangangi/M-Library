@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.m_library.R
 import com.example.m_library.model.Book
 import com.example.m_library.model.Book.ReadingStatus.choiceList
+import com.example.m_library.ui.screens.add_book.components.EditBookEvents
 import com.example.m_library.ui.screens.my_books.ProgressIndicator
 import com.example.m_library.viewmodel.BookViewModel
 import java.text.SimpleDateFormat
@@ -51,7 +52,7 @@ fun BookDetail(
                     onBackClicked()
                 },
                 onEditClick = {
-                    //TODO
+                    bookViewModel.editEvent(EditBookEvents.RestoreDetails)
                     onEditClick()
                 }
             )

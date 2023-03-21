@@ -18,8 +18,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    viewModel: BookViewModel = hiltViewModel(),
-    editViewModel: BookViewModel = hiltViewModel()
+    viewModel: BookViewModel = hiltViewModel()
 ) {
     NavHost(
         navController = navController,
@@ -40,7 +39,7 @@ fun NavGraph(
 
         composable(route = BottomScreen.AddBook.route) {
             AddBook(
-                bookViewModel = editViewModel,
+                bookViewModel = hiltViewModel(),
                 onCloseDialog = {
                     navController.navigate(BottomScreen.MyBooks.route) {
                         popUpTo(BottomScreen.MyBooks.route) { inclusive = true }

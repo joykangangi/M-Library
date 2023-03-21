@@ -6,8 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
 import com.example.m_library.ui.screens.book_detail.BookDetailState
-import com.example.m_library.ui.screens.book_detail.EditBookEvents
+import com.example.m_library.ui.screens.add_book.components.EditBookEvents
 import com.example.m_library.ui.screens.my_books.BookState
+import com.example.m_library.util.dateToLocal
 import com.example.m_library.util.localDateToDate
 import com.example.m_library.util.safeToInt
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -110,6 +111,26 @@ class BookViewModel
                     )
                 }
 
+            }
+            EditBookEvents.RestoreDetails -> {
+                //immediately the user adds a new book that VM instance is destroyed,
+                // yes they will find a clear screen when they want to add another book
+                // but, if the want to edit a book, the edit screen book, will have empty fields
+                // because the viewmodel instance was destroyed.
+                // "but you can use the values from `bookstate`?" you might wonder
+                // if we do this we'll have to add code for event and state management similar to this `fun getEvent`
+                // but the state will be `bookstate` that will cause alot of redundancy and more errors/complexity
+                // so when the user goes to edit, we copy the values of bookstate to detail state.
+                //remember, detail state at this point is empty
+                // (this is actually what I wanted to do in the beginning but I didnt have the clarity then)
+                _bookDetailState.value = BookDetailState(
+                    selectedStatus = _bookState.value.book?.readStatus ?: 0,
+                    readByDate = dateToLocal(_bookState.value.book?.readByDate),
+                    title = _bookState.value.book?.title ?: "",
+                    author = _bookState.value.book?.author ?: "",
+                    totalChapters = _bookState.value.book?.totalChapters.toString(),
+                    readChapters = _bookState.value.book?.currentChapter.toString()
+                )
             }
         }
     }

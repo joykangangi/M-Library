@@ -1,4 +1,4 @@
-package com.example.m_library.ui.screens.book_detail
+package com.example.m_library.ui.screens.add_book.components
 
 import java.time.LocalDate
 
@@ -12,4 +12,5 @@ sealed class EditBookEvents {
     data class OnDateChange(val dateChange: LocalDate) : EditBookEvents()
 
     object SaveBook: EditBookEvents()
+    object RestoreDetails: EditBookEvents() //restore details when moving from Detail to Edit Screen
 }
