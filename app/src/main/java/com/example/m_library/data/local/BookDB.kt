@@ -13,17 +13,6 @@ abstract class BookDB: RoomDatabase() {
     abstract fun newWordDao(): NewWordDao
 
     companion object {
-        @Volatile
-        private var INSTANCE: BookDB? = null
-
-        //Todo Provide in DI
-        fun getDatabase(context: Context): BookDB {
-            return INSTANCE ?: synchronized(this) {
-                Room.databaseBuilder(context, BookDB::class.java,"book_db")
-                    .fallbackToDestructiveMigration()
-                    .build()
-                    .also { INSTANCE = it }
-            }
-        }
+       const val DATABASE_NAME = "book_db"
     }
 }

@@ -28,7 +28,7 @@ interface BookDao {
     @Query("SELECT * FROM books WHERE current_chapter = total_chapters")
     fun finishedBooks(): Flow<List<Book>>
 
-    @Query("SELECT * FROM books WHERE current_chapter > 0")
+    @Query("SELECT * FROM books WHERE current_chapter > 0 AND current_chapter < total_chapters")
     fun currentReads(): Flow<List<Book>>
 }
 

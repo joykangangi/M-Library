@@ -1,6 +1,7 @@
 package com.example.m_library.di
 
 import android.app.Application
+import androidx.room.Room
 import com.example.m_library.data.BookRepository
 import com.example.m_library.data.local.BookDB
 import com.example.m_library.data.local.BookDao
@@ -14,33 +15,23 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AppModule{
+object AppModule{
 
-    //Book Repository
+    //Book Repository, provide the daos via the db, instead of going to provide daos separatly from the DB; this is just using the available resources
     @Singleton
     @Provides
-    fun provideBookRepository(bookDao: BookDao, newWordDao: NewWordDao): BookRepository {
-        return BookRepository(bookDao = bookDao, newWordDao = newWordDao)
+    fun provideBookRepository(bookDB: BookDB): BookRepository {
+        return BookRepository(bookDao = bookDB.bookDao(), newWordDao = bookDB.newWordDao())
     }
 
     //BookDB
     @Singleton
     @Provides
     fun providesDatabase(application: Application):BookDB{
-        return BookDB.getDatabase(context = application)
-    }
-
-    //BookDao
-    @Singleton
-    @Provides
-    fun provideBookDao(appDatabase: BookDB): BookDao {
-        return appDatabase.bookDao()
-    }
-
-    //NewWordDao
-    @Singleton
-    @Provides
-    fun provideNewWordDao(appDatabase: BookDB): NewWordDao {
-        return appDatabase.newWordDao()
+        return Room.databaseBuilder(
+            context = application,
+            klass = BookDB::class.java,
+            name = BookDB.DATABASE_NAME
+        ).build()
     }
 }

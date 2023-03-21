@@ -2,6 +2,7 @@ package com.example.m_library.navigation
 
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,21 +11,26 @@ import com.example.m_library.ui.screens.book_detail.BookDetail
 import com.example.m_library.ui.screens.book_detail.EditBook
 import com.example.m_library.ui.screens.my_books.AllMyBooks
 import com.example.m_library.ui.screens.stats.BookStats
-import com.example.m_library.viewmodel.AddEditViewModel
 import com.example.m_library.viewmodel.BookViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 
 
 @Composable
 fun NavGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: BookViewModel = hiltViewModel(),
+    editViewModel: BookViewModel = hiltViewModel()
 ) {
-    //var id by Delegates.notNull<Long>()
     NavHost(
         navController = navController,
         startDestination = BottomScreen.MyBooks.route
     ) {
-        composable(route = BottomScreen.MyBooks.route) {
+
+        composable(route = BottomScreen.MyBooks.route) {_->
+            //val parentEntry = remember(backStack) { navController.getBackStackEntry(BottomScreen.MyBooks.route) }
+           // val allBooksViewModel = hiltViewModel<BookViewModel>(parentEntry)
             AllMyBooks(
+                bookViewModel = viewModel,
                 onClickBook = {
                     navController.navigate(Screen.BookDetailScreen.route + "/${it.id}")
                     Log.i("Bottom Nav","The screen number is: ${Screen.BookDetailScreen.route+ it.id} ")
@@ -34,8 +40,11 @@ fun NavGraph(
 
         composable(route = BottomScreen.AddBook.route) {
             AddBook(
+                bookViewModel = editViewModel,
                 onCloseDialog = {
-                    navController.navigate(BottomScreen.MyBooks.route)
+                    navController.navigate(BottomScreen.MyBooks.route) {
+                        popUpTo(BottomScreen.MyBooks.route) { inclusive = true }
+                    }
                 }
             )
         }
@@ -45,6 +54,7 @@ fun NavGraph(
         }
         composable(route = Screen.BookDetailScreen.route + "/{id}") {
             BookDetail(
+                bookViewModel = viewModel,
                 onBackClicked = {
                     navController.navigate(BottomScreen.MyBooks.route)
                 },
@@ -55,7 +65,9 @@ fun NavGraph(
         }
 
         composable(route = Screen.BookEditScreen.route + "/{id}") {
-            EditBook( onCloseEdit = {
+            EditBook(
+                bookViewModel = viewModel,
+                onCloseEdit = {
                 navController.navigate(Screen.BookDetailScreen.route + "/{id}")
             })
         }

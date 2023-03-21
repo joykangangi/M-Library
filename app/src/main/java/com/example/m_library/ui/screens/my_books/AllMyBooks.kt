@@ -28,7 +28,7 @@ import java.util.*
 @Composable
 fun AllMyBooks(
     modifier: Modifier = Modifier,
-    bookViewModel: BookViewModel = hiltViewModel(),
+    bookViewModel: BookViewModel,
     onClickBook: (Book) -> Unit
 ) {
     val bookList by bookViewModel.allList.collectAsState(initial = listOf())
@@ -53,6 +53,7 @@ fun AllMyBooks(
                     book = book,
                     onBookClicked = {
                         bookViewModel.setSelectedBook(book = book)
+                        Log.i("Selected Book","The book is $book")
                         onClickBook(book)
                          },
                     modifier = Modifier.animateItemPlacement(

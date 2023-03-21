@@ -22,7 +22,6 @@ import com.example.m_library.R
 import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.DateSaver
 import com.example.m_library.ui.screens.add_book.components.ReadingStatusRadio
-import com.example.m_library.viewmodel.AddEditViewModel
 import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
@@ -31,11 +30,11 @@ import java.util.*
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EditBook(
-    addEditViewModel: AddEditViewModel = hiltViewModel(),
+    bookViewModel: BookViewModel,
     onCloseEdit: () -> Unit
 ) {
 
-    val detailState by addEditViewModel.bookDetailState.collectAsState()
+    val detailState by bookViewModel.bookDetailState.collectAsState()
 
 
     //store the dialog open or closed
@@ -86,7 +85,7 @@ fun EditBook(
                     OutlinedTextField(
                         value = detailState.title,
                         onValueChange = {
-                            addEditViewModel.editEvent(EditBookEvents.OnTitleChange(it))
+                            bookViewModel.editEvent(EditBookEvents.OnTitleChange(it))
                         },
                         maxLines = 2,
                         label = {
@@ -100,7 +99,7 @@ fun EditBook(
                     OutlinedTextField(
                         value = detailState.author,
                         onValueChange = {
-                            addEditViewModel.editEvent(EditBookEvents.OnAuthorChange(it))
+                            bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it))
                         },
                         maxLines = 2,
                         label = {
@@ -125,7 +124,7 @@ fun EditBook(
                             modifier = Modifier.weight(0.4f),
                             value = detailState.readChapters,
                             onValueChange = {
-                                addEditViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it))
+                                bookViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it))
                             },
                             maxLines = 1,
                             label = {
@@ -143,7 +142,7 @@ fun EditBook(
                             modifier = Modifier.weight(0.4f),
                             value = detailState.totalChapters,
                             onValueChange = {
-                                addEditViewModel.editEvent(EditBookEvents.OnTChaptsChange(it))
+                                bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it))
                             },
                             maxLines = 1,
                             label = {
@@ -170,12 +169,12 @@ fun EditBook(
                         options = choiceList,
                         selectedIndex = detailState.selectedStatus,
                         onSelected = {
-                            addEditViewModel.editEvent(EditBookEvents.OnSelectChange(it))
+                            bookViewModel.editEvent(EditBookEvents.OnSelectChange(it))
                         }
                     )
 
                     DateSaver(date = detailState.readByDate, onDateChanged = {
-                        addEditViewModel.editEvent(EditBookEvents.OnDateChange(it))
+                        bookViewModel.editEvent(EditBookEvents.OnDateChange(it))
                     })
 
 
@@ -185,9 +184,9 @@ fun EditBook(
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                             .align(Alignment.CenterHorizontally),
-                        enabled = addEditViewModel.validInput(),
+                        enabled = bookViewModel.validInput(),
                         onClick = {
-                            addEditViewModel.editEvent(EditBookEvents.SaveBook)
+                            bookViewModel.editEvent(EditBookEvents.SaveBook)
                             onCloseEdit()
                         }) {
                         Text(text = stringResource(id = R.string.update), fontSize = 21.sp)

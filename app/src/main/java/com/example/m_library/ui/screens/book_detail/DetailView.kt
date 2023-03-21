@@ -28,7 +28,7 @@ import java.util.*
 @Composable
 fun BookDetail(
     onBackClicked: () -> Unit,
-    bookViewModel: BookViewModel = hiltViewModel(),
+    bookViewModel: BookViewModel,
     onEditClick: () -> Unit
 ) {
     // Format date as: Thu Jan 3, 2023
@@ -36,6 +36,7 @@ fun BookDetail(
     val bookState by bookViewModel.bookState.collectAsState()
 
 
+    Log.i("Detail view Book Value","${bookState.book}")
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +50,10 @@ fun BookDetail(
 
                     onBackClicked()
                 },
-                onEditClick = { onEditClick() }
+                onEditClick = {
+                    //TODO
+                    onEditClick()
+                }
             )
 
             Spacer(modifier = Modifier.height(5.dp))

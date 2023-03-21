@@ -18,7 +18,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.m_library.R
 import com.example.m_library.ui.screens.book_detail.MoreDetail
 import com.example.m_library.viewmodel.BookViewModel
-
+//this instance of vm is independent of state,
 @Composable
 fun BookStats(
     viewModel: BookViewModel = hiltViewModel()
