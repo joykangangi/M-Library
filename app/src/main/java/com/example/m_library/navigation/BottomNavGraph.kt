@@ -26,8 +26,6 @@ fun NavGraph(
     ) {
 
         composable(route = BottomScreen.MyBooks.route) {_->
-            //val parentEntry = remember(backStack) { navController.getBackStackEntry(BottomScreen.MyBooks.route) }
-           // val allBooksViewModel = hiltViewModel<BookViewModel>(parentEntry)
             AllMyBooks(
                 bookViewModel = viewModel,
                 onClickBook = {

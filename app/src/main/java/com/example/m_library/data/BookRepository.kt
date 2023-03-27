@@ -31,6 +31,8 @@ class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWo
     fun finishedBooks(): Flow<List<Book>> = bookDao.finishedBooks()
     fun readingBooks(): Flow<List<Book>> = bookDao.currentReads()
 
+    fun futureReads(): Flow<List<Book>> = bookDao.futureReads()
+
     //for new words
     fun getAllNewWords(): Flow<List<NewWord>> = newWordDao.getAllNewWords()
 

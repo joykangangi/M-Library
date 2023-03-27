@@ -1,19 +1,25 @@
 package com.example.m_library.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
+import com.example.m_library.model.ExpandableCardModel
 import com.example.m_library.ui.screens.book_detail.BookDetailState
 import com.example.m_library.ui.screens.add_book.components.EditBookEvents
 import com.example.m_library.ui.screens.my_books.BookState
+import com.example.m_library.ui.screens.stats.ExpandedEvents
+import com.example.m_library.ui.screens.stats.ExpandedState
 import com.example.m_library.util.dateToLocal
 import com.example.m_library.util.localDateToDate
 import com.example.m_library.util.safeToInt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,12 +28,14 @@ class BookViewModel
     private val bookRepository: BookRepository
 ) : ViewModel() {
 
-
-
     val allList = bookRepository.getAllBooks()
     val finishedList = bookRepository.finishedBooks()
     val readingList = bookRepository.readingBooks()
+    val futureReads = bookRepository.futureReads()
 
+
+    private val _expandedState = MutableStateFlow(ExpandedState())
+    val expandedState: StateFlow<ExpandedState> = _expandedState.asStateFlow()
 
     private val _bookState = MutableStateFlow(BookState())
     val bookState: StateFlow<BookState> = _bookState.asStateFlow()
@@ -37,38 +45,26 @@ class BookViewModel
 
     private var currentId: Long? = null
 
-    private var vminst = 0
+    private var vminstance = 1
 
     init {
-        Log.i("BookViewModel", "Book View Model Instance = ${vminst++}")
+        Log.i("BookViewModel", "Book View Model Instance = ${vminstance++}")
     }
 
-//    private val _eventFlow = MutableSharedFlow<EditBookEvents>()
-//    val eventFlow = _eventFlow.asSharedFlow()
+    fun onCardArrowClicked(expandedEvents: ExpandedEvents) {
+        when(expandedEvents) {
+            ExpandedEvents.ExpandFinish -> {
+                _expandedState.value = _expandedState.value.copy(isFinishExpanded = !_expandedState.value.isFinishExpanded )
+            }
+            ExpandedEvents.ExpandReading -> {
+                _expandedState.value = _expandedState.value.copy(isReadingExpanded = !_expandedState.value.isReadingExpanded)
+            }
+            ExpandedEvents.ExpandToRead -> {
+                _expandedState.value = _expandedState.value.copy(isToReadExpanded = !_expandedState.value.isToReadExpanded)
+            }
+        }
 
-//    init {
-//        //if a book exists
-//        savedStateHandle.get<Long>("bookId")?.let { bookId: Long ->
-//            if (bookId != -1L) {
-//                viewModelScope.launch {
-//                    bookRepository.getBook(id = bookId)?.also { book: Book ->
-//                        currentId = book.id
-//                        _bookDetailState.value = _bookDetailState.value.copy(
-//                            author = book.author,
-//                            title = book.title,
-//                            readByDate = dateToLocal(book.readByDate),
-//                            totalChapters = book.totalChapters.toString(),
-//                            readChapters = book.currentChapter.toString(),
-//                            selectedStatus = book.readStatus
-//                        )
-//                        _addTextState.value =
-//                            AddTextState(headerText = "Edit", buttonText = "Update")
-//                    }
-//                }
-//            }
-//        }
-//
-//    }
+    }
 
 
     fun editEvent(event: EditBookEvents) {
@@ -168,14 +164,3 @@ class BookViewModel
         bookRepository.deleteBook(book = book)
     }
 }
-
-
-//class BookViewModelFactory(private val bookRepository: BookRepository) : ViewModelProvider.Factory {
-//    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//        if (modelClass.isAssignableFrom(BookViewModel::class.java)) {
-//            @Suppress("UNCHECKED_CAST")
-//            return BookViewModel(bookRepository) as T
-//        }
-//        throw IllegalArgumentException("Unknown ViewModel class")
-//    }
-//}

@@ -30,6 +30,9 @@ interface BookDao {
 
     @Query("SELECT * FROM books WHERE current_chapter > 0 AND current_chapter < total_chapters")
     fun currentReads(): Flow<List<Book>>
+
+    @Query("SELECT * FROM BOOKS WHERE current_chapter = 0")
+    fun futureReads(): Flow<List<Book>>
 }
 
 @Dao
