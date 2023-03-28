@@ -1,45 +1,61 @@
 package com.example.m_library.navigation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
+import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.m_library.viewmodel.BookViewModel
+import com.example.m_library.R
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CustomBottomNav() {
 
     val navController = rememberNavController()
 
     Scaffold(
+        scaffoldState = rememberScaffoldState(),
         bottomBar = {
-            CustomBottomBar(navController = navController)
-        }
+            BottomAppBar(
+                backgroundColor = MaterialTheme.colors.primary,
+                cutoutShape = CircleShape
+            ) {
+                CustomBottomBar(navController = navController)
+            }
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+        isFloatingActionButtonDocked = true,
+        floatingActionButton = { FabButton{
+            navController.navigate(Screen.AddBook.route)
+        } },
     ) {
         NavGraph(navController = navController)
-        it
     }
 }
 
+
+@Composable
+fun FabButton(onFabClick:() -> Unit) {
+    FloatingActionButton(
+        onClick = onFabClick,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
+        contentColor = MaterialTheme.colors.background,
+        elevation = FloatingActionButtonDefaults.elevation(2.dp, 3.dp)
+    ) {
+        Icon(imageVector = Icons.Default.Add, contentDescription = stringResource(id = R.string.add_book) )
+    }
+
+}
 
 @Composable
 fun CustomBottomBar(
@@ -48,52 +64,39 @@ fun CustomBottomBar(
 
     val bottomScreens: List<BottomScreen> = listOf(
         BottomScreen.MyBooks,
-        BottomScreen.AddBook,
         BottomScreen.Stats
     )
 
-    val navStackBackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navStackBackEntry?.destination
+    //val navStackBackEntry by navController.currentBackStackEntryAsState()
+  //val currentDestination = navStackBackEntry?.destination
 
-    Column {
-        Divider()
+    Row(
+        modifier = Modifier
+            .padding(3.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
 
-        Row(
-            modifier = Modifier
-                .padding(3.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            bottomScreens.forEach { screen ->
-                BottomNavItem(
-                    bottomScreen = screen,
-                    currentDestination = currentDestination,
-                    navController = navController
-                )
-            }
+        bottomScreens.forEach { screen ->
+            BottomNavItem(
+                bottomScreen = screen,
+                navController = navController
+            )
         }
     }
 }
 
+
 @Composable
 fun BottomNavItem(
     bottomScreen: BottomScreen,
-    currentDestination: NavDestination?,
     navController: NavHostController
 ) {
-    val isSelected = currentDestination?.hierarchy?.any { it.route == bottomScreen.route } == true
-
-    val background =
-        if (isSelected) MaterialTheme.colors.background.copy(alpha = 0.1f) else Color.Transparent
-    val contentColor =
-        if (isSelected) MaterialTheme.colors.primary else Color.LightGray
+    //val isSelected = currentDestination?.hierarchy?.any { it.route == bottomScreen.route } == true
 
     Box(
         modifier = Modifier
-            .clip(CircleShape)
-            .background(color = background)
             .clickable(onClick = {
                 navController.navigate(bottomScreen.route) {
                     popUpTo(navController.graph.findStartDestination().id)
@@ -101,21 +104,15 @@ fun BottomNavItem(
                 }
             })
     ) {
-        Row(
-            modifier = Modifier
-                .padding(all = 5.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(modifier = Modifier.size(35.dp),
+            Icon(
                 imageVector = bottomScreen.icon,
                 contentDescription = bottomScreen.title,
-                tint = contentColor
+                tint = MaterialTheme.colors.onPrimary
             )
-            AnimatedVisibility(visible = isSelected) {
-                Text(text = bottomScreen.title, color = contentColor, fontSize = 16.sp)
-            }
-
+            Text(text = bottomScreen.title, color = MaterialTheme.colors.onPrimary)
         }
 
     }

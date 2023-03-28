@@ -35,7 +35,7 @@ fun NavGraph(
             )
         }
 
-        composable(route = BottomScreen.AddBook.route) {
+        composable(route = Screen.AddBook.route) {
             AddBook(
                 bookViewModel = hiltViewModel(),
                 onCloseDialog = {

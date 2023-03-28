@@ -44,5 +44,3 @@ fun DetailTopAppBar(onBackClicked: () -> Unit, onDeleteClick:()-> Unit,onEditCli
         }
     )
 }
-
-//Todo join to VM and create an edit screen

@@ -37,7 +37,7 @@ fun AllMyBooks(
 
     Column(
         modifier = modifier
-            .size(596.dp)
+            .size(586.dp)
     ) {
         TopAppBar(
             title = {
