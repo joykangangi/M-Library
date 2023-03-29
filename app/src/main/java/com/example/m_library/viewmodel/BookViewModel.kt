@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
 import com.example.m_library.ui.screens.add_book.components.EditBookEvents
+import com.example.m_library.ui.screens.book_detail.AddFormState
 import com.example.m_library.ui.screens.book_detail.BookDetailState
 import com.example.m_library.ui.screens.my_books.BookState
 import com.example.m_library.ui.screens.stats.ExpandedEvents
@@ -34,6 +35,9 @@ class BookViewModel
 
     private val _expandedState = MutableStateFlow(ExpandedState())
     val expandedState: StateFlow<ExpandedState> = _expandedState.asStateFlow()
+
+    private val _addFormState = MutableStateFlow(AddFormState(formValid = false))
+    val addFormState: StateFlow<AddFormState> = _addFormState.asStateFlow()
 
     private val _bookState = MutableStateFlow(BookState())
     val bookState: StateFlow<BookState> = _bookState.asStateFlow()
@@ -104,7 +108,6 @@ class BookViewModel
                         )
                     )
                 }
-
             }
             EditBookEvents.RestoreDetails -> {
                 //immediately the user adds a new book that VM instance is destroyed,
@@ -124,6 +127,16 @@ class BookViewModel
                     author = _bookState.value.book?.author ?: "",
                     totalChapters = _bookState.value.book?.totalChapters.toString(),
                     readChapters = _bookState.value.book?.currentChapter.toString()
+                )
+            }
+            is EditBookEvents.FocusChange -> {
+                when(event.focusFieldName) {
+                    "title" -> {
+                        val titleValid = validInput()
+                    }
+                }
+                _bookDetailState.value = _bookDetailState.value.copy(
+
                 )
             }
         }
@@ -152,6 +165,25 @@ class BookViewModel
 
     fun deleteBook(book: Book) = viewModelScope.launch {
         bookRepository.deleteBook(book = book)
+    }
+
+    /*fun validateInput(inputValue: String?, inputType: InputType): Boolean {
+        when(inputType) {
+            InputType.TEXT -> {
+                !inputValue.isNullOrEmpty() && inputValue.length > 3
+            }
+            InputType.NUMBER -> {
+
+            }
+        }
+    }*/
+
+    fun validateInput(author: String?, title: String?, readChp: Int, totChap: Int): Boolean {
+        val validAuthor = (!author.isNullOrBlank() && author.length > 5)
+        val validTitle = (!title.isNullOrBlank() && title.length > 5)
+        val validReadChapters =
+            readChp < totChap && readChp.toString().isNotBlank() && totChap.toString().isNotBlank()
+        return validAuthor || validTitle || validReadChapters
     }
 
 

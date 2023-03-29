@@ -13,4 +13,6 @@ sealed class EditBookEvents {
 
     object SaveBook: EditBookEvents()
     object RestoreDetails: EditBookEvents() //restore details when moving from Detail to Edit Screen
+
+    data class FocusChange(val focusFieldName: String) : EditBookEvents()
 }

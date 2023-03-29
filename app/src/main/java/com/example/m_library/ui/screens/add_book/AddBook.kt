@@ -2,28 +2,20 @@ package com.example.m_library.ui.screens.add_book
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.m_library.R
 import com.example.m_library.model.Book.ReadingStatus.choiceList
-import com.example.m_library.ui.screens.add_book.components.DateSaver
-import com.example.m_library.ui.screens.add_book.components.ReadingStatusRadio
-import com.example.m_library.ui.screens.add_book.components.EditBookEvents
+import com.example.m_library.ui.screens.add_book.components.*
 import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
@@ -62,101 +54,21 @@ fun AddBook(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     //x Add book
-                    Row(
-                        modifier = Modifier.padding(start = 3.dp),
-                        horizontalArrangement = Arrangement.spacedBy(7.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(onClick = onCloseDialog) {
-                            Icon(
-                                imageVector = Icons.Outlined.Close,
-                                contentDescription = stringResource(
-                                    id = R.string.close
-                                ),
-                                modifier = Modifier.size(40.dp)
-                            )
-                        }
+                    TopView(onCloseDialog = onCloseDialog)
 
-                        Text(
-                            text = stringResource(id = R.string.add_book),//TODO VM
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-
-                    OutlinedTextField(
-                        value = addBookState.title,
-                        onValueChange = {
-                            bookViewModel.editEvent(event = EditBookEvents.OnTitleChange(it))
-                        },
-                        maxLines = 2,
-                        label = {
-                            Text(
-                                text = stringResource(id = R.string.titl)
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                    TextFieldsSection1(
+                        title = addBookState.title,
+                        onTitleChanged = { bookViewModel.editEvent(event = EditBookEvents.OnTitleChange(it)) },
+                        author = addBookState.author,
+                        onAuthorChanged = { bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it)) }
                     )
 
-
-                    OutlinedTextField(
-                        value = addBookState.author,
-                        onValueChange = {
-                            bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it))
-                        },
-                        maxLines = 2,
-                        label = {
-                            Text(
-                                text = stringResource(id = R.string.author)
-                            )
-                        },
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+                    TextFieldsSection2(
+                        readChpt = addBookState.readChapters,
+                        onReadChptsChanged = { bookViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it)) },
+                        totChpts = addBookState.totalChapters,
+                        onTotChptChanged = { bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it)) }
                     )
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 5.dp),
-                        horizontalArrangement = Arrangement.spacedBy(5.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-
-                        OutlinedTextField(
-                            modifier = Modifier.weight(0.4f),
-                            value = addBookState.readChapters,
-                            onValueChange = {
-                                bookViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it))
-                            },
-                            maxLines = 1,
-                            label = {
-                                Text(
-                                    text = stringResource(id = R.string.currentChp)
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Next,
-                                keyboardType = KeyboardType.Number
-                            )
-                        )
-                        OutlinedTextField(
-                            modifier = Modifier.weight(0.4f),
-                            value = addBookState.totalChapters,
-                            onValueChange = {
-                                bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it))
-                            },
-                            maxLines = 1,
-                            label = {
-                                Text(
-                                    text = stringResource(id = R.string.totChap)
-                                )
-                            },
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Done,
-                                keyboardType = KeyboardType.Number
-                            )
-                        )
-                    }
 
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
@@ -190,9 +102,8 @@ fun AddBook(
                             onCloseDialog()
                         }
                     ) {
-                        Text(text = stringResource(id = R.string.save), fontSize = 21.sp) //TODO VM
+                        Text(text = stringResource(id = R.string.save), fontSize = 21.sp)
                     }
-
                 }
             }
         }
