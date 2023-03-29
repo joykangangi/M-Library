@@ -2,6 +2,8 @@ package com.example.m_library.ui.screens.book_detail
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -41,6 +43,7 @@ fun BookDetail(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(state = rememberScrollState())
     ) {
         bookState.book?.let { book: Book ->
             DetailTopAppBar(

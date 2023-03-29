@@ -1,15 +1,12 @@
 package com.example.m_library.viewmodel
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
-import com.example.m_library.model.ExpandableCardModel
-import com.example.m_library.ui.screens.book_detail.BookDetailState
 import com.example.m_library.ui.screens.add_book.components.EditBookEvents
+import com.example.m_library.ui.screens.book_detail.BookDetailState
 import com.example.m_library.ui.screens.my_books.BookState
 import com.example.m_library.ui.screens.stats.ExpandedEvents
 import com.example.m_library.ui.screens.stats.ExpandedState
@@ -17,9 +14,10 @@ import com.example.m_library.util.dateToLocal
 import com.example.m_library.util.localDateToDate
 import com.example.m_library.util.safeToInt
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.lang.Thread.State
 import javax.inject.Inject
 
 @HiltViewModel
@@ -131,21 +129,6 @@ class BookViewModel
         }
     }
 
-
-    private fun upsertBook(book: Book) = viewModelScope.launch {
-        bookRepository.insertBook(book = book)
-    }
-
-
-    fun validInput(): Boolean {
-        return !(_bookDetailState.value.author.isBlank() ||
-                _bookDetailState.value.readByDate.toString().isBlank()
-                || _bookDetailState.value.title.isBlank() || _bookDetailState.value.readChapters.isBlank() ||
-                _bookDetailState.value.totalChapters.isBlank() ||
-                _bookDetailState.value.selectedStatus.toString().isBlank())
-    }
-
-
     //gives value to the bookstate, that will be called in the detail screen
     fun setSelectedBook(book: Book) {
         viewModelScope.launch {
@@ -155,12 +138,23 @@ class BookViewModel
         Log.i("VM-BookState Value", "${_bookState.value}")
     }
 
-    fun getBook(id: Long) = viewModelScope.launch {
-        bookRepository.getBook(id = id)
+    private fun upsertBook(book: Book) = viewModelScope.launch {
+        bookRepository.insertBook(book = book)
     }
 
+    fun validInput(): Boolean {
+        return !(_bookDetailState.value.author.isBlank() ||
+                _bookDetailState.value.readByDate.toString().isBlank()
+                || _bookDetailState.value.title.isBlank() || _bookDetailState.value.readChapters.isBlank() ||
+                _bookDetailState.value.totalChapters.isBlank() ||
+                _bookDetailState.value.selectedStatus.toString().isBlank())
+    }
 
     fun deleteBook(book: Book) = viewModelScope.launch {
         bookRepository.deleteBook(book = book)
     }
+
+
+
+
 }

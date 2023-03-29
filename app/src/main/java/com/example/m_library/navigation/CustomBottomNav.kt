@@ -40,7 +40,7 @@ fun CustomBottomNav() {
         BottomScreen.Stats.route -> bottomBarState.value = true
         else -> bottomBarState.value = false
     }
-    
+
     Scaffold(
         scaffoldState = rememberScaffoldState(),
         bottomBar = {
