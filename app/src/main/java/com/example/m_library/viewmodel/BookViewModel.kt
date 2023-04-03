@@ -36,8 +36,6 @@ class BookViewModel
     private val _expandedState = MutableStateFlow(ExpandedState())
     val expandedState: StateFlow<ExpandedState> = _expandedState.asStateFlow()
 
-    private val _addFormState = MutableStateFlow(AddFormState(formValid = false))
-    val addFormState: StateFlow<AddFormState> = _addFormState.asStateFlow()
 
     private val _bookState = MutableStateFlow(BookState())
     val bookState: StateFlow<BookState> = _bookState.asStateFlow()
@@ -167,23 +165,24 @@ class BookViewModel
         bookRepository.deleteBook(book = book)
     }
 
-    /*fun validateInput(inputValue: String?, inputType: InputType): Boolean {
-        when(inputType) {
-            InputType.TEXT -> {
-                !inputValue.isNullOrEmpty() && inputValue.length > 3
-            }
-            InputType.NUMBER -> {
 
-            }
-        }
-    }*/
+    fun validText(input: String): Boolean {
+        return (input.isNotBlank() && input.length > 5)
+    }
 
-    fun validateInput(author: String?, title: String?, readChp: Int, totChap: Int): Boolean {
-        val validAuthor = (!author.isNullOrBlank() && author.length > 5)
-        val validTitle = (!title.isNullOrBlank() && title.length > 5)
+    fun validChapter(readChp: Int, totChap: Int): Boolean {
+        return readChp < totChap
+
+    }
+    fun validateInput() {
+        val validAuthor = (_bookDetailState.value.author.isNotBlank() && _bookDetailState.value.author.length > 5)
+        val validTitle = (_bookDetailState.value.title.isNotBlank() && _bookDetailState.value.title.length > 5)
         val validReadChapters =
-            readChp < totChap && readChp.toString().isNotBlank() && totChap.toString().isNotBlank()
-        return validAuthor || validTitle || validReadChapters
+            _bookDetailState.value.readChapters < _bookDetailState.value.totalChapters
+                    &&
+                    _bookDetailState.value.readChapters.isNotBlank() && _bookDetailState.value.totalChapters.isNotBlank()
+        val formValid = validAuthor || validTitle || validReadChapters
+        _bookDetailState.value = _bookDetailState.value.copy(isValid = formValid)
     }
 
 

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.m_library.R
 
 @Composable
-fun TopView(onCloseDialog:()->Unit) {
+fun TopView(onCloseDialog: () -> Unit) {
     Row(
         modifier = Modifier.padding(start = 3.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp),
@@ -47,14 +47,17 @@ fun TopView(onCloseDialog:()->Unit) {
 @Composable
 fun TextFieldsSection1(
     title: String,
-    onTitleChanged:(String)->Unit,
+    onTitleChanged: (String) -> Unit,
     author: String,
+    titleError: Boolean,
+    authError: Boolean,
     onAuthorChanged: (String) -> Unit
 ) {
     OutlinedTextField(
-        value = title ,
+        value = title,
         onValueChange = onTitleChanged,
         maxLines = 2,
+        isError = titleError,
         label = {
             Text(
                 text = stringResource(id = R.string.titl)
@@ -62,13 +65,14 @@ fun TextFieldsSection1(
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
     )
-
+    if (titleError) Text(text = stringResource(id = R.string.title_err))
 
 
     OutlinedTextField(
         value = author,
         onValueChange = onAuthorChanged,
         maxLines = 2,
+        isError = authError,
         label = {
             Text(
                 text = stringResource(id = R.string.author)
@@ -76,6 +80,7 @@ fun TextFieldsSection1(
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
     )
+    if (authError) Text(text = stringResource(id = R.string.auth_err))
 }
 
 
@@ -84,6 +89,7 @@ fun TextFieldsSection2(
     readChpt: String,
     onReadChptsChanged: (String) -> Unit,
     totChpts: String,
+    chptError: Boolean,
     onTotChptChanged: (String) -> Unit
 ) {
 
@@ -100,6 +106,7 @@ fun TextFieldsSection2(
             value = readChpt,
             onValueChange = onReadChptsChanged,
             maxLines = 1,
+            isError = chptError || readChpt.isNotBlank(),
             label = {
                 Text(
                     text = stringResource(id = R.string.currentChp)
@@ -110,9 +117,12 @@ fun TextFieldsSection2(
                 keyboardType = KeyboardType.Number
             )
         )
+        if (chptError)
+            Text(text = stringResource(id = R.string.valid_chp))
         OutlinedTextField(
             modifier = Modifier.weight(0.4f),
-            value = totChpts ,
+            isError = totChpts.isNotBlank(),
+            value = totChpts,
             onValueChange = onTotChptChanged,
             maxLines = 1,
             label = {

@@ -60,14 +60,17 @@ fun AddBook(
                         title = addBookState.title,
                         onTitleChanged = { bookViewModel.editEvent(event = EditBookEvents.OnTitleChange(it)) },
                         author = addBookState.author,
-                        onAuthorChanged = { bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it)) }
+                        onAuthorChanged = { bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it)) },
+                        titleError = bookViewModel.validText(addBookState.title),
+                        authError = bookViewModel.validText(addBookState.author)
                     )
 
                     TextFieldsSection2(
                         readChpt = addBookState.readChapters,
                         onReadChptsChanged = { bookViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it)) },
                         totChpts = addBookState.totalChapters,
-                        onTotChptChanged = { bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it)) }
+                        onTotChptChanged = { bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it)) },
+                        chptError = bookViewModel.validChapter(addBookState.readChapters.toInt(), addBookState.totalChapters.toInt())
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
@@ -96,8 +99,9 @@ fun AddBook(
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                             .align(Alignment.CenterHorizontally),
-                        enabled = bookViewModel.validInput(),
+                        enabled = addBookState.isValid,
                         onClick = {
+                            bookViewModel.validateInput()
                             bookViewModel.editEvent(EditBookEvents.SaveBook)
                             onCloseDialog()
                         }
