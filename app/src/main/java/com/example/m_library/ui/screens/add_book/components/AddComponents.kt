@@ -2,10 +2,7 @@ package com.example.m_library.ui.screens.add_book.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.runtime.Composable
@@ -56,7 +53,7 @@ fun TextFieldsSection1(
     OutlinedTextField(
         value = title,
         onValueChange = onTitleChanged,
-        maxLines = 2,
+        maxLines = 1,
         isError = titleError,
         label = {
             Text(
@@ -65,13 +62,16 @@ fun TextFieldsSection1(
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
     )
-    if (titleError) Text(text = stringResource(id = R.string.title_err))
-
+    if (titleError) Text(
+        text = stringResource(id = R.string.title_err),
+        color = MaterialTheme.colors.error,
+        fontSize = 12.sp
+    )
 
     OutlinedTextField(
         value = author,
         onValueChange = onAuthorChanged,
-        maxLines = 2,
+        maxLines = 1,
         isError = authError,
         label = {
             Text(
@@ -80,7 +80,11 @@ fun TextFieldsSection1(
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
     )
-    if (authError) Text(text = stringResource(id = R.string.auth_err))
+    if (authError) Text(
+        text = stringResource(id = R.string.auth_err),
+        color = MaterialTheme.colors.error,
+        fontSize = 12.sp
+    )
 }
 
 
@@ -100,13 +104,12 @@ fun TextFieldsSection2(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         OutlinedTextField(
             modifier = Modifier.weight(0.4f),
             value = readChpt,
             onValueChange = onReadChptsChanged,
             maxLines = 1,
-            isError = chptError || readChpt.isNotBlank(),
+            isError = readChpt.isBlank(),
             label = {
                 Text(
                     text = stringResource(id = R.string.currentChp)
@@ -117,11 +120,10 @@ fun TextFieldsSection2(
                 keyboardType = KeyboardType.Number
             )
         )
-        if (chptError)
-            Text(text = stringResource(id = R.string.valid_chp))
+
         OutlinedTextField(
             modifier = Modifier.weight(0.4f),
-            isError = totChpts.isNotBlank(),
+            isError = !( chptError && totChpts.isNotBlank() ),
             value = totChpts,
             onValueChange = onTotChptChanged,
             maxLines = 1,

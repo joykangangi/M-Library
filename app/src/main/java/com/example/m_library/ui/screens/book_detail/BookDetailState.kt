@@ -11,7 +11,6 @@ data class BookDetailState(
     val author: String = "",
     val totalChapters: String = "",
     val readChapters: String = "",
-    val isValid: Boolean = true,
     val errorMessage: String = "",
 )
 

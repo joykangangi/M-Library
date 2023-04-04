@@ -1,5 +1,6 @@
 package com.example.m_library.ui.screens.add_book
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -16,6 +17,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.m_library.R
 import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.*
+import com.example.m_library.util.safeToInt
 import com.example.m_library.viewmodel.BookViewModel
 import java.util.*
 
@@ -29,6 +31,7 @@ fun AddBook(
 ) {
 
     val addBookState by bookViewModel.bookDetailState.collectAsState()
+    val chptError = bookViewModel.validChapter(addBookState.readChapters.safeToInt(), addBookState.totalChapters.safeToInt())
 
     //store the dialog open or closed
     var dialogOpen by remember {
@@ -48,7 +51,7 @@ fun AddBook(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(state = rememberScrollState())
+                        //.verticalScroll(state = rememberScrollState())
                         .padding(start = 8.dp),
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -61,17 +64,24 @@ fun AddBook(
                         onTitleChanged = { bookViewModel.editEvent(event = EditBookEvents.OnTitleChange(it)) },
                         author = addBookState.author,
                         onAuthorChanged = { bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it)) },
-                        titleError = bookViewModel.validText(addBookState.title),
-                        authError = bookViewModel.validText(addBookState.author)
+                        titleError = !bookViewModel.validText(addBookState.title),
+                        authError = !bookViewModel.validText(addBookState.author)
                     )
+                    Log.i("Add Book","${bookViewModel.validText(addBookState.title)}")
 
                     TextFieldsSection2(
                         readChpt = addBookState.readChapters,
                         onReadChptsChanged = { bookViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it)) },
                         totChpts = addBookState.totalChapters,
                         onTotChptChanged = { bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it)) },
-                        chptError = bookViewModel.validChapter(addBookState.readChapters.toInt(), addBookState.totalChapters.toInt())
+                        chptError = chptError
                     )
+                    if (!chptError)
+                        Text(
+                            text = stringResource(id = R.string.valid_chp),
+                            color = MaterialTheme.colors.error,
+                            fontSize = 12.sp
+                        )
 
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
@@ -99,9 +109,8 @@ fun AddBook(
                         modifier = Modifier
                             .fillMaxWidth(0.7f)
                             .align(Alignment.CenterHorizontally),
-                        enabled = addBookState.isValid,
+                        enabled = bookViewModel.validateInput(),
                         onClick = {
-                            bookViewModel.validateInput()
                             bookViewModel.editEvent(EditBookEvents.SaveBook)
                             onCloseDialog()
                         }

@@ -31,5 +31,5 @@
 
     <string name="valid_chp">Total chapters should be more than current chapter</string>
     <string name="title_err">The title should have more than 5 characters</string>
-    <string name="auth_err">The auth should have more than 5 characters</string>
+    <string name="auth_err">The author should have more than 5 characters</string>
 </resources>

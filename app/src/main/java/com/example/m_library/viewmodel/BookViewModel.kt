@@ -52,15 +52,18 @@ class BookViewModel
     }
 
     fun onCardArrowClicked(expandedEvents: ExpandedEvents) {
-        when(expandedEvents) {
+        when (expandedEvents) {
             ExpandedEvents.ExpandFinish -> {
-                _expandedState.value = _expandedState.value.copy(isFinishExpanded = !_expandedState.value.isFinishExpanded )
+                _expandedState.value =
+                    _expandedState.value.copy(isFinishExpanded = !_expandedState.value.isFinishExpanded)
             }
             ExpandedEvents.ExpandReading -> {
-                _expandedState.value = _expandedState.value.copy(isReadingExpanded = !_expandedState.value.isReadingExpanded)
+                _expandedState.value =
+                    _expandedState.value.copy(isReadingExpanded = !_expandedState.value.isReadingExpanded)
             }
             ExpandedEvents.ExpandToRead -> {
-                _expandedState.value = _expandedState.value.copy(isToReadExpanded = !_expandedState.value.isToReadExpanded)
+                _expandedState.value =
+                    _expandedState.value.copy(isToReadExpanded = !_expandedState.value.isToReadExpanded)
             }
         }
 
@@ -70,10 +73,10 @@ class BookViewModel
     fun editEvent(event: EditBookEvents) {
         when (event) {
             is EditBookEvents.OnAuthorChange -> {
-                    _bookDetailState.value = _bookDetailState.value.copy(author = event.author)
+                _bookDetailState.value = _bookDetailState.value.copy(author = event.author)
             }
             is EditBookEvents.OnDateChange -> {
-                    _bookDetailState.value = _bookDetailState.value.copy(readByDate = event.dateChange)
+                _bookDetailState.value = _bookDetailState.value.copy(readByDate = event.dateChange)
 
             }
             is EditBookEvents.OnRdChaptsChange -> {
@@ -83,7 +86,8 @@ class BookViewModel
                 _bookDetailState.value = _bookDetailState.value.copy(readChapters = event.rdChap)
             }
             is EditBookEvents.OnSelectChange -> {
-                _bookDetailState.value = _bookDetailState.value.copy(selectedStatus = event.selectedIndex)
+                _bookDetailState.value =
+                    _bookDetailState.value.copy(selectedStatus = event.selectedIndex)
             }
             is EditBookEvents.OnTChaptsChange -> {
                 _bookDetailState.value = _bookDetailState.value.copy(totalChapters = event.totChap)
@@ -127,16 +131,6 @@ class BookViewModel
                     readChapters = _bookState.value.book?.currentChapter.toString()
                 )
             }
-            is EditBookEvents.FocusChange -> {
-                when(event.focusFieldName) {
-                    "title" -> {
-                        val titleValid = validInput()
-                    }
-                }
-                _bookDetailState.value = _bookDetailState.value.copy(
-
-                )
-            }
         }
     }
 
@@ -167,25 +161,24 @@ class BookViewModel
 
 
     fun validText(input: String): Boolean {
-        return (input.isNotBlank() && input.length > 5)
+        return (input.isNotBlank() && input.length > 4)
     }
 
     fun validChapter(readChp: Int, totChap: Int): Boolean {
         return readChp < totChap
 
     }
-    fun validateInput() {
-        val validAuthor = (_bookDetailState.value.author.isNotBlank() && _bookDetailState.value.author.length > 5)
-        val validTitle = (_bookDetailState.value.title.isNotBlank() && _bookDetailState.value.title.length > 5)
+
+    fun validateInput(): Boolean {
+        val validAuthor =
+            (_bookDetailState.value.author.isNotBlank() && _bookDetailState.value.author.length > 5)
+        val validTitle =
+            (_bookDetailState.value.title.isNotBlank() && _bookDetailState.value.title.length > 5)
         val validReadChapters =
             _bookDetailState.value.readChapters < _bookDetailState.value.totalChapters
                     &&
                     _bookDetailState.value.readChapters.isNotBlank() && _bookDetailState.value.totalChapters.isNotBlank()
         val formValid = validAuthor || validTitle || validReadChapters
-        _bookDetailState.value = _bookDetailState.value.copy(isValid = formValid)
+        return formValid
     }
-
-
-
-
 }
