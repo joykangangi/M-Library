@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
+import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.EditBookEvents
-import com.example.m_library.ui.screens.book_detail.AddFormState
 import com.example.m_library.ui.screens.book_detail.BookDetailState
 import com.example.m_library.ui.screens.my_books.BookState
 import com.example.m_library.ui.screens.stats.ExpandedEvents
@@ -47,6 +47,23 @@ class BookViewModel
 
     private var vminstance = 1
 
+   private fun getReadingStatus(readChp: Int, totChap: Int) {
+        val readingStatus = when (readChp) {
+            in 1 until totChap -> {
+                choiceList.indexOf("READING")
+
+            }
+            0 -> {
+                choiceList.indexOf("TO_READ")
+            }
+            else -> {
+                choiceList.indexOf("COMPLETED")
+            }
+        }
+
+        _bookDetailState.value = _bookDetailState.value.copy(selectedStatus = readingStatus)
+    }
+
     init {
         Log.i("BookViewModel", "Book View Model Instance = ${vminstance++}")
     }
@@ -85,10 +102,7 @@ class BookViewModel
 //                }
                 _bookDetailState.value = _bookDetailState.value.copy(readChapters = event.rdChap)
             }
-            is EditBookEvents.OnSelectChange -> {
-                _bookDetailState.value =
-                    _bookDetailState.value.copy(selectedStatus = event.selectedIndex)
-            }
+
             is EditBookEvents.OnTChaptsChange -> {
                 _bookDetailState.value = _bookDetailState.value.copy(totalChapters = event.totChap)
             }
@@ -165,20 +179,22 @@ class BookViewModel
     }
 
     fun validChapter(readChp: Int, totChap: Int): Boolean {
-        return readChp < totChap
+        return readChp <= totChap
 
     }
 
+
     fun validateInput(): Boolean {
         val validAuthor =
-            (_bookDetailState.value.author.isNotBlank() && _bookDetailState.value.author.length > 5)
+            (_bookDetailState.value.author.isNotBlank() && _bookDetailState.value.author.length > 4)
         val validTitle =
-            (_bookDetailState.value.title.isNotBlank() && _bookDetailState.value.title.length > 5)
+            (_bookDetailState.value.title.isNotBlank() && _bookDetailState.value.title.length > 4)
         val validReadChapters =
-            _bookDetailState.value.readChapters < _bookDetailState.value.totalChapters
+            _bookDetailState.value.readChapters <= _bookDetailState.value.totalChapters
                     &&
                     _bookDetailState.value.readChapters.isNotBlank() && _bookDetailState.value.totalChapters.isNotBlank()
-        val formValid = validAuthor || validTitle || validReadChapters
+        getReadingStatus(_bookDetailState.value.readChapters.safeToInt(), _bookDetailState.value.totalChapters.safeToInt())
+        val formValid = validAuthor && validTitle && validReadChapters
         return formValid
     }
 }

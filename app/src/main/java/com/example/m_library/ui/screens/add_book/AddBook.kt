@@ -83,8 +83,10 @@ fun AddBook(
                             fontSize = 12.sp
                         )
 
+
                     Spacer(modifier = Modifier.height(6.dp))
-                    Text(
+
+                   /* Text(
                         text = stringResource(id = R.string.reading_st),
                         style = MaterialTheme.typography.h6
                     )
@@ -97,7 +99,7 @@ fun AddBook(
                         onSelected = {
                             bookViewModel.editEvent(EditBookEvents.OnSelectChange(it))
                         }
-                    )
+                    )*/
 
                     DateSaver(date = addBookState.readByDate, onDateChanged = {
                         bookViewModel.editEvent(EditBookEvents.OnDateChange(it))

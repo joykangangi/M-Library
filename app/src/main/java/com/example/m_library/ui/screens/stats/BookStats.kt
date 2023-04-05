@@ -46,8 +46,7 @@ fun BookStats(
 
     Column(
         modifier = Modifier
-            .height(594.dp)
-            .verticalScroll(state = rememberScrollState()),
+            .height(594.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
