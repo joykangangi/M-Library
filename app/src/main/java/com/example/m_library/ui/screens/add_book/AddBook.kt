@@ -2,8 +2,6 @@ package com.example.m_library.ui.screens.add_book
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,7 +13,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.m_library.R
-import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.*
 import com.example.m_library.util.safeToInt
 import com.example.m_library.viewmodel.BookViewModel
@@ -31,7 +28,10 @@ fun AddBook(
 ) {
 
     val addBookState by bookViewModel.bookDetailState.collectAsState()
-    val chptError = bookViewModel.validChapter(addBookState.readChapters.safeToInt(), addBookState.totalChapters.safeToInt())
+    val chptError = bookViewModel.validChapter(
+        addBookState.readChapters.safeToInt(),
+        addBookState.totalChapters.safeToInt()
+    )
 
     //store the dialog open or closed
     var dialogOpen by remember {
@@ -57,23 +57,44 @@ fun AddBook(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     //x Add book
-                    TopView(onCloseDialog = onCloseDialog)
+                    TopView(
+                        onCloseDialog = onCloseDialog,
+                        iconText = stringResource(id = R.string.add_book)
+                    )
 
                     TextFieldsSection1(
                         title = addBookState.title,
-                        onTitleChanged = { bookViewModel.editEvent(event = EditBookEvents.OnTitleChange(it)) },
+                        onTitleChanged = {
+                            bookViewModel.editEvent(
+                                event = EditBookEvents.OnTitleChange(
+                                    it
+                                )
+                            )
+                        },
                         author = addBookState.author,
                         onAuthorChanged = { bookViewModel.editEvent(EditBookEvents.OnAuthorChange(it)) },
                         titleError = !bookViewModel.validText(addBookState.title),
                         authError = !bookViewModel.validText(addBookState.author)
                     )
-                    Log.i("Add Book","${bookViewModel.validText(addBookState.title)}")
+                    Log.i("Add Book", "${bookViewModel.validText(addBookState.title)}")
 
                     TextFieldsSection2(
                         readChpt = addBookState.readChapters,
-                        onReadChptsChanged = { bookViewModel.editEvent(EditBookEvents.OnRdChaptsChange(it)) },
+                        onReadChptsChanged = {
+                            bookViewModel.editEvent(
+                                EditBookEvents.OnRdChaptsChange(
+                                    it
+                                )
+                            )
+                        },
                         totChpts = addBookState.totalChapters,
-                        onTotChptChanged = { bookViewModel.editEvent(EditBookEvents.OnTChaptsChange(it)) },
+                        onTotChptChanged = {
+                            bookViewModel.editEvent(
+                                EditBookEvents.OnTChaptsChange(
+                                    it
+                                )
+                            )
+                        },
                         chptError = chptError
                     )
                     if (!chptError)
@@ -85,21 +106,6 @@ fun AddBook(
 
 
                     Spacer(modifier = Modifier.height(6.dp))
-
-                   /* Text(
-                        text = stringResource(id = R.string.reading_st),
-                        style = MaterialTheme.typography.h6
-                    )
-                    Divider(Modifier.padding(top = 3.dp))
-
-
-                    ReadingStatusRadio(
-                        options = choiceList,
-                        selectedIndex = addBookState.selectedStatus,
-                        onSelected = {
-                            bookViewModel.editEvent(EditBookEvents.OnSelectChange(it))
-                        }
-                    )*/
 
                     DateSaver(date = addBookState.readByDate, onDateChanged = {
                         bookViewModel.editEvent(EditBookEvents.OnDateChange(it))

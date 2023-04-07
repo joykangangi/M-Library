@@ -30,6 +30,6 @@
     <string name="expand_icon">Expand Icon</string>
 
     <string name="valid_chp">Total chapters should be more than or equal to current chapter</string>
-    <string name="title_err">The title should have more than 5 characters</string>
-    <string name="auth_err">The author should have more than 5 characters</string>
+    <string name="title_err">Title should have more than 5 characters</string>
+    <string name="auth_err">Author should have more than 5 characters</string>
 </resources>

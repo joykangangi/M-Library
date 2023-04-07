@@ -7,7 +7,7 @@ import com.example.m_library.data.BookRepository
 import com.example.m_library.model.Book
 import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.EditBookEvents
-import com.example.m_library.ui.screens.book_detail.BookDetailState
+import com.example.m_library.ui.screens.add_book.components.BookDetailState
 import com.example.m_library.ui.screens.my_books.BookState
 import com.example.m_library.ui.screens.stats.ExpandedEvents
 import com.example.m_library.ui.screens.stats.ExpandedState
@@ -145,6 +145,10 @@ class BookViewModel
                     readChapters = _bookState.value.book?.currentChapter.toString()
                 )
             }
+
+            EditBookEvents.EnableEdit -> {
+                _bookDetailState.value = _bookDetailState.value.copy(isEditing = true)
+            }
         }
     }
 
@@ -161,14 +165,6 @@ class BookViewModel
         bookRepository.insertBook(book = book)
     }
 
-    fun validInput(): Boolean {
-        return !(_bookDetailState.value.author.isBlank() ||
-                _bookDetailState.value.readByDate.toString().isBlank()
-                || _bookDetailState.value.title.isBlank() || _bookDetailState.value.readChapters.isBlank() ||
-                _bookDetailState.value.totalChapters.isBlank() ||
-                _bookDetailState.value.selectedStatus.toString().isBlank())
-    }
-
     fun deleteBook(book: Book) = viewModelScope.launch {
         bookRepository.deleteBook(book = book)
     }
@@ -179,8 +175,8 @@ class BookViewModel
     }
 
     fun validChapter(readChp: Int, totChap: Int): Boolean {
-        return readChp <= totChap
-
+        val valid = readChp <= totChap && (totChap != 0 || readChp != 0)
+        return valid
     }
 
 

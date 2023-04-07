@@ -17,7 +17,10 @@ import androidx.compose.ui.unit.sp
 import com.example.m_library.R
 
 @Composable
-fun TopView(onCloseDialog: () -> Unit) {
+fun TopView(
+    onCloseDialog: () -> Unit,
+    iconText: String
+) {
     Row(
         modifier = Modifier.padding(start = 3.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp),
@@ -29,12 +32,12 @@ fun TopView(onCloseDialog: () -> Unit) {
                 contentDescription = stringResource(
                     id = R.string.close
                 ),
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(35.dp)
             )
         }
 
         Text(
-            text = stringResource(id = R.string.add_book),
+            text = iconText,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )

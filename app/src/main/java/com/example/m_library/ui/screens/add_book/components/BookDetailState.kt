@@ -1,8 +1,6 @@
-package com.example.m_library.ui.screens.book_detail
+package com.example.m_library.ui.screens.add_book.components
 
-import com.example.m_library.model.Book
 import java.time.LocalDate
-import kotlin.reflect.typeOf
 
 data class BookDetailState(
     val selectedStatus: Int = 0,
@@ -12,6 +10,7 @@ data class BookDetailState(
     val totalChapters: String = "",
     val readChapters: String = "",
     val errorMessage: String = "",
+    val isEditing: Boolean = false
 )
 
 enum class InputType {
