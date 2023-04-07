@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -44,9 +45,9 @@ fun BookStats(
     val expandedState = viewModel.expandedState.collectAsState().value
     Log.i("Book Stats- Expanded State", "$expandedState")
 
+
     Column(
-        modifier = Modifier
-            .height(594.dp),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
@@ -79,6 +80,8 @@ fun BookStats(
                 viewModel.onCardArrowClicked(expandedEvents = ExpandedEvents.ExpandFinish)
             }
         )
+
+
 
         ExpandableCard(
             card = ExpandableCardModel(

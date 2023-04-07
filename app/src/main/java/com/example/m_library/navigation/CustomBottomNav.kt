@@ -95,7 +95,6 @@ fun CustomBottomBar(
         BottomScreen.Stats
     )
 
-    Log.i("CUSTOM BOTTOM NAV - Bottom Bar State", "$bottomBarState")
 
     AnimatedVisibility(
         visible = bottomBarState,

@@ -2,6 +2,8 @@ package com.example.m_library.ui.screens.add_book
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -51,7 +53,7 @@ fun AddBook(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        //.verticalScroll(state = rememberScrollState())
+                        .verticalScroll(state = rememberScrollState())
                         .padding(start = 8.dp),
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -113,18 +115,14 @@ fun AddBook(
 
                     Spacer(modifier = Modifier.height(5.dp))
 
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth(0.7f)
-                            .align(Alignment.CenterHorizontally),
-                        enabled = bookViewModel.validateInput(),
-                        onClick = {
+
+                    AddEditButton(
+                        btnId = R.string.save,
+                        onBtnClicked = {
                             bookViewModel.editEvent(EditBookEvents.SaveBook)
                             onCloseDialog()
-                        }
-                    ) {
-                        Text(text = stringResource(id = R.string.save), fontSize = 21.sp)
-                    }
+                        }, btnEnabled = bookViewModel.validateInput()
+                    )
                 }
             }
         }

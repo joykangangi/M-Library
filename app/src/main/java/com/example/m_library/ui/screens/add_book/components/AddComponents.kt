@@ -142,3 +142,19 @@ fun TextFieldsSection2(
         )
     }
 }
+
+@Composable
+fun AddEditButton(btnId: Int, onBtnClicked:() -> Unit, btnEnabled: Boolean) {
+    Column {
+        Button(
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .align(Alignment.CenterHorizontally)
+                .padding(bottom = 3.dp),
+            enabled = btnEnabled,
+            onClick = onBtnClicked
+        ) {
+            Text(text = stringResource(id = btnId), fontSize = 21.sp)
+        }
+    }
+}

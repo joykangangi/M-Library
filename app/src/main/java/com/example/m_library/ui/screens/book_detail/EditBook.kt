@@ -123,17 +123,14 @@ fun EditBook(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     if (detailState.isEditing) {
-                        Button(
-                            modifier = Modifier
-                                .fillMaxWidth(0.7f)
-                                .align(Alignment.CenterHorizontally),
-                            enabled = bookViewModel.validateInput(),
-                            onClick = {
+
+                        AddEditButton(
+                            btnId = R.string.update,
+                            onBtnClicked = {
                                 bookViewModel.editEvent(EditBookEvents.SaveBook)
                                 onCloseEdit()
-                            }) {
-                            Text(text = stringResource(id = R.string.update), fontSize = 21.sp)
-                        }
+                            }, btnEnabled = bookViewModel.validateInput()
+                        )
                     }
                 }
             }

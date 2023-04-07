@@ -1,6 +1,8 @@
 package com.example.m_library.ui.screens.stats
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -58,11 +60,12 @@ fun CardArrow(cardArrowClick: () -> Unit, arrowDegrees: Float) {
 
 @Composable
 fun BookNames(books: List<Book>) {
-    LazyColumn( modifier = Modifier.padding(start = 12.dp, end = 12.dp)) {
-        items(books) {book: Book ->
-            Text(text = book.title )
-            Divider()
+
+        LazyColumn(modifier = Modifier.padding(start = 12.dp, end = 12.dp)) {
+            items(books) { book: Book ->
+                Text(text = book.title)
+                Divider()
+            }
         }
     }
-}
 
