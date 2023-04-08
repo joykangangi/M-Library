@@ -121,7 +121,8 @@ fun AddBook(
                         onBtnClicked = {
                             bookViewModel.editEvent(EditBookEvents.SaveBook)
                             onCloseDialog()
-                        }, btnEnabled = bookViewModel.validateInput()
+                        },
+                        btnEnabled = bookViewModel.validateInput()
                     )
                 }
             }
