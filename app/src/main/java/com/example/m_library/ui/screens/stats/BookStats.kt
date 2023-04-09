@@ -61,6 +61,7 @@ fun BookStats(
                         Text(
                             text = stringResource(id = R.string.stats),
                             style = MaterialTheme.typography.h4,
+                            color = MaterialTheme.colors.onPrimary,
                             fontWeight = FontWeight.Bold
                         )
                         Image(

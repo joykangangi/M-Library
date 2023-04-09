@@ -45,7 +45,6 @@ fun AllMyBooks(
                         book = book,
                         onBookClicked = {
                             bookViewModel.setSelectedBook(book = book)
-                            Log.i("Selected Book", "The book is $book")
                             onClickBook(book)
                         },
                         modifier = Modifier.animateItemPlacement(

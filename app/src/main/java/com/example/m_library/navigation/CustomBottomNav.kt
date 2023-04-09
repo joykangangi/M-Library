@@ -1,10 +1,7 @@
 package com.example.m_library.navigation
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -21,14 +18,15 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.m_library.R
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@OptIn(ExperimentalAnimationApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun CustomBottomNav() {
 
-    val navController = rememberNavController()
+    val navController: NavHostController = rememberAnimatedNavController()
     val bottomBarState = rememberSaveable { (mutableStateOf(true))}
 
     // Subscribe to navBackStackEntry, required to get current route
@@ -51,7 +49,6 @@ fun CustomBottomNav() {
                 ) {
                     CustomBottomBar(
                         navController = navController,
-                        bottomBarState = bottomBarState.value,
                         currentDestination = currentDestination
                     )
                 }
@@ -63,7 +60,7 @@ fun CustomBottomNav() {
             navController.navigate(Screen.AddBook.route)
         } },
     ) {
-        NavGraph(navController = navController)
+        AnimNavGraph(navController = navController)
     }
 }
 
@@ -87,7 +84,6 @@ fun FabButton(bottomBarState: Boolean,onFabClick:() -> Unit) {
 @Composable
 fun CustomBottomBar(
     navController: NavHostController,
-    bottomBarState: Boolean,
     currentDestination: NavDestination?
 ) {
     val bottomScreens: List<BottomScreen> = listOf(
@@ -96,11 +92,6 @@ fun CustomBottomBar(
     )
 
 
-    AnimatedVisibility(
-        visible = bottomBarState,
-        enter = fadeIn(),
-        exit = fadeOut()
-    ) {
         BottomNavigation {
 
             bottomScreens.forEach { screen ->
@@ -126,5 +117,5 @@ fun CustomBottomBar(
             }
         }
     }
-}
+
 
