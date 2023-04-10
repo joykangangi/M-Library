@@ -44,5 +44,15 @@ the user can clearly see their book collection (library). Moreover, they can get
  - Navigation has 3 componenets NavController, NavHost and NavGraph.
  ### 3. [Dependency Injection](https://www.google.com/url?client=internal-element-cse&cx=000521750095050289010:zpcpi1ea4s8&q=https://developer.android.com/training/dependency-injection&sa=U&ved=2ahUKEwjS1Jbao-H9AhXZNsAKHWNLB1sQFnoECAIQAg&usg=AOvVaw2oA-oALv95msY1NWbv3zQe)
  ### 4. [Date Picker](https://vanpra.github.io/compose-material-dialogs/DateTimePicker/)
- = The library helps in choosing the date and time with less code.
+ The library helps in choosing the date and time with less code.
+ ## How the code works
+ The app is divided into packages to do small units of work. These packages include:
+ - Converters
+ - Data
+ - Dependency Injection
+ - Model 
+ - Navigation
+ - UI
+ - Util
+ - Viewmodel
  
