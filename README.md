@@ -55,4 +55,7 @@ the user can clearly see their book collection (library). Moreover, they can get
  - UI
  - Util
  - Viewmodel
+ ## Run The app
+ - Use this link: [Appetize](https://appetize.io/app/zvlh2wesyoiixav6gl5f3qxwxq)
+ 
  
