@@ -170,27 +170,28 @@ class BookViewModel
     }
 
 
-    fun validText(input: String): Boolean {
+    fun validText(input: String = ""): Boolean {
         return (input.isNotBlank() && input.length > 4)
     }
 
-    fun validChapter(readChp: Int, totChap: Int): Boolean {
+    fun validChapter(readChp: Int = 0, totChap: Int =0): Boolean {
         val valid = readChp <= totChap && (totChap != 0 || readChp != 0)
         return valid
     }
 
 
     fun validateInput(): Boolean {
-        val validAuthor =
-            (_bookDetailState.value.author.isNotBlank() && _bookDetailState.value.author.length > 4)
-        val validTitle =
-            (_bookDetailState.value.title.isNotBlank() && _bookDetailState.value.title.length > 4)
-        val validReadChapters =
-            _bookDetailState.value.readChapters <= _bookDetailState.value.totalChapters
-                    &&
-                    _bookDetailState.value.readChapters.isNotBlank() && _bookDetailState.value.totalChapters.isNotBlank()
-        getReadingStatus(_bookDetailState.value.readChapters.safeToInt(), _bookDetailState.value.totalChapters.safeToInt())
-        val formValid = validAuthor && validTitle && validReadChapters
-        return formValid
+        val validAuthor = validText(_bookDetailState.value.author)
+        val validTitle = validText(_bookDetailState.value.title)
+        val validReadChapters = validChapter(
+            _bookDetailState.value.readChapters.safeToInt(),
+            _bookDetailState.value.totalChapters.safeToInt()
+        )
+        
+        getReadingStatus(
+            _bookDetailState.value.readChapters.safeToInt(),
+            _bookDetailState.value.totalChapters.safeToInt()
+        )
+        return validAuthor && validTitle && validReadChapters
     }
 }

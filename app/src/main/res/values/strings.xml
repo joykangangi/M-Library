@@ -25,6 +25,7 @@
     <string name="book_det">Book Detail</string>
 
     <string name="info">Your Info</string>
+    <string name="empty">No Books</string>
 
     <string name="stats">Your Stats</string>
     <string name="expand_icon">Expand Icon</string>
