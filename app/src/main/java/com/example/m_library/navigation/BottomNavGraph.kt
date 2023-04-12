@@ -6,7 +6,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.IntOffset
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -18,9 +17,6 @@ import com.example.m_library.ui.screens.stats.BookStats
 import com.example.m_library.viewmodel.BookViewModel
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -29,13 +25,11 @@ fun AnimNavGraph(
     navController: NavHostController,
     viewModel: BookViewModel = hiltViewModel()
 ) {
-
     val slideEffect = spring<IntOffset>(dampingRatio = Spring.DampingRatioMediumBouncy)
     val popupEffect = tween<IntOffset>(
         durationMillis = 2000,
         easing = CubicBezierEasing(0.08f, 0.93f, 0.68f, 1.27f)
     )
-    val coroutineScope = rememberCoroutineScope()
 
     AnimatedNavHost(navController = navController, startDestination = BottomScreen.MyBooks.route) {
         composable(
@@ -56,11 +50,7 @@ fun AnimNavGraph(
             AllMyBooks(
                 bookViewModel = viewModel,
                 onClickBook = {
-                    coroutineScope.launch {
-                        withContext(Dispatchers.Main) {
-                            navController.navigate(Screen.BookDetailScreen.route + "/${it.id}")
-                        }
-                    }
+                    navController.navigate(Screen.BookDetailScreen.route + "/${it.id}")
                 }
             )
         }
@@ -83,12 +73,8 @@ fun AnimNavGraph(
             AddBook(
                 bookViewModel = hiltViewModel(),
                 onCloseDialog = {
-                    coroutineScope.launch {
-                        withContext(Dispatchers.Main) {
-                            navController.navigate(BottomScreen.MyBooks.route) {
-                                popUpTo(BottomScreen.MyBooks.route) { inclusive = true }
-                            }
-                        }
+                    navController.navigate(BottomScreen.MyBooks.route) {
+                        popUpTo(BottomScreen.MyBooks.route) { inclusive = true }
                     }
                 }
             )
@@ -129,18 +115,10 @@ fun AnimNavGraph(
             BookDetail(
                 bookViewModel = viewModel,
                 onBackClicked = {
-                    coroutineScope.launch {
-                        withContext(Dispatchers.Main) {
-                            navController.navigate(BottomScreen.MyBooks.route)
-                        }
-                    }
+                    navController.navigate(BottomScreen.MyBooks.route)
                 },
                 onEditClick = {
-                    coroutineScope.launch {
-                        withContext(Dispatchers.Main) {
-                            navController.navigate(Screen.BookEditScreen.route + "/{id}")
-                        }
-                    }
+                    navController.navigate(Screen.BookEditScreen.route + "/{id}")
                 }
             )
         }
@@ -163,12 +141,9 @@ fun AnimNavGraph(
             EditBook(
                 bookViewModel = viewModel,
                 onCloseEdit = {
-                    coroutineScope.launch {
-                        withContext(Dispatchers.Main) {
-                            navController.navigate(Screen.BookDetailScreen.route + "/{id}")
-                        }
-                    }
-                })
+                    navController.navigate(Screen.BookDetailScreen.route + "/{id}")
+                }
+            )
         }
     }
 }

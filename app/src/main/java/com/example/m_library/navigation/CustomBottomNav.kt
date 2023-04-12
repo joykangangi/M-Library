@@ -27,7 +27,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 fun CustomBottomNav() {
 
     val navController: NavHostController = rememberAnimatedNavController()
-    val bottomBarState = rememberSaveable { (mutableStateOf(true))}
+    val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
 
     // Subscribe to navBackStackEntry, required to get current route
     val navStackBackEntry by navController.currentBackStackEntryAsState()
@@ -56,16 +56,18 @@ fun CustomBottomNav() {
         },
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
-        floatingActionButton = { FabButton(bottomBarState = bottomBarState.value){
-            navController.navigate(Screen.AddBook.route)
-        } },
+        floatingActionButton = {
+            FabButton(bottomBarState = bottomBarState.value) {
+                navController.navigate(Screen.AddBook.route)
+            }
+        },
     ) {
         AnimNavGraph(navController = navController)
     }
 }
 
 @Composable
-fun FabButton(bottomBarState: Boolean,onFabClick:() -> Unit) {
+fun FabButton(bottomBarState: Boolean, onFabClick: () -> Unit) {
     if (bottomBarState) {
         FloatingActionButton(
             onClick = onFabClick,
@@ -92,30 +94,30 @@ fun CustomBottomBar(
     )
 
 
-        BottomNavigation {
+    BottomNavigation {
 
-            bottomScreens.forEach { screen ->
-                val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
-                BottomNavigationItem(
-                    icon =  {
-                        Icon(
-                            imageVector = screen.icon,
-                            contentDescription = screen.title,
-                            tint = MaterialTheme.colors.onPrimary
-                        )
-                    },
-                    label =  { Text(text = screen.title, color = MaterialTheme.colors.onPrimary)},
-                    selected = isSelected,
-                    onClick = {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id){ saveState = true}
-                            launchSingleTop = true
-                            restoreState = true
-                        }
+        bottomScreens.forEach { screen ->
+            val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+            BottomNavigationItem(
+                icon = {
+                    Icon(
+                        imageVector = screen.icon,
+                        contentDescription = screen.title,
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+                },
+                label = { Text(text = screen.title, color = MaterialTheme.colors.onPrimary) },
+                selected = isSelected,
+                onClick = {
+                    navController.navigate(screen.route) {
+                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
                     }
-                )
-            }
+                }
+            )
         }
     }
+}
 
 
