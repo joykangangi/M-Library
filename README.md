@@ -43,8 +43,7 @@ the user can clearly see their book collection (library). Moreover, they can get
  - The app has 5 screens to show, therefore this library is useful for migrating from one screen to the other.
  - Navigation has 3 componenets NavController, NavHost and NavGraph.
  ### 3. [Dependency Injection](https://www.google.com/url?client=internal-element-cse&cx=000521750095050289010:zpcpi1ea4s8&q=https://developer.android.com/training/dependency-injection&sa=U&ved=2ahUKEwjS1Jbao-H9AhXZNsAKHWNLB1sQFnoECAIQAg&usg=AOvVaw2oA-oALv95msY1NWbv3zQe)
- ### 4. [Date Picker](https://vanpra.github.io/compose-material-dialogs/DateTimePicker/)
- The library helps in choosing the date and time with less code.
+
  ## How the code works
  The app is divided into packages to do small units of work. These packages include:
  - Converters
@@ -56,6 +55,16 @@ the user can clearly see their book collection (library). Moreover, they can get
  - Util
  - Viewmodel
  ## Run The app
- - Use this link: [Appetize](https://appetize.io/app/y7fd5hfxkmpujlxkhmsj7zlnu4?device=pixel4&osVersion=11.0&scale=75)
+ - Use this link: [Appetize](https://appetize.io/app/brwhzd3d3o25smamxgmc5ml4wu)
  
- 
+ ## Challenges Faced
+ - Figuring out that the viewmodel should be scoped to a composable and not the whole activity. 
+  - Before this, once the user would add a book, they would move away then when then they come back to add another book they would find details of the previous book there. However, this was not an issue in the Edit Screen.
+  - After going through [this issue](https://stackoverflow.com/questions/64955859/scoping-states-in-jetpack-compose) in stackoverflow, I learnt on how I could scope my viewmodel to respective composable. This solved the error. Once a user adds a book, that Viewmodel instance would be destroyed. They would find a clear screen after returning to the add screen. 
+  - Subsequently, the Edit Screen was blank, because the viewmodel instance was destroyed. To restore the details to be edited I created an event `Restore Details`. "..but you can use the values from `bookstate`?" you might wonder. If I do this I'll have to add code for event and state management similar to the `fun getEvent` in the `BookViewModel. This would cause alot of redundancy and more errors/complexity. So when the user goes to edit, we copy the values of bookstate to detail state. Remember, detail state at this point is empty.
+ - In addition to this, I learnt:
+   1. Use Store complex data, like `Date` in Room Database.
+   2. Using progressIndicators
+   3. Hiding Bottom Navigation Bar in certain screen
+   4. Splitting `Composables` into small portions
+   5. Theming using [Material Theme Builder](https://m3.material.io/theme-builder#/custom)
