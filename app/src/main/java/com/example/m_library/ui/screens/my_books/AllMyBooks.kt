@@ -10,7 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -26,34 +26,35 @@ fun AllMyBooks(
     bookViewModel: BookViewModel,
     onClickBook: (Book) -> Unit
 ) {
-    val bookList by bookViewModel.allList.collectAsState(initial = listOf())
-
-    Column {
-        TopAppBar(
-            title = {
-                Text(text = stringResource(id = R.string.app_name))
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.app_name))
+                }
+            )
+        },
+        content = { contentPadding ->
+            val books by bookViewModel.allList.collectAsState(initial = listOf())
+            val onBookClicked = remember {
+                { book: Book ->
+                    bookViewModel.setSelectedBook(book = book)
+                    onClickBook(book)
+                }
             }
-        )
-
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(bottom = 85.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (bookList.isEmpty()) {
-                EmptyList()
-            } else {
-                LazyColumn(
-                    modifier = Modifier.padding(start = 12.dp, end = 12.dp)
-                ) {
-                    items(items = bookList) { book: Book ->
+            if (books.isEmpty()) {
+                EmptyList(modifier = Modifier.fillMaxSize())
+            } else LazyColumn(
+                modifier = Modifier.padding(contentPadding),
+                contentPadding = PaddingValues(
+                    12.dp, 12.dp, 12.dp, 85.dp,
+                ),
+                content = {
+                    items(items = books) { book: Book ->
                         BookItem(
                             book = book,
-                            onBookClicked = {
-                                bookViewModel.setSelectedBook(book = book)
-                                onClickBook(book)
-                            },
+                            onBookClicked = onBookClicked,
                             modifier = Modifier.animateItemPlacement(
                                 animationSpec = tween(
                                     durationMillis = 500,
@@ -63,7 +64,7 @@ fun AllMyBooks(
                         )
                     }
                 }
-            }
+            )
         }
-    }
+    )
 }
