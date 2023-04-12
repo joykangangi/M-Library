@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DatePickerStyle" parent="android:Widget.Material.DatePicker">
+        <item name="android:datePickerMode">calendar</item>
+        <item name="android:colorAccent">@color/primary_color</item>
+        <item name="android:colorControlHighlight">@color/on_primary_color</item>
+        <item name="android:colorControlNormal">@color/on_surface</item>
+
+    </style>
+</resources>

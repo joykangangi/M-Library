@@ -9,6 +9,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -22,10 +24,15 @@ fun EmptyList() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.empty_shelf),
+            painter = painterResource(id = R.drawable.no_books),
             contentDescription = stringResource(id = R.string.empty),
-            modifier = Modifier.size(77.dp)
+            colorFilter = ColorFilter.tint(color = Color.Gray)
         )
-        Text(text = stringResource(id = R.string.empty), fontSize = 22.sp, style = MaterialTheme.typography.h3)
+        Text(
+            text = stringResource(id = R.string.empty),
+            fontSize = 22.sp,
+            style = MaterialTheme.typography.h3,
+            color = Color.Gray
+        )
     }
 }

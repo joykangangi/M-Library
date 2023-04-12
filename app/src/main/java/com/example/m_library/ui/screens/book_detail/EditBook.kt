@@ -112,13 +112,7 @@ fun EditBook(
 
                     Spacer(modifier = Modifier.height(6.dp))
 
-                    DateSaver(date = detailState.readByDate, onDateChanged = {
-                        bookViewModel.editEvent(EditBookEvents.OnDateChange(it))
-                        bookViewModel.editEvent(
-                            event = EditBookEvents.EnableEdit
-                        )
-                    })
-
+                    DatePicker(date = detailState.readByDate)
 
                     Spacer(modifier = Modifier.height(5.dp))
 

@@ -92,14 +92,8 @@ class BookViewModel
             is EditBookEvents.OnAuthorChange -> {
                 _bookDetailState.value = _bookDetailState.value.copy(author = event.author)
             }
-            is EditBookEvents.OnDateChange -> {
-                _bookDetailState.value = _bookDetailState.value.copy(readByDate = event.dateChange)
 
-            }
             is EditBookEvents.OnRdChaptsChange -> {
-//                viewModelScope.launch {
-//                    _bookDetailState.emit(_bookDetailState.first().copy(readChapters = event.rdChap))
-//                }
                 _bookDetailState.value = _bookDetailState.value.copy(readChapters = event.rdChap)
             }
 
@@ -187,7 +181,7 @@ class BookViewModel
             _bookDetailState.value.readChapters.safeToInt(),
             _bookDetailState.value.totalChapters.safeToInt()
         )
-        
+
         getReadingStatus(
             _bookDetailState.value.readChapters.safeToInt(),
             _bookDetailState.value.totalChapters.safeToInt()
