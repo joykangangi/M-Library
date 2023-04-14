@@ -7,10 +7,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -57,8 +62,10 @@ fun CustomBottomNav() {
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
-            FabButton(bottomBarState = bottomBarState.value) {
-                navController.navigate(Screen.AddBook.route)
+            if (bottomBarState.value) {
+                FabButton {
+                    navController.navigate(Screen.AddBook.route)
+                }
             }
         },
     ) {
@@ -67,19 +74,18 @@ fun CustomBottomNav() {
 }
 
 @Composable
-fun FabButton(bottomBarState: Boolean, onFabClick: () -> Unit) {
-    if (bottomBarState) {
-        FloatingActionButton(
-            onClick = onFabClick,
-            backgroundColor = MaterialTheme.colors.primaryVariant,
-            contentColor = MaterialTheme.colors.background,
-            elevation = FloatingActionButtonDefaults.elevation(2.dp, 3.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = stringResource(id = R.string.add_book)
-            )
-        }
+fun FabButton(modifier: Modifier = Modifier, onFabClick: () -> Unit) {
+    FloatingActionButton(
+        modifier = modifier,
+        onClick = onFabClick,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
+        contentColor = MaterialTheme.colors.background,
+        elevation = FloatingActionButtonDefaults.elevation(2.dp, 3.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(id = R.string.add_book)
+        )
     }
 }
 

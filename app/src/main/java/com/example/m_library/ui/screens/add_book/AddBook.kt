@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -30,10 +31,15 @@ fun AddBook(
 ) {
 
     val addBookState by bookViewModel.bookDetailState.collectAsState()
-    val chptError = bookViewModel.validChapter(
-        addBookState.readChapters.safeToInt(),
-        addBookState.totalChapters.safeToInt()
-    )
+    val chptError = remember {
+        mutableStateOf(false)
+    }
+    LaunchedEffect(key1 = Unit, block = {
+        chptError.value = bookViewModel.validChapter(
+            addBookState.readChapters.safeToInt(),
+            addBookState.totalChapters.safeToInt()
+        )
+    })
 
     //store the dialog open or closed
     var dialogOpen by remember {
@@ -97,9 +103,9 @@ fun AddBook(
                                 )
                             )
                         },
-                        chptError = chptError
+                        chptError = chptError.value
                     )
-                    if (!chptError)
+                    if (!chptError.value)
                         Text(
                             text = stringResource(id = R.string.valid_chp),
                             color = MaterialTheme.colors.error,
