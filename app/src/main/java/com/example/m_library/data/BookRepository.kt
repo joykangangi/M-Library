@@ -1,9 +1,7 @@
 package com.example.m_library.data
 
-import com.example.m_library.model.Book
 import com.example.m_library.data.local.BookDao
-import com.example.m_library.model.NewWord
-import com.example.m_library.data.local.NewWordDao
+import com.example.m_library.model.Book
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,34 +11,17 @@ import kotlinx.coroutines.flow.Flow
  * Therefore, it's often appropriate to use val for the private fields in a repository.
  */
 
-class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWordDao) {
+class BookRepository(private val bookDao: BookDao) {
 
     //for books
     fun getAllBooks(): Flow<List<Book>> = bookDao.getAllBooks()
 
-    suspend fun insertBook(book: Book) = bookDao.insertBook(book = book)
-
-    suspend fun updateBook(book: Book) = bookDao.updateBook(book = book)
+    suspend fun insertBook(book: Book) = bookDao.upsertBook(book = book)
 
     suspend fun deleteBook(book: Book) = bookDao.deleteBook(book = book)
-
-    suspend fun getBook(id: Long) = bookDao.getBookById(id = id)
-
-   fun sortByDate(): Flow<List<Book>> = bookDao.sortDates()
 
     fun finishedBooks(): Flow<List<Book>> = bookDao.finishedBooks()
     fun readingBooks(): Flow<List<Book>> = bookDao.currentReads()
 
     fun futureReads(): Flow<List<Book>> = bookDao.futureReads()
-
-    //for new words
-    fun getAllNewWords(): Flow<List<NewWord>> = newWordDao.getAllNewWords()
-
-    suspend fun getNewWord(id: Long) = newWordDao.getNewWordById(id = id)
-
-    suspend fun insertNewWord(newWord: NewWord) = newWordDao.insertNewWord(newWord = newWord)
-
-    suspend fun updateWord(newWord: NewWord) = newWordDao.updateWord(newWord = newWord)
-
-    suspend fun deleteWord(newWord: NewWord) = newWordDao.deleteWord(newWord = newWord)
 }

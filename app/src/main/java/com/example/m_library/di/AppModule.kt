@@ -4,8 +4,6 @@ import android.app.Application
 import androidx.room.Room
 import com.example.m_library.data.BookRepository
 import com.example.m_library.data.local.BookDB
-import com.example.m_library.data.local.BookDao
-import com.example.m_library.data.local.NewWordDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +19,7 @@ object AppModule{
     @Singleton
     @Provides
     fun provideBookRepository(bookDB: BookDB): BookRepository {
-        return BookRepository(bookDao = bookDB.bookDao(), newWordDao = bookDB.newWordDao())
+        return BookRepository(bookDao = bookDB.bookDao())
     }
 
     //BookDB
