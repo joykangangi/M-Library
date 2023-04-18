@@ -5,7 +5,6 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.CubicBezierEasing
-import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -37,9 +36,9 @@ object NavigationTransitions : DestinationStyle.Animated {
     private fun enterTransition(
         isHorizontal: Boolean,
         isNegative: Boolean,
-        animationSpec: FiniteAnimationSpec<IntOffset> = slideEffect,
     ): EnterTransition {
         val duration = if (isNegative) -DURATION else DURATION
+        val animationSpec = if (isHorizontal) slideEffect else popupEffect
 
         return if (isHorizontal) {
             slideInHorizontally(initialOffsetX = { duration }, animationSpec = animationSpec)
@@ -51,9 +50,9 @@ object NavigationTransitions : DestinationStyle.Animated {
     private fun exitTransition(
         isHorizontal: Boolean,
         isNegative: Boolean,
-        animationSpec: FiniteAnimationSpec<IntOffset> = slideEffect,
     ): ExitTransition {
         val duration = if (isNegative) -DURATION else DURATION
+        val animationSpec = if (isHorizontal) slideEffect else popupEffect
 
         return if (isHorizontal) {
             slideOutHorizontally(targetOffsetX = { duration }, animationSpec = animationSpec)
@@ -63,38 +62,30 @@ object NavigationTransitions : DestinationStyle.Animated {
     }
 
     override fun AnimatedContentScope<NavBackStackEntry>.enterTransition(): EnterTransition {
-        val isHorizontal = initialState.appDestination() in horizontalDestinations
         return enterTransition(
-            isHorizontal = isHorizontal,
+            isHorizontal = initialState.appDestination() in horizontalDestinations,
             isNegative = false,
-            animationSpec = if (isHorizontal) slideEffect else popupEffect,
         )
     }
 
     override fun AnimatedContentScope<NavBackStackEntry>.exitTransition(): ExitTransition {
-        val isHorizontal = initialState.appDestination() in horizontalDestinations
         return exitTransition(
-            isHorizontal = isHorizontal,
+            isHorizontal = initialState.appDestination() in horizontalDestinations,
             isNegative = true,
-            animationSpec = if (isHorizontal) slideEffect else popupEffect,
         )
     }
 
     override fun AnimatedContentScope<NavBackStackEntry>.popEnterTransition(): EnterTransition {
-        val isHorizontal = initialState.appDestination() in horizontalDestinations
         return enterTransition(
-            isHorizontal = isHorizontal,
+            isHorizontal = initialState.appDestination() in horizontalDestinations,
             isNegative = true,
-            animationSpec = if (isHorizontal) slideEffect else popupEffect,
         )
     }
 
     override fun AnimatedContentScope<NavBackStackEntry>.popExitTransition(): ExitTransition {
-        val isHorizontal = initialState.appDestination() in horizontalDestinations
         return exitTransition(
-            isHorizontal = isHorizontal,
+            isHorizontal = initialState.appDestination() in horizontalDestinations,
             isNegative = false,
-            animationSpec = if (isHorizontal) slideEffect else popupEffect,
         )
     }
 }
