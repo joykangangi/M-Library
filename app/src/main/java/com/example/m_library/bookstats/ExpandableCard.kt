@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -115,7 +114,7 @@ fun ExpandableCard(
             contentColor = contentColor,
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp,
+            defaultElevation = smallPadding() / 2,
         ),
         content = {
             Column(
@@ -149,18 +148,18 @@ fun ExpandableCard(
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowDown,
                                         contentDescription = stringResource(id = R.string.expand_icon),
-                                        modifier = Modifier
-                                            .rotate(arrowRotation)
-                                            .size(30.dp)
+                                        modifier = Modifier.rotate(arrowRotation)
                                     )
                                 }
                             )
                         }
                     )
                     if (expanded) {
-                        books.forEach { book ->
+                        books.forEachIndexed { index, book ->
                             Text(text = book.title)
-                            Divider()
+                            if (index < books.lastIndex) Divider(
+                                modifier = Modifier.padding(vertical = smallPadding() / 2)
+                            )
                         }
                     }
                 },

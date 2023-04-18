@@ -66,13 +66,14 @@ fun BookDetailScreen(
                         text = "Written by ${book.author}",
                         style = MaterialTheme.typography.headlineSmall,
                         fontStyle = FontStyle.Italic,
+                        maxLines = 1,
                     )
                     Text(
                         modifier = Modifier.padding(
                             vertical = mediumPadding(),
                         ),
                         text = stringResource(id = R.string.info),
-                        style = MaterialTheme.typography.labelMedium,
+                        style = MaterialTheme.typography.labelLarge,
                         fontWeight = FontWeight.Bold
                     )
                     BookDetailItem(
