@@ -38,7 +38,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.m_library.R
 import com.example.m_library.app.data.local.Book
 import com.example.m_library.app.theme.MLibraryTheme
@@ -119,8 +118,8 @@ fun ExpandableCard(
         content = {
             Column(
                 modifier = Modifier
-                    .padding(mediumPadding())
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(mediumPadding()),
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -136,7 +135,7 @@ fun ExpandableCard(
                                         shape = CircleShape,
                                         color = MaterialTheme.colorScheme.secondary
                                     )
-                                    .padding(horizontal = 5.dp),
+                                    .padding(horizontal = smallPadding() / 2),
                                 text = books.size.toString(),
                                 style = MaterialTheme.typography.bodyLarge,
                                 fontWeight = FontWeight.Bold,

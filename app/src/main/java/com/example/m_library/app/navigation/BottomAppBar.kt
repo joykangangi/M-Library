@@ -101,7 +101,9 @@ fun BottomAppBar(
             modifier = modifier,
             content = {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = mediumPadding()),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     content = {
                         screens.forEach { screen ->
@@ -110,7 +112,7 @@ fun BottomAppBar(
                                     onClick = {
                                         navController.navigate(screen.route)
                                     },
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    containerColor = MaterialTheme.colorScheme.primary,
                                     contentColor = MaterialTheme.colorScheme.background,
                                     elevation = FloatingActionButtonDefaults.elevation(2.dp, 3.dp),
                                     content = {
@@ -150,12 +152,12 @@ private fun BottomAppBarItem(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
+            .clip(RoundedCornerShape(mediumPadding()))
             .clickable(onClick = onClick)
             .padding(
                 horizontal = mediumPadding(),
                 vertical = smallPadding(),
-            )
-            .clip(RoundedCornerShape(mediumPadding())),
+            ),
         content = {
             Icon(
                 imageVector = icon,
