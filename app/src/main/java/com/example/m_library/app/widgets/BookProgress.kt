@@ -1,4 +1,4 @@
-package com.example.m_library.books
+package com.example.m_library.app.widgets
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -20,35 +20,25 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.m_library.app.theme.MLibraryTheme
-
-
-/**
- * startAngle Defns:
- * -90 -> North
- * 0 -> East
- * 90 -> South
- * 180 -> West
- */
+import com.example.m_library.app.theme.smallPadding
 
 @Composable
-fun ProgressIndicator(
+fun BookProgress(
     modifier: Modifier = Modifier,
     readChapters: Int,
     totalChapters: Int,
-    fontSize: TextUnit = 14.sp,
+    textStyle: androidx.compose.ui.text.TextStyle = MaterialTheme.typography.bodyMedium,
     radius: Dp = 25.dp,
     color: Color = MaterialTheme.colorScheme.primary,
-    strokeWidth: Dp = 3.dp,
+    strokeWidth: Dp = smallPadding() / 2,
     animationDuration: Int = 1000, //ms,
-    animDelay: Int = 0
+    animationDelay: Int = 0
 ) {
-    val percentage = remember {
+    val percentage = remember(totalChapters, readChapters) {
         if (totalChapters > 0) {
-            readChapters.toFloat() / totalChapters
+            readChapters.toFloat() / totalChapters.toFloat()
         } else 0f
     }
 
@@ -58,7 +48,7 @@ fun ProgressIndicator(
         targetValue = if (animationPlayed) percentage else 0f,
         animationSpec = tween(
             durationMillis = animationDuration,
-            delayMillis = animDelay
+            delayMillis = animationDelay
         ),
         label = "read_progress"
     )
@@ -87,7 +77,7 @@ fun ProgressIndicator(
 
             Text(
                 text = (animation.value * 100).toInt().toString() + "%",
-                fontSize = fontSize
+                style = textStyle,
             )
         }
     )
@@ -98,6 +88,6 @@ fun ProgressIndicator(
 @Composable
 fun ProgressPreview() {
     MLibraryTheme {
-        ProgressIndicator(readChapters = 80, totalChapters = 100, modifier = Modifier)
+        BookProgress(readChapters = 80, totalChapters = 100, modifier = Modifier)
     }
 }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
@@ -29,7 +28,7 @@ import com.example.m_library.app.data.local.Book
 import com.example.m_library.app.theme.MLibraryTheme
 import com.example.m_library.app.theme.smallPadding
 import com.example.m_library.app.util.formattedName
-import com.example.m_library.books.ProgressIndicator
+import com.example.m_library.app.widgets.BookProgress
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -56,11 +55,11 @@ fun BookDetailScreen(
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 content = {
-                    ProgressIndicator(
+                    BookProgress(
                         readChapters = book.currentChapter,
                         totalChapters = book.totalChapters,
-                        fontSize = 20.sp,
-                        modifier = Modifier.size(100.dp)
+                        textStyle = MaterialTheme.typography.headlineSmall,
+                        radius = 50.dp,
                     )
 
                     Spacer(modifier = Modifier.height(7.dp))
@@ -144,6 +143,8 @@ private fun BookDetailScreenPreview() = MLibraryTheme {
         book = Book(
             title = "Title",
             author = "Joy",
+            currentChapter = 10,
+            totalChapters = 20,
         ),
         onBack = {},
         onEdit = {},

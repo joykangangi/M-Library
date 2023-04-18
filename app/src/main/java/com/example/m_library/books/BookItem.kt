@@ -26,6 +26,7 @@ import com.example.m_library.app.theme.mediumPadding
 import com.example.m_library.app.theme.smallPadding
 import com.example.m_library.app.util.formatted
 import com.example.m_library.app.util.formattedName
+import com.example.m_library.app.widgets.BookProgress
 import java.time.LocalDate
 import java.util.*
 
@@ -59,7 +60,7 @@ fun BookItem(
                         status = book.readStatus.formattedName,
                         readByDate = book.readByDate
                     )
-                    ProgressIndicator(
+                    BookProgress(
                         readChapters = book.currentChapter,
                         totalChapters = book.totalChapters,
                     )
