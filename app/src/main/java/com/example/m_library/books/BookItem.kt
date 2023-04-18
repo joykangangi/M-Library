@@ -1,4 +1,4 @@
-package com.example.m_library.ui.screens.my_books
+package com.example.m_library.books
 
 
 import androidx.compose.foundation.layout.*
@@ -6,25 +6,30 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.m_library.R
-import com.example.m_library.model.Book
-import java.text.SimpleDateFormat
+import com.example.m_library.app.data.local.Book
+import com.example.m_library.app.theme.mediumPadding
+import com.example.m_library.app.theme.smallPadding
+import com.example.m_library.app.util.formatted
+import com.example.m_library.app.util.formattedName
+import java.time.LocalDate
 import java.util.*
 
-// Always save constant variables in remember block or as file variables
-// Format date as: Thu Jan 3, 2023
-private val dateFormat = SimpleDateFormat("EEE MMM d, yyyy", Locale.ENGLISH)
-
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookItem(
     modifier: Modifier = Modifier,
@@ -36,28 +41,27 @@ fun BookItem(
     }
 
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = 10.dp,
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(mediumPadding()),
+        elevation = CardDefaults.cardElevation(defaultElevation = smallPadding()),
         onClick = onClick,
         content = {
             Row(
-                modifier = modifier.fillMaxWidth(),
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(smallPadding()),
                 horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
                 content = {
-                    // try not to set fixed sizes for components
                     BookDetail(
                         modifier = Modifier.weight(1f),
                         bookTitle = book.title,
-                        status = Book.choiceList[book.readStatus],
+                        status = book.readStatus.formattedName,
                         readByDate = book.readByDate
                     )
                     ProgressIndicator(
                         readChapters = book.currentChapter,
-                        totChapters = book.totalChapters,
-                        modifier = Modifier.padding(top = 8.dp, end = 6.dp)
+                        totalChapters = book.totalChapters,
                     )
                 }
             )
@@ -72,8 +76,9 @@ fun BookDetail(
     modifier: Modifier = Modifier,
     bookTitle: String,
     status: String,
-    readByDate: Date
+    readByDate: LocalDate
 ) {
+    val color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
     Column(
         modifier = modifier.padding(3.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
@@ -81,32 +86,34 @@ fun BookDetail(
         content = {
             Text(
                 text = stringResource(id = R.string.title, bookTitle),
-                style = MaterialTheme.typography.h6,
-                color = MaterialTheme.colors.onSurface,
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = stringResource(id = R.string.reading_status, status),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.bodyLarge
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 content = {
                     Icon(
-                        imageVector = Icons.Filled.DateRange, contentDescription = stringResource(
+                        imageVector = Icons.Filled.DateRange,
+                        contentDescription = stringResource(
                             id = R.string.deadline
                         ),
-                        tint = Color.Gray
+                        tint = color,
                     )
+                    Spacer(modifier = Modifier.width(smallPadding()))
                     Text(
                         text = stringResource(
                             id = R.string.due_date,
-                            dateFormat.format(readByDate)
+                            readByDate.formatted,
                         ),
-                        style = MaterialTheme.typography.caption,
-                        color = Color.Gray
+                        style = MaterialTheme.typography.labelSmall,
+                        color = color
                     )
                 }
             )
