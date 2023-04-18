@@ -52,6 +52,7 @@ expresso = "androidx.test.espresso:espresso-core:3.5.1"
 # Hilt
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+hilt-compose = "androidx.hilt:hilt-navigation-compose:1.0.0"
 # JUnit
 junit = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-android = "androidx.test.ext:junit:1.1.5"
@@ -69,9 +70,6 @@ lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel
 mockk = "io.mockk:mockk:1.13.4"
 # Napier
 napier = "io.github.aakira:napier:2.6.1"
-# Project Reactor
-projectreactor = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions" }
-projectreactor-test = { module = "io.projectreactor:reactor-test" }
 # Room
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
