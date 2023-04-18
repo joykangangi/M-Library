@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.m_library.R
 import com.example.m_library.app.theme.MLibraryTheme
@@ -20,6 +21,7 @@ import com.example.m_library.app.theme.MLibraryTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookDetailAppBar(
+    bookName: String,
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
     onDelete: () -> Unit,
@@ -28,7 +30,7 @@ fun BookDetailAppBar(
     TopAppBar(
         modifier = modifier,
         title = {
-            Text(text = stringResource(id = R.string.book_det))
+            Text(text = bookName, maxLines = 1, overflow = TextOverflow.Ellipsis)
         },
         navigationIcon = {
             IconButton(onClick = onBack) {
@@ -63,5 +65,10 @@ fun BookDetailAppBar(
 @Preview
 @Composable
 private fun BookDetailAppBarPreview() = MLibraryTheme {
-    BookDetailAppBar(onBack = { /*TODO*/ }, onDelete = { /*TODO*/ }) {}
+    BookDetailAppBar(
+        bookName = "The Chronicles of an Android Dev",
+        onBack = { },
+        onDelete = { },
+        onEdit = {},
+    )
 }

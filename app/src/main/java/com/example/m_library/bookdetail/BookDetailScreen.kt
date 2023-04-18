@@ -20,16 +20,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.m_library.R
 import com.example.m_library.app.data.local.Book
 import com.example.m_library.app.theme.MLibraryTheme
+import com.example.m_library.app.theme.mediumPadding
 import com.example.m_library.app.theme.smallPadding
+import com.example.m_library.app.util.formatted
 import com.example.m_library.app.util.formattedName
 import com.example.m_library.app.widgets.BookProgress
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun BookDetailScreen(
@@ -43,6 +42,7 @@ fun BookDetailScreen(
         modifier = modifier,
         topBar = {
             BookDetailAppBar(
+                bookName = book.title,
                 onBack = onBack,
                 onDelete = onDelete,
                 onEdit = onEdit,
@@ -61,39 +61,36 @@ fun BookDetailScreen(
                         textStyle = MaterialTheme.typography.headlineSmall,
                         radius = 50.dp,
                     )
-
-                    Spacer(modifier = Modifier.height(7.dp))
-
+                    Spacer(modifier = Modifier.height(mediumPadding()))
                     Text(
-                        text = book.title,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.headlineMedium
-                    )
-                    Spacer(modifier = Modifier.height(3.dp))
-                    Text(
-                        text = book.author,
+                        text = "Written by ${book.author}",
                         style = MaterialTheme.typography.headlineSmall,
-                        fontStyle = FontStyle.Italic
+                        fontStyle = FontStyle.Italic,
                     )
-                    Spacer(modifier = Modifier.height(5.dp))
                     Text(
+                        modifier = Modifier.padding(
+                            vertical = mediumPadding(),
+                        ),
                         text = stringResource(id = R.string.info),
-                        fontSize = 18.sp,
+                        style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.Bold
                     )
-                    MoreDetail(
+                    BookDetailItem(
                         title = stringResource(id = R.string.reading_st),
-                        details = book.readStatus.formattedName
+                        details = book.readStatus.formattedName,
                     )
-                    MoreDetail(
+                    Divider()
+                    BookDetailItem(
                         title = stringResource(id = R.string.finishby),
-                        details = book.readByDate.format(DateTimeFormatter.ISO_LOCAL_DATE)
+                        details = book.readByDate.formatted
                     )
-                    MoreDetail(
+                    Divider()
+                    BookDetailItem(
                         title = stringResource(id = R.string.currentChp),
                         details = book.currentChapter.toString()
                     )
-                    MoreDetail(
+                    Divider()
+                    BookDetailItem(
                         title = stringResource(id = R.string.totChap),
                         details = book.totalChapters.toString()
                     )
@@ -104,34 +101,29 @@ fun BookDetailScreen(
 }
 
 @Composable
-fun MoreDetail(
+private fun BookDetailItem(
     title: String,
     details: String,
     modifier: Modifier = Modifier,
-    spaced: Dp = smallPadding(),
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(spaced),
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                vertical = smallPadding(),
+                horizontal = mediumPadding(),
+            ),
+        horizontalArrangement = Arrangement.SpaceBetween,
         content = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(smallPadding() / 2),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                content = {
-                    Text(
-                        text = title,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                    Text(
-                        text = details,
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
+            Text(
+                text = title,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.bodyLarge,
             )
-            Divider()
+            Text(
+                text = details,
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
     )
 }
