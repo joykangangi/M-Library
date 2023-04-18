@@ -1,9 +1,5 @@
-package com.example.m_library.data
+package com.example.m_library.app.data.local
 
-import com.example.m_library.model.Book
-import com.example.m_library.data.local.BookDao
-import com.example.m_library.model.NewWord
-import com.example.m_library.data.local.NewWordDao
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -19,8 +15,6 @@ class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWo
     fun getAllBooks(): Flow<List<Book>> = bookDao.getAllBooks()
 
     suspend fun insertBook(book: Book) = bookDao.insertBook(book = book)
-
-    suspend fun updateBook(book: Book) = bookDao.updateBook(book = book)
 
     suspend fun deleteBook(book: Book) = bookDao.deleteBook(book = book)
 

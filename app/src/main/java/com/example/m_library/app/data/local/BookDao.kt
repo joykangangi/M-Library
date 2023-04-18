@@ -1,17 +1,12 @@
-package com.example.m_library.data.local
+package com.example.m_library.app.data.local
 
 import androidx.room.*
-import com.example.m_library.model.Book
-import com.example.m_library.model.NewWord
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BookDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBook(book: Book)
-
-    @Update
-    suspend fun updateBook(book: Book)
 
     @Delete
     suspend fun deleteBook(book: Book)
