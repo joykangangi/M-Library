@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.m_library.model.Book
 import com.example.m_library.model.ExpandableCardModel
-import com.example.m_library.ui.screens.stats.Constants.EXPAND_ANIMATION_DURATION
+import com.example.m_library.util.Constants.EXPAND_ANIMATION_DURATION
 
 
 @Composable

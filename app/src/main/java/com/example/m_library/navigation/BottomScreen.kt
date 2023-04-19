@@ -12,7 +12,6 @@ sealed class BottomScreen(
     //All Books/Home Page
     object MyBooks: BottomScreen(route = "my_books", title = "MyBooks", icon = Icons.Filled.List)
 
-    //New Word
     object Stats: BottomScreen(route = "book_stats", title = "Stats", icon = Icons.Filled.Settings)
 
 }
@@ -20,6 +19,5 @@ sealed class BottomScreen(
 sealed class Screen(val route: String) {
     object BookDetailScreen: Screen("detail")
     object BookEditScreen: Screen("edit")
-
     object AddBook: BottomScreen(route = "add_book", title = "Add Book", icon = Icons.Filled.AddCircle)
 }

@@ -17,12 +17,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.m_library.R
 import com.example.m_library.model.Book
-import java.text.SimpleDateFormat
+import com.example.m_library.util.Constants.dateFormat
 import java.util.*
 
-// Always save constant variables in remember block or as file variables
-// Format date as: Thu Jan 3, 2023
-private val dateFormat = SimpleDateFormat("EEE MMM d, yyyy", Locale.ENGLISH)
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -47,11 +44,10 @@ fun BookItem(
                 modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 content = {
-                    // try not to set fixed sizes for components
                     BookDetail(
                         modifier = Modifier.weight(1f),
                         bookTitle = book.title,
-                        status = Book.choiceList[book.readStatus],
+                        status = book.readStatus.name,
                         readByDate = book.readByDate
                     )
                     ProgressIndicator(
@@ -66,7 +62,7 @@ fun BookItem(
 }
 
 
-//The first side of the card
+//The right side of the card
 @Composable
 fun BookDetail(
     modifier: Modifier = Modifier,

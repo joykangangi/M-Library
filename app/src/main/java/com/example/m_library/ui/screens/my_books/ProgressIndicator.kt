@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -40,7 +41,7 @@ fun ProgressIndicator(
     radius: Dp = 25.dp,
     color: Color = MaterialTheme.colors.primary,
     strokeWidth: Dp = 3.dp,
-    animationDuration: Int = 1000, //ms,
+    animationDuration: Int = 500, //ms,
     animDelay: Int = 0
 ) {
     var animationPlayed by remember {
@@ -57,8 +58,7 @@ fun ProgressIndicator(
         )
     )
 
-    //Start animation when activity is launched, key=true ==key never changes
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = Unit) {
         animationPlayed = true
     }
     Box(
@@ -82,7 +82,6 @@ fun ProgressIndicator(
         )
     }
 }
-
 
 @Preview
 @Composable

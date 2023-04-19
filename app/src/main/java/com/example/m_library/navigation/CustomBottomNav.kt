@@ -10,12 +10,13 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.m_library.R
@@ -57,8 +58,10 @@ fun CustomBottomNav() {
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
-            FabButton(bottomBarState = bottomBarState.value) {
-                navController.navigate(Screen.AddBook.route)
+            if (bottomBarState.value) {
+                FabButton {
+                    navController.navigate(Screen.AddBook.route)
+                }
             }
         },
     ) {
@@ -67,21 +70,25 @@ fun CustomBottomNav() {
 }
 
 @Composable
-fun FabButton(bottomBarState: Boolean, onFabClick: () -> Unit) {
-    if (bottomBarState) {
-        FloatingActionButton(
-            onClick = onFabClick,
-            backgroundColor = MaterialTheme.colors.primaryVariant,
-            contentColor = MaterialTheme.colors.background,
-            elevation = FloatingActionButtonDefaults.elevation(2.dp, 3.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = stringResource(id = R.string.add_book)
-            )
-        }
+fun FabButton(modifier: Modifier = Modifier, onFabClick: () -> Unit) {
+    val fabClick = remember {
+        { onFabClick() }
+    }
+
+    FloatingActionButton(
+        modifier = modifier,
+        onClick = fabClick,
+        backgroundColor = MaterialTheme.colors.primaryVariant,
+        contentColor = MaterialTheme.colors.background,
+        elevation = FloatingActionButtonDefaults.elevation(2.dp, 3.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = stringResource(id = R.string.add_book)
+        )
     }
 }
+
 
 @Composable
 fun CustomBottomBar(
@@ -98,6 +105,9 @@ fun CustomBottomBar(
 
         bottomScreens.forEach { screen ->
             val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+            val onScreenClicked = remember {
+                { navController.navigate(screen.route) }
+            }
             BottomNavigationItem(
                 icon = {
                     Icon(
@@ -108,13 +118,7 @@ fun CustomBottomBar(
                 },
                 label = { Text(text = screen.title, color = MaterialTheme.colors.onPrimary) },
                 selected = isSelected,
-                onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
+                onClick = onScreenClicked
             )
         }
     }

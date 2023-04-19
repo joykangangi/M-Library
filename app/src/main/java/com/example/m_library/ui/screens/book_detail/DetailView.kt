@@ -1,6 +1,5 @@
 package com.example.m_library.ui.screens.book_detail
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,23 +9,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.m_library.R
 import com.example.m_library.model.Book
-import com.example.m_library.model.Book.ReadingStatus.choiceList
 import com.example.m_library.ui.screens.add_book.components.EditBookEvents
 import com.example.m_library.ui.screens.my_books.ProgressIndicator
+import com.example.m_library.util.Constants.dateFormat
 import com.example.m_library.viewmodel.BookViewModel
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun BookDetail(
@@ -34,34 +30,36 @@ fun BookDetail(
     bookViewModel: BookViewModel,
     onEditClick: () -> Unit
 ) {
-    // Format date as: Thu Jan 3, 2023
-    val dateFormat = SimpleDateFormat("EEE MMM d, yyyy", Locale.ENGLISH)
     val bookState by bookViewModel.bookState.collectAsState()
 
 
-    Log.i("Detail view Book Value","${bookState.book}")
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState())
     ) {
         bookState.book?.let { book: Book ->
-            DetailTopAppBar(
-                onBackClicked = onBackClicked,
-                onDeleteClick = {
-                    Log.i("DETAIL VIEW", "$book")
+            val deleteClicked = remember {
+                {
                     bookViewModel.deleteBook(book = book)
-
                     onBackClicked()
-                },
-                onEditClick = {
+                }
+            }
+
+            val editClicked = remember {
+                {
                     bookViewModel.editEvent(EditBookEvents.RestoreDetails)
                     onEditClick()
                 }
+            }
+
+            DetailTopAppBar(
+                onBackClicked = onBackClicked,
+                onDeleteClick = deleteClicked,
+                onEditClick = editClicked
             )
 
-            Spacer(modifier = Modifier.height(5.dp))
-            Column(Modifier.padding(3.dp), horizontalAlignment = CenterHorizontally) {
+            Column(Modifier.padding(5.dp), horizontalAlignment = CenterHorizontally) {
 
 
                 ProgressIndicator(
@@ -96,7 +94,7 @@ fun BookDetail(
 
                 MoreDetail(
                     title = stringResource(id = R.string.reading_st),
-                    details = choiceList[book.readStatus]
+                    details = book.readStatus.name
                 )
 
                 MoreDetail(
@@ -107,11 +105,11 @@ fun BookDetail(
 
             MoreDetail(
                 title = stringResource(id = R.string.currentChp),
-                details = book.currentChapter
+                details = book.currentChapter.toString()
             )
             MoreDetail(
                 title = stringResource(id = R.string.totChap),
-                details = book.totalChapters
+                details = book.totalChapters.toString()
             )
         }
     }
@@ -119,13 +117,13 @@ fun BookDetail(
 
 @Composable
 fun MoreDetail(
+    modifier: Modifier = Modifier,
     title: String,
-    details: Any,
-    spaced: Dp = 8.dp,
+    details: String
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(spaced)) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(5.dp),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -137,7 +135,7 @@ fun MoreDetail(
                 fontSize = 16.sp
             )
             Text(
-                text = details.toString(),
+                text = details,
                 style = MaterialTheme.typography.body2,
                 fontSize = 14.sp
             )
