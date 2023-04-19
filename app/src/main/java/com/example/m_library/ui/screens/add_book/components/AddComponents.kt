@@ -19,10 +19,11 @@ import com.example.m_library.R
 @Composable
 fun TopView(
     onCloseDialog: () -> Unit,
-    iconText: String
+    iconTextId: Int,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.padding(start = 3.dp),
+        modifier = modifier.padding(start = 3.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -37,7 +38,7 @@ fun TopView(
         }
 
         Text(
-            text = iconText,
+            text = stringResource(id = iconTextId),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold
         )
@@ -45,7 +46,7 @@ fun TopView(
 }
 
 @Composable
-fun TextFieldsSection1(
+fun EditTextField(
     title: String,
     onTitleChanged: (String) -> Unit,
     author: String,
@@ -92,7 +93,7 @@ fun TextFieldsSection1(
 
 
 @Composable
-fun TextFieldsSection2(
+fun EditChaptersField(
     readChpt: String,
     onReadChptsChanged: (String) -> Unit,
     totChpts: String,

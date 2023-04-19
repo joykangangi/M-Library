@@ -36,7 +36,7 @@ fun AnimNavGraph(
         }
 
         setComposable(route = Screen.AddBook.route) {
-            AddBook(bookViewModel = hiltViewModel(), onCloseDialog = {
+            AddBook(onCloseDialog = {
                 navController.navigate(BottomScreen.MyBooks.route) {
                     popUpTo(BottomScreen.MyBooks.route)
                 }
