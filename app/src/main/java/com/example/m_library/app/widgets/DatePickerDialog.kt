@@ -5,8 +5,6 @@ import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
-import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +22,6 @@ import java.time.LocalDate
 import java.util.Calendar
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePicker(
     date: LocalDate,

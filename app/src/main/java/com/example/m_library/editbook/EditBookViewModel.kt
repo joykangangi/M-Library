@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.m_library.R
 import com.example.m_library.app.data.local.Book
 import com.example.m_library.app.data.local.BookRepository
+import com.example.m_library.app.data.local.ReadStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,8 +35,14 @@ class EditBookViewModel @Inject constructor(
                 null
             } else R.string.valid_chp
 
+        val updateReadStatus = when(book.currentChapter) {
+            in 1 until book.totalChapters -> ReadStatus.Reading
+            0 -> ReadStatus.ToRead
+            else -> ReadStatus.Completed
+        }
+
         EditBookState(
-            book = book,
+            book = book.copy(readStatus = updateReadStatus),
             titleError = titleError,
             authorError = authorError,
             chaptersError = chaptersError,
@@ -44,7 +51,7 @@ class EditBookViewModel @Inject constructor(
     }.flowOn(Dispatchers.Default).stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5_000),
-        EditBookState(),
+        initialValue = EditBookState(),
     )
 
     fun getBook(bookId: Long?) {
