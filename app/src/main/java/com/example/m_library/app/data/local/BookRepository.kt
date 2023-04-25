@@ -20,8 +20,6 @@ class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWo
 
     suspend fun getBook(id: Long) = bookDao.getBookById(id = id)
 
-   fun sortByDate(): Flow<List<Book>> = bookDao.sortDates()
-
     fun finishedBooks(): Flow<List<Book>> = bookDao.finishedBooks()
     fun readingBooks(): Flow<List<Book>> = bookDao.currentReads()
 
@@ -29,8 +27,6 @@ class BookRepository(private val bookDao: BookDao, private val newWordDao: NewWo
 
     //for new words
     fun getAllNewWords(): Flow<List<NewWord>> = newWordDao.getAllNewWords()
-
-    suspend fun getNewWord(id: Long) = newWordDao.getNewWordById(id = id)
 
     suspend fun insertNewWord(newWord: NewWord) = newWordDao.insertNewWord(newWord = newWord)
 

@@ -73,50 +73,47 @@ fun EditBookScreen(
                         label = stringResource(id = R.string.author),
                         error = state.authorError?.let { stringResource(id = it) },
                     )
-                    Column {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            content = {
-                                TextField(
-                                    modifier = Modifier.weight(1f),
-                                    value = state.book.currentChapter.toString(),
-                                    onValueChanged = {
-                                        updateBook(
-                                            state.book.copy(
-                                                currentChapter = it.toIntOrNull() ?: 0
-                                            )
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        content = {
+                            TextField(
+                                modifier = Modifier.weight(1f),
+                                value = state.book.currentChapter.toString(),
+                                onValueChanged = {
+                                    updateBook(
+                                        state.book.copy(
+                                            currentChapter = it.toIntOrNull() ?: 0
                                         )
-                                    },
-                                    label = stringResource(id = R.string.currentChp),
-                                    error = state.chaptersError?.let { "" },
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Next,
-                                        keyboardType = KeyboardType.Number
-                                    ),
-                                )
-                                Spacer(modifier = Modifier.width(smallPadding()))
-                                TextField(
-                                    modifier = Modifier.weight(1f),
-                                    value = state.book.totalChapters.toString(),
-                                    onValueChanged = {
-                                        updateBook(
-                                            state.book.copy(
-                                                totalChapters = it.toIntOrNull() ?: 0
-                                            )
+                                    )
+                                },
+                                label = stringResource(id = R.string.currentChp),
+                                error = state.chaptersError?.let { "" },
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Next, keyboardType = KeyboardType.Number
+                                ),
+                            )
+                            Spacer(modifier = Modifier.width(smallPadding()))
+                            TextField(
+                                modifier = Modifier.weight(1f),
+                                value = state.book.totalChapters.toString(),
+                                onValueChanged = {
+                                    updateBook(
+                                        state.book.copy(
+                                            totalChapters = it.toIntOrNull() ?: 0
                                         )
-                                    },
-                                    label = stringResource(id = R.string.totChap),
-                                    error = state.chaptersError?.let { "" },
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Done,
-                                        keyboardType = KeyboardType.Number
-                                    ),
-                                )
-                            },
-                        )
-                        state.chaptersError?.let {
-                            ErrorText(text = stringResource(it))
-                        }
+                                    )
+                                },
+                                label = stringResource(id = R.string.totChap),
+                                error = state.chaptersError?.let { "" },
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Done, keyboardType = KeyboardType.Number
+                                ),
+                            )
+                        },
+                    )
+                    state.chaptersError?.let {
+                        ErrorText(text = stringResource(it))
                     }
 
                     DatePicker(
@@ -124,20 +121,17 @@ fun EditBookScreen(
                         date = state.book.readByDate,
                     )
 
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth(0.7f)
-                            .align(Alignment.CenterHorizontally),
+                    Button(modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .align(Alignment.CenterHorizontally),
                         enabled = state.buttonEnabled,
                         onClick = onSave,
                         content = {
                             Text(
                                 text = stringResource(id = if (isEdit) R.string.update else R.string.save)
                             )
-                        }
-                    )
-                }
-            )
+                        })
+                })
         },
     )
 }

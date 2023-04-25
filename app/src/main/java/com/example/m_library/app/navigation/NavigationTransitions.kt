@@ -20,7 +20,7 @@ import com.example.m_library.destinations.BookStatsRouteDestination
 import com.example.m_library.destinations.BooksRouteDestination
 import com.ramcosta.composedestinations.spec.DestinationStyle
 
-private const val DURATION = 1000
+private const val OFFSET = 1000
 private val slideEffect = spring<IntOffset>(dampingRatio = Spring.DampingRatioMediumBouncy)
 private val popupEffect = tween<IntOffset>(
     durationMillis = 2000,
@@ -37,13 +37,13 @@ object NavigationTransitions : DestinationStyle.Animated {
         isHorizontal: Boolean,
         isNegative: Boolean,
     ): EnterTransition {
-        val duration = if (isNegative) -DURATION else DURATION
+        val offset = if (isNegative) -OFFSET else OFFSET
         val animationSpec = if (isHorizontal) slideEffect else popupEffect
 
         return if (isHorizontal) {
-            slideInHorizontally(initialOffsetX = { duration }, animationSpec = animationSpec)
+            slideInHorizontally(initialOffsetX = { offset }, animationSpec = animationSpec)
         } else {
-            slideInVertically(initialOffsetY = { duration }, animationSpec = animationSpec)
+            slideInVertically(initialOffsetY = { offset }, animationSpec = animationSpec)
         }
     }
 
@@ -51,13 +51,13 @@ object NavigationTransitions : DestinationStyle.Animated {
         isHorizontal: Boolean,
         isNegative: Boolean,
     ): ExitTransition {
-        val duration = if (isNegative) -DURATION else DURATION
+        val offset = if (isNegative) -OFFSET else OFFSET
         val animationSpec = if (isHorizontal) slideEffect else popupEffect
 
         return if (isHorizontal) {
-            slideOutHorizontally(targetOffsetX = { duration }, animationSpec = animationSpec)
+            slideOutHorizontally(targetOffsetX = { offset }, animationSpec = animationSpec)
         } else {
-            slideOutVertically(targetOffsetY = { duration }, animationSpec = animationSpec)
+            slideOutVertically(targetOffsetY = { offset }, animationSpec = animationSpec)
         }
     }
 

@@ -15,7 +15,6 @@ fun ErrorText(
         modifier = modifier,
         text = text,
         color = MaterialTheme.colorScheme.error,
-
         fontSize = 12.sp
     )
 }

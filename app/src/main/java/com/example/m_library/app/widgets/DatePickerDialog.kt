@@ -5,6 +5,8 @@ import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,6 +24,7 @@ import java.time.LocalDate
 import java.util.Calendar
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePicker(
     date: LocalDate,
@@ -31,10 +34,10 @@ fun DatePicker(
     val context = LocalContext.current
 
     var selectedDate by remember { mutableStateOf(date) }
+    val calendar = Calendar.getInstance()
 
     val datePicker = remember(context) {
-        val calendar = Calendar.getInstance()
-        val dialog = DatePickerDialog(
+        DatePickerDialog(
             context,
             R.style.DatePickerStyle,
             { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
@@ -44,10 +47,8 @@ fun DatePicker(
             calendar[Calendar.MONTH],
             calendar[Calendar.DAY_OF_MONTH]  //initial selected date in the dialog.
         )
-        dialog.datePicker.minDate = calendar.timeInMillis
-        dialog
     }
-
+    datePicker.datePicker.minDate = calendar.timeInMillis
 
     Row(
         modifier = modifier,

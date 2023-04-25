@@ -11,14 +11,11 @@ interface BookDao {
     @Delete
     suspend fun deleteBook(book: Book)
 
-    @Query("SELECT * FROM books")
-    fun getAllBooks(): Flow<List<Book>>
-
     @Query("SELECT * FROM books WHERE id = :id")
     suspend fun getBookById(id: Long): Book?
 
-    @Query("SELECT * FROM books ORDER BY read_by_date DESC")
-    fun sortDates(): Flow<List<Book>>
+    @Query("SELECT * FROM books")
+    fun getAllBooks(): Flow<List<Book>>
 
     @Query("SELECT * FROM books WHERE current_chapter = total_chapters")
     fun finishedBooks(): Flow<List<Book>>
@@ -43,7 +40,4 @@ interface NewWordDao {
 
     @Query("SELECT * FROM new_words")
     fun getAllNewWords(): Flow<List<NewWord>>
-
-    @Query("SELECT * FROM new_words WHERE id = :id")
-    suspend fun getNewWordById(id: Long): NewWord
 }
