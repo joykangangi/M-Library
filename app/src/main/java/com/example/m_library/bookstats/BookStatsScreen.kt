@@ -1,15 +1,19 @@
 package com.example.m_library.bookstats
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AutoGraph
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,53 +28,52 @@ fun BookStatsScreen(
     state: BookStatsState,
     modifier: Modifier = Modifier,
 ) {
+    val appBarColor = MaterialTheme.colorScheme.primary
+    val barContentColor = MaterialTheme.colorScheme.onPrimary
     Scaffold(
         modifier = modifier,
         topBar = {
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = appBarColor,
+                    titleContentColor = barContentColor
+                ),
                 title = {
-                    Text(
-                        text = stringResource(id = R.string.stats),
-                    )
+                    Text(text = stringResource(id = R.string.stats))
                 },
                 actions = {
-                    IconButton(
-                        onClick = {},
-                        content = {
-                            Icon(
-                                imageVector = Icons.Outlined.AutoGraph,
-                                contentDescription = null,
-                            )
-                        }
+                    Icon(
+                        imageVector = Icons.Outlined.AutoGraph,
+                        tint = barContentColor,
+                        contentDescription = null,
+                        modifier = modifier.padding(end = smallPadding())
                     )
                 }
             )
         },
         content = { scaffoldPadding ->
-            LazyColumn(
-                modifier = Modifier.padding(scaffoldPadding),
+            Column(
+                modifier = Modifier
+                    .padding(scaffoldPadding)
+                    .padding(mediumPadding())
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(smallPadding()),
-                contentPadding = PaddingValues(mediumPadding()),
                 content = {
-                    item {
-                        ExpandableCard(
-                            title = "Finished Books",
-                            books = state.finished,
-                        )
-                    }
-                    item {
-                        ExpandableCard(
-                            title = "Currently Reading",
-                            books = state.reading,
-                        )
-                    }
-                    item {
-                        ExpandableCard(
-                            title = "To Read",
-                            books = state.future,
-                        )
-                    }
+                    ExpandableCard(
+                        title = "Finished Books",
+                        books = state.finished,
+                    )
+
+                    ExpandableCard(
+                        title = "Currently Reading",
+                        books = state.reading,
+                    )
+
+                    ExpandableCard(
+                        title = "To Read",
+                        books = state.future,
+                    )
                 }
             )
         }

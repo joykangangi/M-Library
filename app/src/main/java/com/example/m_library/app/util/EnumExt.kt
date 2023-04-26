@@ -17,3 +17,12 @@ val <T : Enum<T>> Enum<T>.formattedName: String
         }
         return builder.toString().trim()
     }
+
+
+fun String.safeToInt(): Int {
+    return if (this.isNotBlank()) {
+        this.toInt()
+    } else {
+        0
+    }
+}

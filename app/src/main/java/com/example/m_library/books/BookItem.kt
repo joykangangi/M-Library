@@ -71,7 +71,7 @@ fun BookItem(
 }
 
 
-//The first side of the card
+//The left side of the card
 @Composable
 fun BookDetail(
     modifier: Modifier = Modifier,

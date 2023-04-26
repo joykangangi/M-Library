@@ -31,10 +31,10 @@ fun DatePicker(
     val context = LocalContext.current
 
     var selectedDate by remember { mutableStateOf(date) }
-    val calendar = Calendar.getInstance()
 
     val datePicker = remember(context) {
-        DatePickerDialog(
+        val calendar = Calendar.getInstance()
+        val dialog =  DatePickerDialog(
             context,
             R.style.DatePickerStyle,
             { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
@@ -44,8 +44,9 @@ fun DatePicker(
             calendar[Calendar.MONTH],
             calendar[Calendar.DAY_OF_MONTH]  //initial selected date in the dialog.
         )
+        dialog.datePicker.minDate = calendar.timeInMillis
+        dialog
     }
-    datePicker.datePicker.minDate = calendar.timeInMillis
 
     Row(
         modifier = modifier,
