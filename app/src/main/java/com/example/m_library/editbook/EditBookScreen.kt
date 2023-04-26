@@ -26,7 +26,6 @@ import com.example.m_library.app.data.local.Book
 import com.example.m_library.app.theme.MLibraryTheme
 import com.example.m_library.app.theme.mediumPadding
 import com.example.m_library.app.theme.smallPadding
-import com.example.m_library.app.util.safeToInt
 import com.example.m_library.app.widgets.DatePicker
 import com.example.m_library.app.widgets.ErrorText
 import com.example.m_library.app.widgets.TextField
@@ -84,11 +83,12 @@ fun EditBookScreen(
                                 onValueChanged = {
                                     updateBook(
                                         state.book.copy(
-                                            currentChapter = it.toIntOrNull() ?: "".safeToInt()
+                                            currentChapter = it.toIntOrNull() ?: 0
                                         )
                                     )
                                 },
                                 label = stringResource(id = R.string.currentChp),
+                                error = state.chaptersError?.let { "" },
                                 keyboardOptions = KeyboardOptions(
                                     imeAction = ImeAction.Next, keyboardType = KeyboardType.Number
                                 ),
@@ -100,13 +100,14 @@ fun EditBookScreen(
                                 onValueChanged = {
                                     updateBook(
                                         state.book.copy(
-                                            totalChapters = it.toIntOrNull() ?: "".safeToInt()
+                                            totalChapters = it.toIntOrNull() ?: 0
                                         )
                                     )
                                 },
                                 label = stringResource(id = R.string.totChap),
+                                error = state.chaptersError?.let { "" },
                                 keyboardOptions = KeyboardOptions(
-                                    imeAction = ImeAction.Done.also { onSave() },
+                                    imeAction = ImeAction.Done,
                                     keyboardType = KeyboardType.Number
                                 ),
                             )
@@ -119,6 +120,11 @@ fun EditBookScreen(
                     DatePicker(
                         modifier = Modifier.padding(vertical = smallPadding()),
                         date = state.book.readByDate,
+                        onDateChanged = {
+                            updateBook(
+                                state.book.copy(readByDate = it)
+                            )
+                        }
                     )
 
                     Button(modifier = Modifier
