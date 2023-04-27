@@ -2,6 +2,11 @@
 Most applications have enabled free accessibility to books online. However, there is no book tracking system for the individual.
 Therefore, to mitigate this, this mobile application was build. The application helps a user add books there reading/have read/ want to read, and 
 the user can clearly see their book collection (library). Moreover, they can get insights of this collection. That is,total books, those to read and completed reads.
+
+ ## Run The app
+ - Initial Project: [Appetize](https://appetize.io/app/brwhzd3d3o25smamxgmc5ml4wu)
+ - Revised Project: [New Upload](https://appetize.io/app/cdi24xfe3p7mac4h46tifkmhzu)
+ 
 ## Features of the App
 1. Add books using a [Dialog](https://m2.material.io/components/dialogs#full-screen-dialog)
      - The data collected includes:
@@ -54,8 +59,6 @@ the user can clearly see their book collection (library). Moreover, they can get
  - UI
  - Util
  - Viewmodel
- ## Run The app
- - Use this link: [Appetize](https://appetize.io/app/brwhzd3d3o25smamxgmc5ml4wu)
  
  ## Challenges Faced
  - Figuring out that the viewmodel should be scoped to a composable and not the whole activity. 
