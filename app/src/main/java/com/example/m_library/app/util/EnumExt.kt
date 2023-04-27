@@ -6,6 +6,7 @@ package com.example.m_library.app.util
  * and using a custom extension property like formattedName
  * is that the former returns the original name of the enum constant as defined in the enum class,
  * while the latter returns a formatted name based on the custom logic defined in the getter of the extension property.
+ * e.g ToRead->To Read
  */
 val <T : Enum<T>> Enum<T>.formattedName: String
     get() {
