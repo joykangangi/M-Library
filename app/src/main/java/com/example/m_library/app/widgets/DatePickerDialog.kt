@@ -24,20 +24,20 @@ private val calendar = Calendar.getInstance()
 @Composable
 fun DatePicker(
     date: LocalDate,
-    modifier: Modifier = Modifier,
     onDateChanged: (LocalDate) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     val context = LocalContext.current
     val selectedDate = remember { mutableStateOf(date) }
 
     val datePicker = remember(context) {
-        val dateDialog = DatePickerDialog(
+         val dateDialog =DatePickerDialog(
             context,
             R.style.DatePickerStyle,
             { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDayOfMonth: Int ->
-                selectedDate.value = LocalDate.of(selectedYear, selectedMonth + 1, selectedDayOfMonth)
-                onDateChanged(selectedDate.value)
+                selectedDate.value =
+                    LocalDate.of(selectedYear, selectedMonth + 1, selectedDayOfMonth)
             },
             calendar[Calendar.YEAR],
             calendar[Calendar.MONTH],
@@ -46,6 +46,8 @@ fun DatePicker(
         dateDialog.datePicker.minDate = calendar.timeInMillis
         dateDialog
     }
+    onDateChanged(selectedDate.value)
+
 
     Row(
         modifier = modifier,

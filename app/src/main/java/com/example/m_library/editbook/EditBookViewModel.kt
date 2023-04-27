@@ -1,6 +1,5 @@
 package com.example.m_library.editbook
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.m_library.R
@@ -41,8 +40,6 @@ class EditBookViewModel @Inject constructor(
             0 -> ReadStatus.ToRead
             else -> ReadStatus.Completed
         }
-        Log.i("EDIT-BOOK VM","Book Value date = ${book.readByDate}")
-        Log.i("EDIT-BOOK VM","Book Value YOTE = $book")
 
         EditBookState(
             book = book.copy(readStatus = updateReadStatus),
